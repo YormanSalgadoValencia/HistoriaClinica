@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-
+import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
+import UiParentCard from '@/components/shared/UiParentCard.vue';
+import ClinicalHistory from '@/components/clinicalHistory/ClinicalHistory.vue';
 
 const page = ref({ title: 'Sample Page' });
 const breadcrumbs = ref([
@@ -19,9 +21,5 @@ const breadcrumbs = ref([
 </script>
 
 <template>
-    <v-row>
-        <v-col>
-            <h1>Componente de clinical history</h1>
-        </v-col>
-    </v-row>
+    <ClinicalHistory></ClinicalHistory>
 </template>
