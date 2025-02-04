@@ -212,7 +212,6 @@
                     :plantilla="plantillaSeleccionada"
                 />
 
-                <!-- Descripción en un cuadro a la derecha -->
                 <div class="description-box">
                     <p>{{ plantillaSeleccionada?.description }}</p>
                 </div>
@@ -229,7 +228,7 @@
 <style scoped lang="scss">
 .title-container {
     display: flex;
-    justify-content: flex-end; /* Alinea el nombre a la derecha */
+    justify-content: flex-end;
     padding: 10px 20px;
 }
 
@@ -241,42 +240,27 @@
 
 .preview-container {
     display: flex;
-    justify-content: space-between; /* Distribuye espacio entre el preview y la descripción */
-    align-items: flex-start; /* Asegura alineación superior */
+    justify-content: space-between;
+    align-items: flex-start; 
     padding: 15px;
-    gap: 20px; /* Espacio entre elementos */
+    gap: 20px;
 }
 
 /* Estilo del preview */
 .preview-container PreviewPlantilla {
-    flex: 1; /* Ocupa el espacio disponible */
+    flex: 1;
 }
 
 /* Descripción en un cuadro */
 .description-box {
-    flex: 0.5; /* Tamaño proporcional */
+    flex: 0.5; 
     border: 2px solid black;
     border-radius: 10px;
     padding: 10px;
     background-color: #f8f8f8;
-    min-width: 200px; /* Tamaño mínimo */
+    min-width: 200px; 
     text-align: left;
 }
-
-/*.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.template-blanco {
-  margin-bottom: 20px;
-  text-align: center;
-  border: 2px solid #ddd;
-  padding: 10px;
-  width: 200px;
-}*/
 
 .search {
   margin-bottom: 20px;
