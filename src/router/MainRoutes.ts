@@ -10,7 +10,7 @@ const MainRoutes = {
             name: 'Starter',
             path: '/',
             component: () => import('@/views/StarterPage.vue')
-        },
+        }
     ]
 };
 

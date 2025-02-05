@@ -10,6 +10,13 @@ export const router = createRouter({
             path: '/:pathMatch(.*)*',
             component: () => import('@/views/authentication/Error.vue')
         },
+        { path: '/pacientes', name: 'ListarPacientes', component: () => import('@/views/Paciente/ListPacientes.vue') },
+        { path: '/atenciones', name: 'ListarAtenciones', component: () => import('@/views/Atencion/ListAtenciones.vue') },
+        {
+            path: '/historia-clinica/:id',
+            name: 'HistoriaClinica',
+            component: () => import('@/components/HistoriaClinica/FormularioHistoriaClinicas.vue')
+        },
         MainRoutes,
         AuthRoutes
     ]
