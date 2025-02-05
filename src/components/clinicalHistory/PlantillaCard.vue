@@ -1,6 +1,7 @@
 <script setup lang="ts">
     defineProps<{ plantilla: 
-        { name: string; sections: 
+        { name: string; 
+          sections: 
           { name: string; fields: 
             { name: string }[] }[] 
         } 

@@ -44,7 +44,7 @@
         {
             id: crypto.randomUUID(),
             name: "Ficha de Paciente",
-            description: "Información básica del paciente",
+            description: "Registro detallado de la información básica del paciente, incluyendo sus datos personales y de contacto. Permite almacenar información esencial para la identificación y comunicación con el paciente, asegurando un acceso rápido y organizado a estos datos en cualquier momento.",
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -64,12 +64,30 @@
                         { id: crypto.randomUUID(), name: "Correo Electrónico", type: "email", value: "" },
                     ],
                 },
+                {
+                    id: crypto.randomUUID(),
+                    name: "Datos de Contacto",
+                    fields: [
+                        { id: crypto.randomUUID(), name: "Teléfono", type: "text", value: "" },
+                        { id: crypto.randomUUID(), name: "Dirección", type: "text", value: "" },
+                        { id: crypto.randomUUID(), name: "Correo Electrónico", type: "email", value: "" },
+                    ],
+                },
+                {
+                    id: crypto.randomUUID(),
+                    name: "Datos de Contacto",
+                    fields: [
+                        { id: crypto.randomUUID(), name: "Teléfono", type: "text", value: "" },
+                        { id: crypto.randomUUID(), name: "Dirección", type: "text", value: "" },
+                        { id: crypto.randomUUID(), name: "Correo Electrónico", type: "email", value: "" },
+                    ],
+                },
             ],
         },
         {
             id: crypto.randomUUID(),
             name: "Evaluación Médica",
-            description: "Formulario para datos clínicos iniciales",
+            description: "Formulario estructurado para recopilar datos clínicos iniciales de un paciente. Contiene información clave sobre signos vitales y síntomas, lo que facilita una evaluación rápida y eficiente para el diagnóstico y tratamiento médico.",
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -94,7 +112,7 @@
         {
             id: crypto.randomUUID(),
             name: "Historia Clínica Completa",
-            description: "Registro médico detallado del paciente",
+            description: "Documento detallado que recoge información sobre los antecedentes médicos del paciente, incluyendo enfermedades crónicas, alergias, cirugías previas y medicación actual. Es fundamental para un seguimiento adecuado de la salud del paciente y la toma de decisiones médicas informadas.",
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -119,7 +137,7 @@
         {
             id: crypto.randomUUID(),
             name: "Ficha de Emergencia",
-            description: "Información rápida para atención en emergencias",
+            description: "Registro diseñado para situaciones de emergencia, proporcionando información crítica sobre el paciente, como su grupo sanguíneo, alergias importantes y contactos de emergencia. Facilita una respuesta rápida y efectiva en casos donde cada segundo cuenta.",
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -160,6 +178,7 @@
             <v-col cols="12">
                 <PlantillaCard
                     :plantilla="plantillEnBlanco"
+                    @click="openPlantilla(plantillEnBlanco)"
                 />
             </v-col>
         </v-row>
@@ -182,7 +201,6 @@
             <div class="template-list" v-if="plantillaBuscada != ''">
                 <PlantillaCard
                     v-for="plantilla in searchPlantilla"
-                    :key="plantilla.id"
                     :plantilla="plantilla"
                     @click="openPlantilla(plantilla)"
                 />
@@ -190,7 +208,6 @@
             <div v-else class="template-list">
                 <PlantillaCard
                     v-for="plantilla in plantillas"
-                    :key="plantilla.id"
                     :plantilla="plantilla"
                     @click="openPlantilla(plantilla)"
                 />
@@ -198,80 +215,94 @@
         </v-row>
     </v-container>
 
-    <v-dialog max-width="800" v-model="isOpenModalPreview">
-        <v-card>
-            <!-- Contenedor del título alineado a la derecha -->
-            <v-card-title class="title-container">
-                <h3 class="title">{{ plantillaSeleccionada?.name }}</h3>
+    <v-dialog max-width="900" max-height="700" v-model="isOpenModalPreview">
+        <v-card class="modal-content">
+            <v-card-title class="d-flex justify-end">
+                <h3 class="mb-0">{{ plantillaSeleccionada?.name }}</h3>
             </v-card-title>
-
-            <v-card-text class="preview-container">
-                <!-- Componente de la plantilla -->
-                <PreviewPlantilla
-                    v-if="plantillaSeleccionada"
-                    :plantilla="plantillaSeleccionada"
-                />
-
-                <div class="description-box">
-                    <p>{{ plantillaSeleccionada?.description }}</p>
-                </div>
+            <v-card-text class="modal-body">
+                <v-row align="center">
+                    <!-- Columna izquierda: vista previa con borde -->
+                    <v-col cols="8">
+                    <div class="preview-box">
+                        <PreviewPlantilla
+                        v-if="plantillaSeleccionada"
+                        :plantilla="plantillaSeleccionada"
+                        />
+                    </div>
+                    </v-col>
+                    <v-col cols="4">
+                    <div class="description-box">
+                        <p>{{ plantillaSeleccionada?.description }}</p>
+                    </div>
+                    </v-col>
+                </v-row>
             </v-card-text>
 
-            <v-card-actions>
-                <!-- Acciones opcionales -->
+            <v-card-actions class="d-flex justify-end">
+            <v-btn color="primary" @click="">
+                Usar esta plantilla
+            </v-btn>
+            <v-btn text @click="isOpenModalPreview = false">
+                Cancelar
+            </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 
+
+
 </template>
 
 <style scoped lang="scss">
-.title-container {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px 20px;
-}
 
-.title {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: right;
+.preview-box{
+    transform: scale(0.8);
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    max-height: 75vh;
+    overflow: scroll;
+    overflow-x: hidden;
 }
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #547ca0 #ffffff;
+  }
 
-.preview-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; 
-    padding: 15px;
-    gap: 20px;
-}
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 16px;
+  }
 
-/* Estilo del preview */
-.preview-container PreviewPlantilla {
-    flex: 1;
-}
+  *::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
 
-/* Descripción en un cuadro */
-.description-box {
-    flex: 0.5; 
-    border: 2px solid black;
+  *::-webkit-scrollbar-thumb {
+    background-color: #547ca0;
     border-radius: 10px;
-    padding: 10px;
-    background-color: #f8f8f8;
-    min-width: 200px; 
-    text-align: left;
+    border: 3px solid #ffffff;
+  }
+
+
+.modal-content {
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
+
+.modal-body {
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+}
+
 
 .search {
   margin-bottom: 20px;
-}
-
-.search-input {
-  padding: 8px;
-  font-size: 16px;
-  width: 250px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
 }
 
 .template-list {
