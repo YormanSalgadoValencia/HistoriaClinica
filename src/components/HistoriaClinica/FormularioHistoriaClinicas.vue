@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { useRoute, useRouter } from 'vue-router';
+import ModalNuevaSeccion from '@/components/HistoriaClinica/ModalNuevaSeccion.vue'; // Ajusta la ruta según tu proyecto
 
 const historiaStore = useHistoriaClinicaStore();
 const route = useRoute();
@@ -15,6 +16,9 @@ const selectedSection = ref<any>(null);
 const listModalOpen = ref(false);
 const selectedList = ref<any[]>([]);
 const selectedListTitle = ref('');
+
+// Nueva sección (para el modal de creación)
+const nuevaSeccion = ref<any>(null);
 
 onMounted(async () => {
     if (historiaId) {
@@ -52,7 +56,7 @@ async function guardarCambios() {
 }
 
 function modificarHistoriaClinica() {
-    console.log('Modificando historia clínica...');
+    router.push(`/historia-clinica/${historiaId}/modificar`);
 }
 
 function volver() {
@@ -92,6 +96,22 @@ const tableHeaders = computed(() => {
                     <v-card-subtitle class="header-subtitle">
                         {{ historiaStore.historiaSeleccionada.description }}
                     </v-card-subtitle>
+                </v-card>
+
+                <!-- Botón para agregar nueva sección -->
+                <v-card class="mb-6" elevation="0">
+                    <v-card-text class="text-center">
+                        <v-btn
+                            color="#1f74ff"
+                            variant="elevated"
+                            size="large"
+                            prepend-icon="mdi-plus"
+                            @click="nuevaSeccion = { _id: Date.now().toString(), name: '', fields: [] }"
+                            class="add-section-button"
+                        >
+                            Agregar Nueva Sección
+                        </v-btn>
+                    </v-card-text>
                 </v-card>
 
                 <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion._id" class="mb-6">
@@ -163,6 +183,7 @@ const tableHeaders = computed(() => {
             </v-col>
         </v-row>
 
+        <!-- Modal para ver detalle de sección -->
         <v-dialog v-model="sectionModalOpen" max-width="600">
             <v-card>
                 <v-card-title class="text-h5 pa-4"> Detalle de la Sección </v-card-title>
@@ -178,6 +199,7 @@ const tableHeaders = computed(() => {
             </v-card>
         </v-dialog>
 
+        <!-- Modal para ver lista -->
         <v-dialog v-model="listModalOpen" max-width="900">
             <v-card>
                 <v-card-title class="text-h5 pa-4">
@@ -216,6 +238,20 @@ const tableHeaders = computed(() => {
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <!-- Modal para crear nueva sección -->
+        <ModalNuevaSeccion
+            :seccion="nuevaSeccion"
+            @createSeccion="
+                (seccion: any) => {
+                    if (historiaStore.historiaSeleccionada) {
+                        historiaStore.historiaSeleccionada.sections.push(seccion);
+                    }
+                    nuevaSeccion = null;
+                }
+            "
+            @cerrarModal="nuevaSeccion = null"
+        />
     </v-container>
 </template>
 

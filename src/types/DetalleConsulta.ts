@@ -1,4 +1,4 @@
-class DetalleConsulta {
+export class DetalleConsulta {
     _id: string;
     fecha: string;
     especialidad: string;
