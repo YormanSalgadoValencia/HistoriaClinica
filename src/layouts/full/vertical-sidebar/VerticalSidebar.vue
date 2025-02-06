@@ -46,8 +46,8 @@ const sidebarMenu = shallowRef(sidebarItems);
                 </template>
             </v-list>
             <div class="pa-6 userbottom">
-                <Profile />
-            </div>
+<!--                 <Profile />
+ -->            </div>
         </perfect-scrollbar>
     </v-navigation-drawer>
 </template>
