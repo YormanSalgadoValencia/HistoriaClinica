@@ -2,8 +2,6 @@
     import { computed, reactive, ref } from "vue";
     import PlantillaCard from "./PlantillaCard.vue";
     import PreviewPlantilla from "./PreviewPlantilla.vue";
-    import { useI18n } from 'vue-i18n';
-
 
     const plantillaBuscada = ref('');
     const selectedCategory = ref('');
@@ -170,6 +168,7 @@
      ]);
 
      const searchPlantilla = computed(() =>
+
         plantillas.filter(p => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
     );
 
@@ -178,9 +177,18 @@
         plantillaSeleccionada.value = plantilla;
     }
 
-    const searchPlantillaByCategory = computed(() => {
-        return plantillas.filter(p => p.categories?.includes(selectedCategory.value));
-    })
+    const searchPlantillaByCategory = computed(() =>
+        plantillas.filter(p => p.categories?.includes(selectedCategory.value))
+    );
+
+    const searchPlantillaFiltered = computed(() => {
+        return plantillas.filter(p => {
+            const matchesSearch = p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase());
+            const matchesCategory = selectedCategory.value === '' || p.categories?.includes(selectedCategory.value);
+            return matchesSearch && matchesCategory;
+        });
+    });
+    
 
 </script>
 
@@ -211,23 +219,32 @@
 
         <v-row class="mb-5 align-center">
             <p class="mr-3">Categorías:</p>
-            <v-chip-group v-model="selectedCategory"  @click="searchPlantillaByCategory" selected-class="text-white" mandatory>
-                <v-chip v-for="category in categories" :key="category" variant="outlined" filter>
+            <v-btn-toggle v-model="selectedCategory" mandatory>
+                <v-btn :value="''" variant="outlined">
+                Todas
+                </v-btn>
+                <v-btn
+                v-for="(category, index) in categories" 
+                    :key="index"
+                    :value="category"
+                    variant="outlined"
+                    >
                     {{ category }}
-                </v-chip>
-            </v-chip-group>
+                </v-btn>
+            </v-btn-toggle>
         </v-row>
+
 
 
         <v-row>
             <div class="template-list" v-if="plantillaBuscada != ''">
                 <PlantillaCard
-                    v-for="plantilla in searchPlantilla"
+                    v-for="plantilla in searchPlantillaFiltered"
                     :plantilla="plantilla"
                     @click="openPlantilla(plantilla)"
                 />
             </div>
-            <div class="template-list" v-if="selectedCategory != ''">
+            <div class="template-list" v-else-if="selectedCategory != ''">
                 <PlantillaCard
                     v-for="plantilla in searchPlantillaByCategory"
                     :plantilla="plantilla"
@@ -250,8 +267,7 @@
                 <h3 class="mb-0">{{ plantillaSeleccionada?.name }}</h3>
             </v-card-title>
             <v-card-text class="modal-body">
-                <v-row align="center">
-                    <!-- Columna izquierda: vista previa con borde -->
+                <v-row class="d-flex justify-center align-center">
                     <v-col cols="8">
                     <div class="preview-box">
                         <PreviewPlantilla
