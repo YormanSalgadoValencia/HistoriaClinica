@@ -2,6 +2,8 @@
     import { computed, reactive, ref } from "vue";
     import PlantillaCard from "./PlantillaCard.vue";
     import PreviewPlantilla from "./PreviewPlantilla.vue";
+    import { useI18n } from 'vue-i18n';
+
 
     const plantillaBuscada = ref('');
     const isOpenModalPreview = ref(false);
