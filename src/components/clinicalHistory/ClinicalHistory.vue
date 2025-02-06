@@ -4,8 +4,10 @@
     import PreviewPlantilla from "./PreviewPlantilla.vue";
 
     const plantillaBuscada = ref('');
+    const selectedCategory = ref('');
     const isOpenModalPreview = ref(false);
     const plantillaSeleccionada = ref<Plantilla | null>(null);
+    const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
     
     const plantillEnBlanco = reactive<Plantilla>({
         id: crypto.randomUUID(),
@@ -45,6 +47,7 @@
             id: crypto.randomUUID(),
             name: "Ficha de Paciente",
             description: "Registro detallado de la información básica del paciente, incluyendo sus datos personales y de contacto. Permite almacenar información esencial para la identificación y comunicación con el paciente, asegurando un acceso rápido y organizado a estos datos en cualquier momento.",
+            categories: ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -88,6 +91,7 @@
             id: crypto.randomUUID(),
             name: "Evaluación Médica",
             description: "Formulario estructurado para recopilar datos clínicos iniciales de un paciente. Contiene información clave sobre signos vitales y síntomas, lo que facilita una evaluación rápida y eficiente para el diagnóstico y tratamiento médico.",
+            categories: ['Primera', 'Quinta'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -113,6 +117,7 @@
             id: crypto.randomUUID(),
             name: "Historia Clínica Completa",
             description: "Documento detallado que recoge información sobre los antecedentes médicos del paciente, incluyendo enfermedades crónicas, alergias, cirugías previas y medicación actual. Es fundamental para un seguimiento adecuado de la salud del paciente y la toma de decisiones médicas informadas.",
+            categories: ['Cuarta', 'Quinta'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -138,6 +143,7 @@
             id: crypto.randomUUID(),
             name: "Ficha de Emergencia",
             description: "Registro diseñado para situaciones de emergencia, proporcionando información crítica sobre el paciente, como su grupo sanguíneo, alergias importantes y contactos de emergencia. Facilita una respuesta rápida y efectiva en casos donde cada segundo cuenta.",
+            categories: ['Tercera'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -170,6 +176,10 @@
         plantillaSeleccionada.value = plantilla;
     }
 
+    const searchPlantillaByCategory = computed(() => {
+        return plantillas.filter(p => p.categories?.includes(selectedCategory.value));
+    })
+
 </script>
 
 <template>
@@ -197,10 +207,27 @@
             </v-col>
         </v-row>
 
+        <v-row class="mb-5 align-center">
+            <p class="mr-3">Categorías:</p>
+            <v-chip-group v-model="selectedCategory"  @click="searchPlantillaByCategory" selected-class="text-white" mandatory>
+                <v-chip v-for="category in categories" :key="category" variant="outlined" filter>
+                    {{ category }}
+                </v-chip>
+            </v-chip-group>
+        </v-row>
+
+
         <v-row>
             <div class="template-list" v-if="plantillaBuscada != ''">
                 <PlantillaCard
                     v-for="plantilla in searchPlantilla"
+                    :plantilla="plantilla"
+                    @click="openPlantilla(plantilla)"
+                />
+            </div>
+            <div class="template-list" v-if="selectedCategory != ''">
+                <PlantillaCard
+                    v-for="plantilla in searchPlantillaByCategory"
                     :plantilla="plantilla"
                     @click="openPlantilla(plantilla)"
                 />
