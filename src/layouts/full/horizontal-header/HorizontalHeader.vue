@@ -82,11 +82,11 @@ watch(priority, (newPriority) => {
             <!-- ---------------------------------------------- -->
             <!-- ShoppingCart -->
             <!-- ---------------------------------------------- -->
-            <v-btn icon variant="text" color="primary" to="/ecommerce/checkout">
+        <!--     <v-btn icon variant="text" color="primary" to="/ecommerce/checkout">
                 <v-badge color="error" :content="0">
                     <ShoppingCartIcon stroke-width="1.5" size="22" />
                 </v-badge>
-            </v-btn>
+            </v-btn> -->
 
             <!-- right sidebar -->
             <v-btn class="hidden-lg-and-up ml-3" icon rounded="sm" @click.stop="appsdrawer = !appsdrawer" variant="flat">

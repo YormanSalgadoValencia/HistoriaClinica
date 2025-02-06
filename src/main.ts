@@ -16,7 +16,7 @@ import './_mockApis';
 import Maska from 'maska';
 
 // Table
-import Vue3EasyDataTable from 'vue3-easy-data-table';
+//import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 //i18
 import { createI18n } from 'vue-i18n';
@@ -29,7 +29,7 @@ import VueScrollTo from 'vue-scrollto';
 import VueEasyLightbox from 'vue-easy-lightbox';
 
 const i18n = createI18n({
-    locale: 'en',
+    locale: 'es',
     messages: messages,
     silentTranslationWarn: true,
     silentFallbackWarn: true
@@ -38,7 +38,7 @@ const i18n = createI18n({
 const app = createApp(App);
 fakeBackend();
 app.use(router);
-app.component('EasyDataTable', Vue3EasyDataTable);
+//app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(PerfectScrollbar);
 // app.use(VueDragscroll);
 app.use(createPinia());
@@ -54,9 +54,8 @@ app.use(vuetify).mount('#app');
 // app.use(VueScrollTo);
 app.use(VueScrollTo, {
     duration: 1000,
-    easing: "ease"
+    easing: 'ease'
 });
 
 //Lightbox
-app.use(VueEasyLightbox)
-
+app.use(VueEasyLightbox);
