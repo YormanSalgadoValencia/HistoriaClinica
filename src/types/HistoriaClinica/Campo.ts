@@ -2,7 +2,7 @@ export class Campo {
     _id: string;
     name: string;
     type: string;
-    value: string;
+    value: string | any[];
 
     constructor(_id: string, name: string, type: string, value: string = '') {
         this._id = _id;
