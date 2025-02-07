@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { languageDD } from '@/_mockApis/headerData';
 import flag1 from '@/assets/images/flag/icon-flag-en.svg';
 import flag5 from '@/assets/images/flag/icon-flag-es.svg';
-
 </script>
 <template>
     <!-- ---------------------------------------------- -->
@@ -13,18 +12,21 @@ import flag5 from '@/assets/images/flag/icon-flag-es.svg';
         <template v-slot:activator="{ props }">
             <v-btn icon variant="text" color="primary" v-bind="props">
                 <v-avatar size="22">
-                    <img v-if="$i18n.locale === 'es'" :src="flag5" :alt="$i18n.locale" width="22" height="22"
-                        class="obj-cover" />
-                    <img v-if="$i18n.locale === 'en'" :src="flag1" :alt="$i18n.locale" width="22" height="22"
-                        class="obj-cover" />
+                    <img v-if="$i18n.locale === 'es'" :src="flag5" :alt="$i18n.locale" width="22" height="22" class="obj-cover" />
+                    <img v-if="$i18n.locale === 'en'" :src="flag1" :alt="$i18n.locale" width="22" height="22" class="obj-cover" />
                 </v-avatar>
             </v-btn>
         </template>
         <v-sheet rounded="md" width="200" elevation="10">
             <v-list class="theme-list">
-                <v-list-item v-for="(item, index) in languageDD" :key="index" color="primary"
-                    :active="$i18n.locale == item.value" class="d-flex align-center"
-                    @click="() => ($i18n.locale = item.value)">
+                <v-list-item
+                    v-for="(item, index) in languageDD"
+                    :key="index"
+                    color="primary"
+                    :active="$i18n.locale == item.value"
+                    class="d-flex align-center"
+                    @click="() => ($i18n.locale = item.value)"
+                >
                     <template v-slot:prepend>
                         <v-avatar size="22">
                             <img :src="item.avatar" :alt="item.avatar" width="22" height="22" class="obj-cover" />

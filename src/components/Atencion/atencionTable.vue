@@ -43,6 +43,7 @@
                         <!-- Columna de Acciones -->
                         <template v-slot:item.acciones="{ item }">
                             <v-row no-gutters class="d-flex align-center">
+                                <v-btn color="primary" size="small" class="mr-2"> Ver </v-btn>
                                 <v-btn color="warning" size="small" @click="modificarAtencion(item)" class="mr-2"> Editar </v-btn>
                                 <v-btn color="error" size="small" @click="eliminarAtencion(item)" class="mr-2"> Eliminar </v-btn>
                                 <v-btn color="info" size="small" @click="verHistoriaClinica(item)"> Historia Clínica </v-btn>
