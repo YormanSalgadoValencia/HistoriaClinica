@@ -43,7 +43,7 @@ const emit = defineEmits(['close']);
 
 // Estado reactivo para el formulario
 const nuevoFormato = ref({
-    _id: Date.now().toString(),
+    id: Date.now().toString(),
     tipoEspecialidad: '', // Ahora es un string, por lo que debe coincidir con los id de la lista
     nombrePersonalizado: ''
 });
@@ -142,7 +142,7 @@ const agregarFormatoAtencion = async () => {
 // Método para resetear el formulario
 const resetFormulario = () => {
     nuevoFormato.value = {
-        _id: Date.now().toString(),
+        id: Date.now().toString(),
         tipoEspecialidad: '', // Reiniciamos a cadena vacía
         nombrePersonalizado: ''
     };

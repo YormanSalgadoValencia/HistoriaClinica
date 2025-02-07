@@ -29,7 +29,7 @@ import VueScrollTo from 'vue-scrollto';
 import VueEasyLightbox from 'vue-easy-lightbox';
 
 const i18n = createI18n({
-    locale: 'en',
+    locale: 'es',
     messages: messages,
     silentTranslationWarn: true,
     silentFallbackWarn: true

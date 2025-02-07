@@ -1,60 +1,22 @@
-<template>
-    <div class="table-container">
-        <!-- Indicador de carga -->
-        <div v-if="loading" class="loading">Cargando...</div>
-
-        <!-- Mostrar error si lo hay -->
-        <div v-if="error" class="error">{{ error }}</div>
-
-        <!-- Tabla de pacientes -->
-        <table v-if="!loading && pacientesComputados.length">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>Género</th>
-                    <th>Documento</th>
-                    <th>Acompañante</th>
-                    <th>Responsable</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="paciente in pacientesComputados" :key="paciente._id">
-                    <td>{{ paciente.nombre }}</td>
-                    <td>{{ paciente.apellido }}</td>
-                    <td>{{ paciente.fechaNacimiento }}</td>
-                    <td>{{ paciente.genero }}</td>
-                    <td>{{ paciente.numeroDocumento }}</td>
-                    <td>{{ paciente.acompanante }}</td>
-                    <td>{{ paciente.responsable }}</td>
-                    <td>
-                        <button class="btn-historia">Crear historial clínico</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Mensaje cuando no hay pacientes -->
-        <div v-if="!loading && pacientesComputados.length === 0" class="no-data">No hay pacientes registrados.</div>
-    </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { Paciente } from '@/types/Paciente';
-import { getPacientes } from '@/services/pacienteService'; // Asegúrate de tener esta función correctamente importada
+import { getPacientes } from '@/services/pacienteService';
 
-// Estados locales
 const pacientes = ref<Paciente[]>([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
+const search = ref('');
+const router = useRouter();
 
-// Cargar datos al montar el componente
 onMounted(async () => {
     try {
-        pacientes.value = await getPacientes();
+        const data = await getPacientes();
+        pacientes.value = data.filter((p) => {
+            const fecha = new Date(p.fechaNacimiento);
+            return p.fechaNacimiento && !isNaN(fecha.getTime());
+        });
     } catch (err: any) {
         error.value = err.message;
     } finally {
@@ -62,12 +24,8 @@ onMounted(async () => {
     }
 });
 
-// Propiedad computada para procesar la lista (por ejemplo, ordenada alfabéticamente)
-const pacientesComputados = computed(() => {
-    return pacientes.value.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-});
+const pacientesComputados = computed(() => pacientes.value.slice().sort((a, b) => a.nombre.localeCompare(b.nombre)));
 
-// Watcher opcional para depuración
 watch(
     () => pacientes.value,
     (newValue) => {
@@ -75,84 +33,186 @@ watch(
     },
     { deep: true }
 );
+
+const headers = [
+    { title: 'Nombre', key: 'nombreCompleto', align: 'start' },
+    { title: 'Fecha Nacimiento', key: 'fechaNacimiento', align: 'start' },
+    { title: 'Género', key: 'genero', align: 'start' },
+    { title: 'Documento', key: 'numeroDocumento', align: 'start' },
+    { title: 'Acciones', key: 'acciones', sortable: false, align: 'center' }
+];
+
+function formatearFecha(fecha: string) {
+    if (!fecha) return 'Fecha inválida';
+    const fechaObj = new Date(fecha);
+    return isNaN(fechaObj.getTime()) ? 'Fecha inválida' : fechaObj.toLocaleDateString('es-ES');
+}
+
+function verPaciente(paciente: Paciente) {
+    console.log('Ver paciente:', paciente);
+}
+
+function editarPaciente(paciente: Paciente) {
+    console.log('Editar paciente:', paciente);
+}
+
+function eliminarPaciente(paciente: Paciente) {
+    console.log('Eliminar paciente:', paciente);
+}
+
+function Atenciones(paciente: Paciente) {
+    console.log('Redirigiendo a atenciones del paciente:', paciente);
+    router.push({ name: 'Atenciones', params: { pacienteId: paciente.id } });
+}
 </script>
 
-<style scoped lang="scss">
-/* Contenedor centrado y más amplio */
-.table-container {
-    margin: 2rem auto;
-    padding: 1rem;
-    box-sizing: border-box;
+<template>
+    <v-container class="pa-6" style="max-width: 1400px">
+        <v-card class="content-card" elevation="2">
+            <v-card-text class="search-section">
+                <v-text-field
+                    v-model="search"
+                    label="Buscar paciente..."
+                    prepend-inner-icon="mdi-magnify"
+                    variant="outlined"
+                    density="comfortable"
+                    hide-details
+                    class="search-field"
+                    clearable
+                ></v-text-field>
+            </v-card-text>
+
+            <v-row justify="center" v-if="loading">
+                <v-col class="text-center" cols="12">
+                    <v-progress-linear indeterminate color="#1f74ff"></v-progress-linear>
+                </v-col>
+            </v-row>
+
+            <v-alert v-if="error" type="error" variant="tonal" border="start" elevation="2" class="ma-4">
+                {{ error }}
+            </v-alert>
+
+            <v-card-text v-if="!loading && pacientes.length" class="pa-0">
+                <v-data-table :headers="headers" :items="pacientesComputados" :search="search" class="styled-data-table" hover>
+                    <template v-slot:item.nombreCompleto="{ item }">
+                        <span class="font-weight-medium">{{ item.nombre }} {{ item.apellido }}</span>
+                    </template>
+
+                    <template v-slot:item.fechaNacimiento="{ item }">
+                        <span class="font-weight-medium">{{ formatearFecha(item.fechaNacimiento) }}</span>
+                    </template>
+
+                    <template v-slot:item.acciones="{ item }">
+                        <div class="action-buttons">
+                            <v-btn icon="mdi-eye" size="small" color="#1f74ff" variant="text" @click="verPaciente(item)"></v-btn>
+                            <v-btn icon="mdi-pencil" size="small" color="warning" variant="text" @click="editarPaciente(item)"></v-btn>
+                            <v-btn icon="mdi-delete" size="small" color="error" variant="text" @click="eliminarPaciente(item)"></v-btn>
+                            <v-btn icon="mdi-file-document" size="small" color="success" variant="text" @click="Atenciones(item)"></v-btn>
+                        </div>
+                    </template>
+                </v-data-table>
+            </v-card-text>
+
+            <v-card-text v-if="!loading && pacientes.length === 0" class="text-center pa-8">
+                <v-icon icon="mdi-account-group" size="64" color="#1f74ff" class="mb-4"></v-icon>
+                <h3 class="text-h6 mb-2">No hay pacientes registrados</h3>
+                <p class="text-body-1 text-medium-emphasis">Comienza agregando un nuevo paciente usando el botón superior.</p>
+            </v-card-text>
+        </v-card>
+    </v-container>
+</template>
+
+<style scoped>
+.header-card {
+    background: linear-gradient(135deg, #000534 0%, #1f74ff 100%);
+    color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(31, 116, 255, 0.15);
 }
 
-/* Indicadores y mensajes */
-.loading,
-.error,
-.no-data {
-    text-align: center;
-    margin-bottom: 1rem;
+.header-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 12px;
+}
+
+.header-subtitle {
     font-size: 1.1rem;
+    opacity: 0.9;
+    padding: 0 24px 24px;
 }
 
-.error {
-    color: #d32f2f;
-    font-weight: bold;
-}
-
-/* Estilo general para la tabla */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 8px;
+.content-card {
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Encabezado de la tabla */
-thead {
-    background-color: #1565c0; /* Azul oscuro */
-    color: #fff;
+.search-section {
+    background-color: #f8fafc;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 16px 24px;
 }
 
-th,
-td {
-    padding: 1rem 1.25rem;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+.search-field {
+    max-width: 400px;
 }
 
-/* Filas alternas y efecto hover */
-tbody tr:nth-child(even) {
-    background-color: #e3f2fd; /* Azul claro */
+.styled-data-table {
+    border-radius: 0;
 }
 
-tbody tr:hover {
-    background-color: #bbdefb; /* Azul intermedio en hover */
-    transition: background-color 0.3s ease;
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
 }
 
-/* Botón para crear historial clínico */
-.btn-historia {
-    background-color: #1976d2; /* Azul medio */
-    border: none;
-    color: #fff;
-    padding: 0.6rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 0.95rem;
+.action-buttons .v-btn {
+    transition: transform 0.2s;
 }
 
-.btn-historia:hover {
-    background-color: #0d47a1; /* Azul más oscuro */
+.action-buttons .v-btn:hover {
+    transform: translateY(-2px);
 }
 
-/* Ajustes responsivos */
-@media (max-width: 768px) {
-    th,
-    td {
-        padding: 0.75rem 1rem;
+@media (max-width: 960px) {
+    .header-title {
+        font-size: 1.5rem;
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .search-field {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-card {
+        border-radius: 12px;
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+        padding: 16px 16px 8px;
+    }
+
+    .header-subtitle {
+        font-size: 1rem;
+        padding: 0 16px 16px;
+    }
+
+    .content-card {
+        border-radius: 8px;
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
     }
 }
 </style>

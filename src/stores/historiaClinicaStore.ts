@@ -34,6 +34,7 @@ export const useHistoriaClinicaStore = defineStore('historiaClinica', {
             this.error = null;
             try {
                 this.historiaSeleccionada = await getHistoriaClinicaById(id);
+                console.log(this.historiaSeleccionada);
             } catch (error: any) {
                 this.error = error.message || 'Error al obtener la historia clínica por ID';
             } finally {

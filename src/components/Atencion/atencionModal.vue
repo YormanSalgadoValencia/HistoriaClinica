@@ -30,7 +30,7 @@
                             <v-select
                                 :key="especialidades.length"
                                 :items="especialidades"
-                                item-value="_id"
+                                item-value="id"
                                 item-title="nombrePersonalizado"
                                 v-model="atencion.tiposAtencion"
                                 label="Especialidad"
@@ -104,14 +104,14 @@ const especialidades = computed(() => formatosAtencion.value);
 
 // Estado para la nueva atención
 const atencion = ref({
-    _id: '',
+    id: '',
     fechaAtencion: new Date(),
     modalidadAtencion: 'Presencial',
     consecutivoAtencion: '',
     informacionAdicional: '',
-    tiposAtencion: { _id: '', tipoEspecialidad: '', nombrePersonalizado: '' },
+    tiposAtencion: { id: '', tipoEspecialidad: '', nombrePersonalizado: '' },
     historiaClinica: {
-        _id: '',
+        id: '',
         name: '',
         description: '',
         sections: []
@@ -162,7 +162,7 @@ const crearAtencion = async () => {
             ...atencion.value,
             fechaAtencion: new Date(atencion.value.fechaAtencion),
             historiaClinica: {
-                _id: '',
+                id: '',
                 name: '',
                 description: '',
                 sections: []
@@ -193,14 +193,14 @@ const crearAtencion = async () => {
 // Función para reiniciar el formulario
 const resetFormulario = () => {
     atencion.value = {
-        _id: Date.now().toString(),
+        id: Date.now().toString(),
         fechaAtencion: new Date(),
         modalidadAtencion: 'Presencial',
         consecutivoAtencion: '',
         informacionAdicional: '',
-        tiposAtencion: { _id: '', tipoEspecialidad: '', nombrePersonalizado: '' },
+        tiposAtencion: { id: '', tipoEspecialidad: '', nombrePersonalizado: '' },
         historiaClinica: {
-            _id: '',
+            id: '',
             name: '',
             description: '',
             sections: []
@@ -234,7 +234,7 @@ const agregarEspecialidad = async (nombreEspecialidad: string) => {
     }
 
     const nueva = {
-        _id: Date.now().toString(),
+        id: Date.now().toString(),
         tipoEspecialidad: '', // Puedes asignar algún tipo o dejarlo vacío
         nombrePersonalizado: nombreEspecialidad
     };
