@@ -24,7 +24,16 @@ export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
                             new Seccion(
                                 section._id,
                                 section.name,
-                                section.fields.map((field: Campo) => new Campo(field._id, field.name, field.type, field.value))
+                                section.fields.map(
+                                    (field: Campo) =>
+                                        new Campo(
+                                            field._id,
+                                            field.name,
+                                            field.type,
+                                            // Si el campo es de tipo 'list' y el valor es un string, se parsea a array.
+                                            field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
+                                        )
+                                )
                             )
                     )
                 )
@@ -62,11 +71,19 @@ export const createHistoriaClinica = async (payload: {
             plantilla.name,
             plantilla.description,
             plantilla.sections.map(
-                (section: any) =>
+                (section: Seccion) =>
                     new Seccion(
-                        section.id,
+                        section._id,
                         section.name,
-                        section.fields.map((field: any) => new Campo(field.id, field.name, field.type, field.value))
+                        section.fields.map(
+                            (field: Campo) =>
+                                new Campo(
+                                    field._id,
+                                    field.name,
+                                    field.type,
+                                    field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
+                                )
+                        )
                     )
             )
         );
@@ -84,6 +101,8 @@ export const getHistoriaClinicaById = async (id: string): Promise<Plantilla> => 
         const response = await axios.get(`${API_URL}/historiasClinicas/${id}`);
         const plantilla = response.data;
 
+        console.log('Plantilla recibida:', plantilla);
+
         return new Plantilla(
             plantilla._id,
             plantilla.name,
@@ -93,7 +112,15 @@ export const getHistoriaClinicaById = async (id: string): Promise<Plantilla> => 
                     new Seccion(
                         section._id,
                         section.name,
-                        section.fields.map((field: Campo) => new Campo(field._id, field.name, field.type, field.value))
+                        section.fields.map(
+                            (field: Campo) =>
+                                new Campo(
+                                    field._id,
+                                    field.name,
+                                    field.type,
+                                    field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
+                                )
+                        )
                     )
             )
         );

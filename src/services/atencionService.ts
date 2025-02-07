@@ -36,7 +36,15 @@ export const getAtenciones = async (): Promise<Atencion[]> => {
                                   new Seccion(
                                       seccion._id,
                                       seccion.name,
-                                      seccion.fields.map((campo: Campo) => new Campo(campo._id, campo.name, campo.type, campo.value))
+                                      seccion.fields.map(
+                                          (campo: Campo) =>
+                                              new Campo(
+                                                  campo._id,
+                                                  campo.name,
+                                                  campo.type,
+                                                  Array.isArray(campo.value) ? JSON.stringify(campo.value) : campo.value
+                                              )
+                                      )
                                   )
                           )
                       )
@@ -108,7 +116,15 @@ export const createAtencion = async (payload: {
                               new Seccion(
                                   seccion._id,
                                   seccion.name,
-                                  seccion.fields.map((campo: Campo) => new Campo(campo._id, campo.name, campo.type, campo.value))
+                                  seccion.fields.map(
+                                      (campo: Campo) =>
+                                          new Campo(
+                                              campo._id,
+                                              campo.name,
+                                              campo.type,
+                                              Array.isArray(campo.value) ? JSON.stringify(campo.value) : campo.value
+                                          )
+                                  )
                               )
                       )
                   )
