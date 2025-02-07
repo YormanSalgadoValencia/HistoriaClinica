@@ -30,7 +30,7 @@
                             <v-select
                                 :key="especialidades.length"
                                 :items="especialidades"
-                                item-value="_id"
+                                item-value="id"
                                 item-title="nombrePersonalizado"
                                 v-model="atencion.tiposAtencion"
                                 label="Especialidad"

@@ -11,7 +11,7 @@
                 <v-text-field v-model="localSeccion.name" label="Nombre de la Sección" outlined></v-text-field>
 
                 <!-- Listado de campos -->
-                <div v-for="(field, index) in localSeccion.fields" :key="field._id" class="mb-3">
+                <div v-for="(field, index) in localSeccion.fields" :key="field.id" class="mb-3">
                     <v-card outlined class="pa-3">
                         <v-card-title class="px-0">
                             Campo {{ index + 1 }}
@@ -79,9 +79,9 @@ watch(
 
 function agregarCampo() {
     // Se crea un nuevo campo con valores por defecto.
-    // En este ejemplo se utiliza Date.now() para asignar un _id único temporal.
+    // En este ejemplo se utiliza Date.now() para asignar un  único temporal.
     const nuevoCampo = {
-        _id: Date.now().toString(),
+        id: Date.now().toString(),
         name: '',
         type: 'text',
         value: ''

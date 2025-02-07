@@ -22,7 +22,7 @@ export const createFormatoAtencion = async (formato: FormatoAtencion): Promise<F
             nombrePersonalizado: formato.nombrePersonalizado
         });
         // Retorna el nuevo formato de atención creado, transformado en un objeto de la clase FormatoAtencion
-        return new FormatoAtencion(response.data._id, response.data.tipoEspecialidad, response.data.nombrePersonalizado);
+        return new FormatoAtencion(response.data.id, response.data.tipoEspecialidad, response.data.nombrePersonalizado);
     } catch (error) {
         console.error('Error al crear el formato de atención:', error);
         throw error;

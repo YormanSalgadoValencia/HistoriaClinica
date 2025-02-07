@@ -12,7 +12,7 @@ export const getPacientes = async (): Promise<Paciente[]> => {
     try {
         const response = await axios.get(`${API_URL}/paciente`);
         return response.data.map((paciente: Paciente) => {
-            // Se crea la instancia del paciente usando _id y demás propiedades.
+            // Se crea la instancia del paciente usando id y demás propiedades.
             const nuevoPaciente = new Paciente(
                 paciente.id,
                 paciente.nombre,
@@ -41,7 +41,7 @@ export const getPacienteById = async (id: string): Promise<Paciente> => {
         const response = await axios.get(`${API_URL}/paciente/${id}`);
         const data = response.data;
 
-        // Se crea la instancia del paciente usando _id y demás propiedades.
+        // Se crea la instancia del paciente usando id y demás propiedades.
         const nuevoPaciente = new Paciente(
             data.id,
             data.nombre,
@@ -81,7 +81,7 @@ export const createPaciente = async (payload: {
         const response = await axios.post(`${API_URL}/paciente`, payload);
         const data = response.data;
 
-        // Se crea la instancia del paciente usando _id y demás propiedades.
+        // Se crea la instancia del paciente usando id y demás propiedades.
         const nuevoPaciente = new Paciente(
             data.id,
             data.nombre,
