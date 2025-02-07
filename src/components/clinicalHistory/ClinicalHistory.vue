@@ -221,7 +221,7 @@
             <p class="mr-3">Categorías:</p>
             <v-btn-toggle v-model="selectedCategory" mandatory>
                 <v-btn :value="''" variant="outlined">
-                Todas
+                    Todas
                 </v-btn>
                 <v-btn
                 v-for="(category, index) in categories" 
@@ -330,7 +330,6 @@
     border-radius: 10px;
     border: 3px solid #ffffff;
   }
-
 
 .modal-content {
     max-height: 90vh;
