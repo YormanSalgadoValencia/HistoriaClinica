@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:3000';
 export const getFormatosAtencion = async (): Promise<FormatoAtencion[]> => {
     try {
         const response = await axios.get(`${API_URL}/formatosAtencion`);
-        return response.data.map((item: FormatoAtencion) => new FormatoAtencion(item._id, item.tipoEspecialidad, item.nombrePersonalizado));
+        return response.data.map((item: FormatoAtencion) => new FormatoAtencion(item.id, item.tipoEspecialidad, item.nombrePersonalizado));
     } catch (error) {
         console.error('Error al obtener los formatos de atención:', error);
         throw error;

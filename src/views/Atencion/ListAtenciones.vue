@@ -19,6 +19,8 @@
                 <!-- Modal para agregar una nueva atención -->
                 <AtencionModal :isOpen="modalAbierto" @close="cerrarModal" />
 
+                <ModalFormatoAtencion :isOpen="mostrarFormatoModal" @close="mostrarFormatoModal = false" />
+
                 <!-- Tabla de atenciones -->
                 <TableAtencion :atenciones="formattedAtenciones" />
 
@@ -36,9 +38,11 @@ import { ref, onMounted, computed } from 'vue';
 import { useAtencionStore } from '@/stores/atencionStore';
 import AtencionModal from '@/components/Atencion/atencionModal.vue';
 import TableAtencion from '@/components/Atencion/atencionTable.vue';
+import ModalFormatoAtencion from '@/components/FormatoAtencion/ModalFormatoAtencion.vue';
 
 const modalAbierto = ref(false);
 const atencionStore = useAtencionStore();
+const mostrarFormatoModal = ref(false);
 
 const abrirModal = () => {
     modalAbierto.value = true;

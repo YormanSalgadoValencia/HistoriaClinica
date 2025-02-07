@@ -2,7 +2,7 @@ import { FormatoAtencion } from './FormatoAtencion';
 import { Plantilla } from './HistoriaClinica/Plantilla';
 
 export class Atencion {
-    _id: string;
+    id: string;
     fechaAtencion: Date;
     modalidadAtencion: string;
     consecutivoAtencion: string;
@@ -11,7 +11,7 @@ export class Atencion {
     historiaClinica?: Plantilla; // Relación uno a uno con la historia clínica
 
     constructor(
-        _id: string,
+        id: string,
         fechaAtencion: string, // Recibe string y convierte a Date
         modalidadAtencion: string,
         consecutivoAtencion: string,
@@ -19,7 +19,7 @@ export class Atencion {
         informacionAdicional?: string, // Valor por defecto si no viene
         historiaClinica?: Plantilla // Se espera un objeto de tipo Plantilla
     ) {
-        this._id = _id;
+        this.id = id;
         this.fechaAtencion = new Date(fechaAtencion); // Convertir a Date
         this.modalidadAtencion = modalidadAtencion;
         this.consecutivoAtencion = consecutivoAtencion;
