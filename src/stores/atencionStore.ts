@@ -6,7 +6,7 @@ import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
 
 // Definimos un tipo para el payload de `addAtencion`
 interface AtencionPayload {
-    _id: string;
+    id: string;
     fechaAtencion: Date;
     modalidadAtencion: string;
     consecutivoAtencion: string;

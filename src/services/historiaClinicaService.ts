@@ -16,18 +16,18 @@ export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
         return response.data.map(
             (plantilla: Plantilla) =>
                 new Plantilla(
-                    plantilla._id,
+                    plantilla.id,
                     plantilla.name,
                     plantilla.description,
                     plantilla.sections.map(
                         (section: Seccion) =>
                             new Seccion(
-                                section._id,
+                                section.id,
                                 section.name,
                                 section.fields.map(
                                     (field: Campo) =>
                                         new Campo(
-                                            field._id,
+                                            field.id,
                                             field.name,
                                             field.type,
                                             // Si el campo es de tipo 'list' y el valor es un string, se parsea a array.
@@ -73,12 +73,12 @@ export const createHistoriaClinica = async (payload: {
             plantilla.sections.map(
                 (section: Seccion) =>
                     new Seccion(
-                        section._id,
+                        section.id,
                         section.name,
                         section.fields.map(
                             (field: Campo) =>
                                 new Campo(
-                                    field._id,
+                                    field.id,
                                     field.name,
                                     field.type,
                                     field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
@@ -104,18 +104,18 @@ export const getHistoriaClinicaById = async (id: string): Promise<Plantilla> => 
         console.log('Plantilla recibida:', plantilla);
 
         return new Plantilla(
-            plantilla._id,
+            plantilla.id,
             plantilla.name,
             plantilla.description,
             plantilla.sections.map(
                 (section: Seccion) =>
                     new Seccion(
-                        section._id,
+                        section.id,
                         section.name,
                         section.fields.map(
                             (field: Campo) =>
                                 new Campo(
-                                    field._id,
+                                    field.id,
                                     field.name,
                                     field.type,
                                     field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value

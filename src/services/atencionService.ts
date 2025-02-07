@@ -14,32 +14,32 @@ export const getAtenciones = async (): Promise<Atencion[]> => {
     try {
         const response = await axios.get(`${API_URL}/atencion`);
 
-        return response.data.map((atencion: any) => {
+        return response.data.map((atencion: Atencion) => {
             return new Atencion(
-                atencion._id,
+                atencion.id,
                 new Date(atencion.fechaAtencion).toISOString(),
                 atencion.modalidadAtencion,
                 atencion.consecutivoAtencion,
                 new FormatoAtencion(
-                    atencion.tiposAtencion._id,
+                    atencion.tiposAtencion.id,
                     atencion.tiposAtencion.tipoEspecialidad,
                     atencion.tiposAtencion.nombrePersonalizado
                 ),
                 atencion.informacionAdicional || '',
                 atencion.historiaClinica
                     ? new Plantilla(
-                          atencion.historiaClinica._id,
+                          atencion.historiaClinica.id,
                           atencion.historiaClinica.name,
                           atencion.historiaClinica.description,
                           atencion.historiaClinica.sections.map(
                               (seccion: Seccion) =>
                                   new Seccion(
-                                      seccion._id,
+                                      seccion.id,
                                       seccion.name,
                                       seccion.fields.map(
                                           (campo: Campo) =>
                                               new Campo(
-                                                  campo._id,
+                                                  campo.id,
                                                   campo.name,
                                                   campo.type,
                                                   Array.isArray(campo.value) ? JSON.stringify(campo.value) : campo.value
@@ -61,7 +61,7 @@ export const getAtenciones = async (): Promise<Atencion[]> => {
  * @param payload Datos necesarios para crear la atención.
  */
 export const createAtencion = async (payload: {
-    _id: string;
+    id: string;
     fechaAtencion: Date;
     modalidadAtencion: string;
     consecutivoAtencion: string;
@@ -75,14 +75,14 @@ export const createAtencion = async (payload: {
             ...payload,
             historiaClinica: payload.historiaClinica
                 ? {
-                      _id: payload.historiaClinica._id,
+                      id: payload.historiaClinica.id,
                       name: payload.historiaClinica.name,
                       description: payload.historiaClinica.description,
                       sections: payload.historiaClinica.sections.map((seccion) => ({
-                          _id: seccion._id,
+                          id: seccion.id,
                           name: seccion.name,
                           fields: seccion.fields.map((campo) => ({
-                              id: campo._id,
+                              id: campo.id,
                               name: campo.name,
                               type: campo.type,
                               value: campo.value
@@ -96,30 +96,30 @@ export const createAtencion = async (payload: {
         const atencion = response.data;
 
         return new Atencion(
-            atencion._id,
+            atencion.id,
             atencion.fechaAtencion,
             atencion.modalidadAtencion,
             atencion.consecutivoAtencion,
             new FormatoAtencion(
-                atencion.tiposAtencion._id,
+                atencion.tiposAtencion.id,
                 atencion.tiposAtencion.tipoEspecialidad,
                 atencion.tiposAtencion.nombrePersonalizado
             ),
             atencion.informacionAdicional || '',
             atencion.historiaClinica
                 ? new Plantilla(
-                      atencion.historiaClinica._id,
+                      atencion.historiaClinica.id,
                       atencion.historiaClinica.name,
                       atencion.historiaClinica.description,
                       atencion.historiaClinica.sections.map(
                           (seccion: Seccion) =>
                               new Seccion(
-                                  seccion._id,
+                                  seccion.id,
                                   seccion.name,
                                   seccion.fields.map(
                                       (campo: Campo) =>
                                           new Campo(
-                                              campo._id,
+                                              campo.id,
                                               campo.name,
                                               campo.type,
                                               Array.isArray(campo.value) ? JSON.stringify(campo.value) : campo.value

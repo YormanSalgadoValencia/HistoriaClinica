@@ -10,8 +10,15 @@ export const router = createRouter({
             path: '/:pathMatch(.*)*',
             component: () => import('@/views/authentication/Error.vue')
         },
-        { path: '/pacientes', name: 'ListarPacientes', component: () => import('@/views/Paciente/ListPacientes.vue') },
-        { path: '/atenciones', name: 'ListarAtenciones', component: () => import('@/views/Atencion/ListAtenciones.vue') },
+        { path: '/pacientes', name: 'Pacientes', component: () => import('@/views/Paciente/ListPacientes.vue') },
+        { path: '/crear-paciente', name: 'CrearPaciente', component: () => import('@/components/Paciente/CrearPaciente.vue') },
+
+        {
+            path: '/pacientes/:pacienteId/atenciones',
+            name: 'Atenciones',
+            component: () => import('@/views/Atencion/ListAtenciones.vue'),
+            props: true
+        },
         {
             path: '/historia-clinica/:id',
             name: 'HistoriaClinica',

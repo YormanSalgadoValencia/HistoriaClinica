@@ -1,7 +1,7 @@
 import { Atencion } from './Atencion';
 
 export class Paciente {
-    _id: string;
+    id: string;
     nombre: string;
     apellido: string;
     fechaNacimiento: string;
@@ -13,7 +13,7 @@ export class Paciente {
     atenciones: Atencion[];
 
     constructor(
-        _id: string,
+        id: string,
         nombre: string,
         apellido: string,
         fechaNacimiento: string,
@@ -22,7 +22,7 @@ export class Paciente {
         acompanante: string,
         responsable: string
     ) {
-        this._id = _id;
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
