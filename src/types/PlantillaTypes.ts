@@ -15,5 +15,6 @@ type Plantilla = {
     id: string;
     name: string;
     description: string;
+    categories?: string[];
     sections: Section[];
 }

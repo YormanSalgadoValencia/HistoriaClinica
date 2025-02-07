@@ -2,12 +2,12 @@
     import { computed, reactive, ref } from "vue";
     import PlantillaCard from "./PlantillaCard.vue";
     import PreviewPlantilla from "./PreviewPlantilla.vue";
-    import { useI18n } from 'vue-i18n';
-
 
     const plantillaBuscada = ref('');
+    const selectedCategory = ref('');
     const isOpenModalPreview = ref(false);
     const plantillaSeleccionada = ref<Plantilla | null>(null);
+    const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
     
     const plantillEnBlanco = reactive<Plantilla>({
         id: crypto.randomUUID(),
@@ -47,6 +47,7 @@
             id: crypto.randomUUID(),
             name: "Ficha de Paciente",
             description: "Registro detallado de la información básica del paciente, incluyendo sus datos personales y de contacto. Permite almacenar información esencial para la identificación y comunicación con el paciente, asegurando un acceso rápido y organizado a estos datos en cualquier momento.",
+            categories: ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -90,6 +91,7 @@
             id: crypto.randomUUID(),
             name: "Evaluación Médica",
             description: "Formulario estructurado para recopilar datos clínicos iniciales de un paciente. Contiene información clave sobre signos vitales y síntomas, lo que facilita una evaluación rápida y eficiente para el diagnóstico y tratamiento médico.",
+            categories: ['Primera', 'Quinta'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -115,6 +117,7 @@
             id: crypto.randomUUID(),
             name: "Historia Clínica Completa",
             description: "Documento detallado que recoge información sobre los antecedentes médicos del paciente, incluyendo enfermedades crónicas, alergias, cirugías previas y medicación actual. Es fundamental para un seguimiento adecuado de la salud del paciente y la toma de decisiones médicas informadas.",
+            categories: ['Cuarta', 'Quinta'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -140,6 +143,7 @@
             id: crypto.randomUUID(),
             name: "Ficha de Emergencia",
             description: "Registro diseñado para situaciones de emergencia, proporcionando información crítica sobre el paciente, como su grupo sanguíneo, alergias importantes y contactos de emergencia. Facilita una respuesta rápida y efectiva en casos donde cada segundo cuenta.",
+            categories: ['Tercera'],
             sections: [
                 {
                     id: crypto.randomUUID(),
@@ -164,6 +168,7 @@
      ]);
 
      const searchPlantilla = computed(() =>
+
         plantillas.filter(p => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
     );
 
@@ -171,6 +176,19 @@
         isOpenModalPreview.value = true;
         plantillaSeleccionada.value = plantilla;
     }
+
+    const searchPlantillaByCategory = computed(() =>
+        plantillas.filter(p => p.categories?.includes(selectedCategory.value))
+    );
+
+    const searchPlantillaFiltered = computed(() => {
+        return plantillas.filter(p => {
+            const matchesSearch = p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase());
+            const matchesCategory = selectedCategory.value === '' || p.categories?.includes(selectedCategory.value);
+            return matchesSearch && matchesCategory;
+        });
+    });
+    
 
 </script>
 
@@ -199,10 +217,36 @@
             </v-col>
         </v-row>
 
+        <v-row class="mb-5 align-center">
+            <p class="mr-3">Categorías:</p>
+            <v-btn-toggle v-model="selectedCategory" mandatory>
+                <v-btn :value="''" variant="outlined">
+                Todas
+                </v-btn>
+                <v-btn
+                v-for="(category, index) in categories" 
+                    :key="index"
+                    :value="category"
+                    variant="outlined"
+                    >
+                    {{ category }}
+                </v-btn>
+            </v-btn-toggle>
+        </v-row>
+
+
+
         <v-row>
             <div class="template-list" v-if="plantillaBuscada != ''">
                 <PlantillaCard
-                    v-for="plantilla in searchPlantilla"
+                    v-for="plantilla in searchPlantillaFiltered"
+                    :plantilla="plantilla"
+                    @click="openPlantilla(plantilla)"
+                />
+            </div>
+            <div class="template-list" v-else-if="selectedCategory != ''">
+                <PlantillaCard
+                    v-for="plantilla in searchPlantillaByCategory"
                     :plantilla="plantilla"
                     @click="openPlantilla(plantilla)"
                 />
@@ -223,8 +267,7 @@
                 <h3 class="mb-0">{{ plantillaSeleccionada?.name }}</h3>
             </v-card-title>
             <v-card-text class="modal-body">
-                <v-row align="center">
-                    <!-- Columna izquierda: vista previa con borde -->
+                <v-row class="d-flex justify-center align-center">
                     <v-col cols="8">
                     <div class="preview-box">
                         <PreviewPlantilla
