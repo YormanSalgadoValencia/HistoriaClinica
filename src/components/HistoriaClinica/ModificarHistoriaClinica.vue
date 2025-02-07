@@ -35,7 +35,7 @@
                 </v-card>
 
                 <!-- Lista de secciones -->
-                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion._id" class="mb-4">
+                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-4">
                     <v-card class="section-card" elevation="2">
                         <div class="section-header">
                             <div class="section-info">
@@ -57,7 +57,7 @@
                                     variant="text"
                                     color="error"
                                     class="action-button"
-                                    @click="eliminarSeccion(seccion._id)"
+                                    @click="eliminarSeccion(seccion.id)"
                                 ></v-btn>
                             </div>
                         </div>
@@ -128,7 +128,7 @@ function editarSeccion(seccion: any) {
 function actualizarSeccion(seccionActualizada: any) {
     // Actualizamos la sección en la historia seleccionada
     if (historiaStore.historiaSeleccionada) {
-        const index = historiaStore.historiaSeleccionada.sections.findIndex((s) => s._id === seccionActualizada._id);
+        const index = historiaStore.historiaSeleccionada.sections.findIndex((s) => s.id === seccionActualizada.id);
         if (index !== -1) {
             historiaStore.historiaSeleccionada.sections[index] = seccionActualizada;
         }

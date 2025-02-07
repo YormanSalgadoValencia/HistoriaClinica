@@ -106,7 +106,7 @@ const tableHeaders = computed(() => {
                             variant="elevated"
                             size="large"
                             prepend-icon="mdi-plus"
-                            @click="nuevaSeccion = { _id: Date.now().toString(), name: '', fields: [] }"
+                            @click="nuevaSeccion = { id: Date.now().toString(), name: '', fields: [] }"
                             class="add-section-button"
                         >
                             Agregar Nueva Sección
@@ -114,7 +114,7 @@ const tableHeaders = computed(() => {
                     </v-card-text>
                 </v-card>
 
-                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion._id" class="mb-6">
+                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-6">
                     <v-card class="section-card" elevation="2">
                         <div class="section-header">
                             <div class="section-title">{{ seccion.name }}</div>
@@ -131,7 +131,7 @@ const tableHeaders = computed(() => {
 
                         <v-card-text class="section-content">
                             <v-row>
-                                <v-col v-for="campo in seccion.fields" :key="campo._id" cols="12" md="6">
+                                <v-col v-for="campo in seccion.fields" :key="campo.id" cols="12" md="6">
                                     <template v-if="campo.type === 'list'">
                                         <v-card class="list-field-card" variant="outlined">
                                             <v-card-text>
