@@ -8,4 +8,18 @@ export class FormatoAtencion {
         this.tipoEspecialidad = tipoEspecialidad;
         this.nombrePersonalizado = nombrePersonalizado;
     }
+
+    static fromJson(data: FormatoAtencion): FormatoAtencion {
+        const formatoAtencion = new FormatoAtencion(data.id, data.tipoEspecialidad, data.nombrePersonalizado);
+
+        return formatoAtencion;
+    }
+
+    static toJson(formatoAtencion: FormatoAtencion): FormatoAtencion {
+        return {
+            id: formatoAtencion.id,
+            tipoEspecialidad: formatoAtencion.tipoEspecialidad,
+            nombrePersonalizado: formatoAtencion.nombrePersonalizado
+        };
+    }
 }

@@ -10,4 +10,19 @@ export class DetalleConsulta {
         this.especialidad = especialidad;
         this.detalle = detalle;
     }
+
+    static fromJson(data: DetalleConsulta): DetalleConsulta {
+        const detalleConsulta = new DetalleConsulta(data.id, data.fecha, data.especialidad, data.detalle);
+
+        return detalleConsulta;
+    }
+
+    static toJson(detalleConsulta: DetalleConsulta): DetalleConsulta {
+        return {
+            id: detalleConsulta.id,
+            fecha: detalleConsulta.fecha,
+            especialidad: detalleConsulta.especialidad,
+            detalle: detalleConsulta.detalle
+        };
+    }
 }

@@ -94,6 +94,7 @@ import { ref, onMounted } from 'vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { useRoute, useRouter } from 'vue-router';
 import ModalSeccion from '@/components/HistoriaClinica/ModalModificarSeccion.vue';
+import { Seccion } from '@/types/HistoriaClinica/Seccion';
 
 const historiaStore = useHistoriaClinicaStore();
 const route = useRoute();
@@ -120,12 +121,12 @@ function eliminarSeccion(seccionId: string) {
     console.log('Eliminar sección:', seccionId);
 }
 
-function editarSeccion(seccion: any) {
+function editarSeccion(seccion: Seccion) {
     // Se puede clonar la sección si es necesario
     seccionEditar.value = { ...seccion };
 }
 
-function actualizarSeccion(seccionActualizada: any) {
+function actualizarSeccion(seccionActualizada: Seccion) {
     // Actualizamos la sección en la historia seleccionada
     if (historiaStore.historiaSeleccionada) {
         const index = historiaStore.historiaSeleccionada.sections.findIndex((s) => s.id === seccionActualizada.id);
