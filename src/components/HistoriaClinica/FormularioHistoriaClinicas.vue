@@ -6,35 +6,61 @@ import ModalNuevaSeccion from '@/components/HistoriaClinica/ModalNuevaSeccion.vu
 import { Seccion } from '@/types/HistoriaClinica/Seccion';
 import { Campo } from '@/types/HistoriaClinica/Campo';
 
+// Usamos el store que maneja la "historia clínica" (Plantilla)
 const historiaStore = useHistoriaClinicaStore();
 const route = useRoute();
 const router = useRouter();
 const historiaId = route.params.id as string;
 const cargando = ref(false);
 
+// Variables para manejar la apertura de modales y la sección/tabla seleccionada
 const sectionModalOpen = ref(false);
-const selectedSection = ref<any>(null);
+const selectedSection = ref<Seccion | null>(null);
 
 const listModalOpen = ref(false);
 const selectedList = ref<any[]>([]);
 const selectedListTitle = ref('');
 
-// Nueva sección (para el modal de creación)
-const nuevaSeccion = ref<any>(null);
+// Nueva sección: se crea como instancia de Seccion
+const nuevaSeccion = ref<Seccion | null>(null);
+
+// Función para formatear fechas a "YYYY-MM-DD"
+function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+}
 
 onMounted(async () => {
     if (historiaId) {
         cargando.value = true;
         await historiaStore.fetchHistoriaById(historiaId);
+        // Una vez cargada la historia, formateamos los campos de tipo 'date'
+        if (historiaStore.historiaSeleccionada) {
+            historiaStore.historiaSeleccionada.sections.forEach((section) => {
+                section.fields.forEach((campo) => {
+                    if (campo.type === 'date' && campo.value) {
+                        if (typeof campo.value === 'string') {
+                            campo.value = formatDate(campo.value);
+                        }
+                    }
+                });
+            });
+        }
         cargando.value = false;
     }
 });
 
+// Abre el modal para ver/modificar el detalle de la sección
 function openSectionModal(seccion: Seccion) {
     selectedSection.value = seccion;
     sectionModalOpen.value = true;
 }
 
+// Abre el modal para visualizar un campo de tipo "list"
 function openListModal(campo: Campo) {
     selectedList.value = Array.isArray(campo.value) ? campo.value : [];
     selectedListTitle.value = campo.name;
@@ -55,6 +81,7 @@ function deleteRow(row: any) {
 
 async function guardarCambios() {
     console.log('Guardando cambios...');
+    // Aquí podrías convertir la plantilla a JSON con Plantilla.toJson y llamar al store para guardar
 }
 
 function modificarHistoriaClinica() {
@@ -80,14 +107,17 @@ const tableHeaders = computed(() => {
 
 <template>
     <v-container class="pa-6" style="max-width: 1200px">
+        <!-- Indicador de carga -->
         <v-row justify="center" v-if="cargando">
             <v-col cols="12" md="10">
                 <v-progress-linear indeterminate color="#1f74ff"></v-progress-linear>
             </v-col>
         </v-row>
 
+        <!-- Vista principal cuando se ha cargado la historia clínica (Plantilla) -->
         <v-row justify="center" v-else-if="historiaStore.historiaSeleccionada">
             <v-col cols="12" md="10">
+                <!-- Encabezado -->
                 <v-card class="mb-6 header-card" elevation="3">
                     <v-card-title class="header-title">
                         <span>Historia Clínica: {{ historiaStore.historiaSeleccionada.name }}</span>
@@ -108,7 +138,7 @@ const tableHeaders = computed(() => {
                             variant="elevated"
                             size="large"
                             prepend-icon="mdi-plus"
-                            @click="nuevaSeccion = { id: Date.now().toString(), name: '', fields: [] }"
+                            @click="nuevaSeccion = new Seccion(Date.now().toString(), '', [])"
                             class="add-section-button"
                         >
                             Agregar Nueva Sección
@@ -116,6 +146,7 @@ const tableHeaders = computed(() => {
                     </v-card-text>
                 </v-card>
 
+                <!-- Itera sobre las secciones de la historia clínica -->
                 <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-6">
                     <v-card class="section-card" elevation="2">
                         <div class="section-header">
@@ -130,10 +161,11 @@ const tableHeaders = computed(() => {
                                 Modificar Sección
                             </v-btn>
                         </div>
-
                         <v-card-text class="section-content">
                             <v-row>
+                                <!-- Bloque para cada campo, renderizado condicional según su tipo -->
                                 <v-col v-for="campo in seccion.fields" :key="campo.id" cols="12" md="6">
+                                    <!-- Campo de tipo 'list' -->
                                     <template v-if="campo.type === 'list'">
                                         <v-card class="list-field-card" variant="outlined">
                                             <v-card-text>
@@ -149,6 +181,61 @@ const tableHeaders = computed(() => {
                                             </v-card-text>
                                         </v-card>
                                     </template>
+                                    <!-- Campo de tipo 'text' -->
+                                    <template v-else-if="campo.type === 'text'">
+                                        <v-text-field
+                                            v-model="campo.value"
+                                            :label="campo.name"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="custom-text-field"
+                                            hide-details
+                                            color="#1f74ff"
+                                        ></v-text-field>
+                                    </template>
+                                    <!-- Campo de tipo 'number' -->
+                                    <template v-else-if="campo.type === 'number'">
+                                        <v-text-field
+                                            v-model="campo.value"
+                                            :label="campo.name"
+                                            type="number"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="custom-text-field"
+                                            hide-details
+                                            color="#1f74ff"
+                                        ></v-text-field>
+                                    </template>
+                                    <!-- Campo de tipo 'textarea' -->
+                                    <template v-else-if="campo.type === 'textarea'">
+                                        <v-textarea
+                                            v-model="campo.value"
+                                            :label="campo.name"
+                                            variant="outlined"
+                                            rows="4"
+                                            class="custom-textarea"
+                                            hide-details
+                                            color="#1f74ff"
+                                        ></v-textarea>
+                                    </template>
+                                    <!-- Campo de tipo 'date' -->
+                                    <template v-else-if="campo.type === 'date'">
+                                        <v-text-field
+                                            v-model="campo.value"
+                                            :label="campo.name"
+                                            type="date"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="custom-text-field"
+                                            hide-details
+                                            color="#1f74ff"
+                                        ></v-text-field>
+                                    </template>
+                                    <!-- Campo de tipo 'check' -->
+                                    <template v-else-if="campo.type === 'check'">
+                                        <v-checkbox v-model="campo.value" :label="campo.name" color="#1f74ff"></v-checkbox>
+                                    </template>
+                                    <!-- Fallback: si no coincide con ningún tipo, se muestra un text field -->
                                     <template v-else>
                                         <v-text-field
                                             v-model="campo.value"
@@ -166,6 +253,7 @@ const tableHeaders = computed(() => {
                     </v-card>
                 </div>
 
+                <!-- Botones de acción final -->
                 <v-row justify="center" class="mt-6">
                     <v-col cols="12" class="text-center">
                         <div class="button-group">
@@ -179,16 +267,17 @@ const tableHeaders = computed(() => {
             </v-col>
         </v-row>
 
+        <!-- Mensaje de error si no se encontró la historia clínica -->
         <v-row justify="center" v-else>
             <v-col cols="12" md="10">
                 <v-alert type="error" variant="tonal" border="start" elevation="2"> No se encontró la historia clínica. </v-alert>
             </v-col>
         </v-row>
 
-        <!-- Modal para ver detalle de sección -->
+        <!-- Modal para ver detalle de la sección -->
         <v-dialog v-model="sectionModalOpen" max-width="600">
             <v-card>
-                <v-card-title class="text-h5 pa-4"> Detalle de la Sección </v-card-title>
+                <v-card-title class="text-h5 pa-4">Detalle de la Sección</v-card-title>
                 <v-card-text class="pa-4">
                     <div v-if="selectedSection">
                         <p class="text-subtitle-1"><strong>Nombre:</strong> {{ selectedSection.name }}</p>
@@ -243,9 +332,10 @@ const tableHeaders = computed(() => {
 
         <!-- Modal para crear nueva sección -->
         <ModalNuevaSeccion
+            v-if="nuevaSeccion"
             :seccion="nuevaSeccion"
             @createSeccion="
-                (seccion: any) => {
+                (seccion: Seccion) => {
                     if (historiaStore.historiaSeleccionada) {
                         historiaStore.historiaSeleccionada.sections.push(seccion);
                     }
@@ -258,6 +348,7 @@ const tableHeaders = computed(() => {
 </template>
 
 <style scoped>
+/* Estilos para el encabezado */
 .header-card {
     background: linear-gradient(135deg, #000534 0%, #1f74ff 100%);
     color: white;
@@ -281,6 +372,7 @@ const tableHeaders = computed(() => {
     padding: 0 24px 24px;
 }
 
+/* Estilos para las secciones */
 .section-card {
     border-radius: 12px;
     transition:
@@ -313,6 +405,7 @@ const tableHeaders = computed(() => {
     padding: 24px;
 }
 
+/* Estilos para campos tipo lista */
 .list-field-card {
     background-color: #f8fafc;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -331,6 +424,7 @@ const tableHeaders = computed(() => {
     margin-bottom: 16px;
 }
 
+/* Estilos para la tabla de listas */
 .styled-data-table {
     border-radius: 8px;
     overflow: hidden;
@@ -343,6 +437,7 @@ const tableHeaders = computed(() => {
     gap: 8px;
 }
 
+/* Botones de acción al final del formulario */
 .button-group {
     display: flex;
     justify-content: center;
@@ -360,6 +455,7 @@ const tableHeaders = computed(() => {
     border-radius: 12px;
 }
 
+/* Responsividad */
 @media (max-width: 960px) {
     .header-title {
         font-size: 1.5rem;
@@ -367,12 +463,10 @@ const tableHeaders = computed(() => {
         gap: 16px;
         align-items: flex-start;
     }
-
     .button-group {
         flex-direction: column;
         gap: 16px;
     }
-
     .save-button,
     .back-button {
         width: 100%;
@@ -384,16 +478,13 @@ const tableHeaders = computed(() => {
     .header-card {
         border-radius: 12px;
     }
-
     .section-card {
         border-radius: 12px;
     }
-
     .header-title {
         font-size: 1.25rem;
         padding: 16px 16px 8px;
     }
-
     .header-subtitle {
         font-size: 1rem;
         padding: 0 16px 16px;

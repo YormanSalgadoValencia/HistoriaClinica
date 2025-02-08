@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { defineProps, defineEmits } from 'vue';
+// Importa el componente desde la ruta especificada
+import FormularioPlantillaCero from '@/components/HistoriaClinica/PlantillaCero/FormularioPlantillaCero.vue';
 
 const props = defineProps({
     modelValue: {
@@ -9,24 +11,27 @@ const props = defineProps({
     }
 });
 
-const emits = defineEmits(['update:modelValue', 'crearDesdeCero', 'crearConDefecto']);
+const emits = defineEmits(['update:modelValue', 'crearConDefecto']);
 
 const isDialogOpen = ref(props.modelValue);
+// Variable que controla si se muestra el formulario de "Crear desde cero"
+const mostrarFormulario = ref(false);
 
+// Sincronizar la prop con el estado local
 watch(
     () => props.modelValue,
     (newVal) => {
         isDialogOpen.value = newVal;
     }
 );
-
 watch(isDialogOpen, (newVal) => {
     emits('update:modelValue', newVal);
 });
 
+// Función: Al hacer clic en "Crear desde cero", se cierra el diálogo y se muestra el formulario
 function crearDesdeCero() {
-    emits('crearDesdeCero');
     isDialogOpen.value = false;
+    mostrarFormulario.value = true;
 }
 
 function crearConDefecto() {
@@ -40,10 +45,11 @@ function cerrarModal() {
 </script>
 
 <template>
+    <!-- Diálogo principal para seleccionar cómo comenzar -->
     <v-dialog v-model="isDialogOpen" max-width="500" transition="dialog-bottom-transition" class="template-dialog">
         <v-card class="modal-card">
             <v-card-title class="modal-header">
-                <v-icon icon="mdi-file-document-plus" class="mr-2" color="white"></v-icon>
+                <v-icon icon="mdi-file-document-plus" class="mr-2" color="white" />
                 Crear Nueva Plantilla
             </v-card-title>
 
@@ -53,35 +59,38 @@ function cerrarModal() {
                     <v-btn block variant="elevated" color="primary" height="56" class="option-button mb-3" @click="crearDesdeCero">
                         <div class="button-content">
                             <div class="button-main">
-                                <v-icon icon="mdi-pencil" class="mr-2"></v-icon>
+                                <v-icon icon="mdi-pencil" class="mr-2" />
                                 <span class="button-title">Crear desde cero</span>
                             </div>
-                            <span class="option-description">Comienza con una plantilla en blanco</span>
+                            <span class="option-description"> Comienza con una plantilla en blanco </span>
                         </div>
                     </v-btn>
 
                     <v-btn block variant="elevated" color="secondary" height="56" class="option-button" @click="crearConDefecto">
                         <div class="button-content">
                             <div class="button-main">
-                                <v-icon icon="mdi-content-copy" class="mr-2"></v-icon>
+                                <v-icon icon="mdi-content-copy" class="mr-2" />
                                 <span class="button-title">Usar plantilla por defecto</span>
                             </div>
-                            <span class="option-description">Comienza con una estructura predefinida</span>
+                            <span class="option-description"> Comienza con una estructura predefinida </span>
                         </div>
                     </v-btn>
                 </div>
             </v-card-text>
 
-            <v-divider></v-divider>
+            <v-divider />
 
             <v-card-actions class="modal-card-actions">
                 <v-btn variant="text" color="error" @click="cerrarModal" class="close-button">
-                    <v-icon icon="mdi-close" class="mr-1"></v-icon>
+                    <v-icon icon="mdi-close" class="mr-1" />
                     Cerrar
                 </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
+
+    <!-- Renderiza el formulario para crear plantilla desde cero cuando se seleccione esa opción -->
+    <FormularioPlantillaCero v-if="mostrarFormulario" v-model="mostrarFormulario" />
 </template>
 
 <style scoped>
@@ -154,7 +163,7 @@ function cerrarModal() {
     font-size: 0.8rem;
     opacity: 0.7;
     font-weight: normal;
-    margin-left: 28px; /* Alinea con el texto principal (icon width + margin) */
+    margin-left: 28px; /* Alinea con el ancho del icono + margen */
 }
 
 .modal-card-actions {
@@ -169,7 +178,6 @@ function cerrarModal() {
     letter-spacing: 0.5px;
 }
 
-/* Animaciones */
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
     transition:
