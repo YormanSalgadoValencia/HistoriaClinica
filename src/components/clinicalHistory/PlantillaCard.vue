@@ -1,9 +1,18 @@
 <script setup lang="ts">
     defineProps<{ plantilla: 
-        { name: string; 
-          sections: 
-          { name: string; fields: 
-            { name: string }[] }[] 
+        { id: string;
+          name: string;
+          description: string;
+          sections: {
+              id: string;
+              name: string;
+              fields: {
+                  id: string;
+                  name: string;
+                  type: string;
+                  value: string | any[];  // Ahora acepta ambos tipos
+              }[];
+          }[];
         } 
     }>();
 
@@ -12,10 +21,10 @@
 
 <template>
     <div class="template-card">
-        <h4 class="template-title">{{ plantilla.name }}</h4>
+        <h4 class="template-title">{{ plantilla?.name }}</h4>
         <div class="mini-template">
             <div 
-                v-for="section in plantilla.sections"
+                v-for="section in plantilla?.sections"
                 :key="section.name"
                 class="section-mini"
             >

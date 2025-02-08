@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
-import { onMounted } from 'vue';
-const historiaStore = useHistoriaClinicaStore();
+    import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
+    import { onMounted } from 'vue';
+  
+    const historiaClinicaEstandar = useHistoriaClinicaStore();
 
+    onMounted(async () => {
+        await historiaClinicaEstandar.fetchHistoriaStandard();
 
-onMounted(async () => {
-      await historiaStore.fetchHistoriaStandard();
-});
+        console.log('COMPONENTE EDIT:' + JSON.stringify(historiaClinicaEstandar));
+        
+    });
 
     defineProps<{ plantilla: 
         { name: string; 
@@ -24,22 +27,24 @@ onMounted(async () => {
              }[] }[] 
         } 
     }>();
+
+
 </script>
 
 <template>
     <v-container fluid>
-      <v-row justify="center" v-if="plantilla">
+      <v-row justify="center" v-if="historiaClinicaEstandar.historiaEstandar">
             <v-col cols="12" md="10">
                 <v-card class="mb-6 header-card" elevation="3">
                     <v-card-title class="header-title">
-                        <span>Historia Clínica: {{ plantilla.name }}</span>
+                        <span>Historia Clínica: {{ historiaClinicaEstandar.historiaEstandar.name }}</span>
                     </v-card-title>
                     <v-card-subtitle class="header-subtitle">
-                        {{ plantilla.description }}
+                        {{ historiaClinicaEstandar.historiaEstandar.description }}
                     </v-card-subtitle>
                 </v-card>
 
-                <div v-for="seccion in plantilla.sections" :key="seccion.id" class="mb-6">
+                <div v-for="seccion in historiaClinicaEstandar.historiaEstandar.sections" :key="seccion.id" class="mb-6">
                     <v-card class="section-card" elevation="2">
                         <div class="section-header">
                             <div class="section-title">{{ seccion.name }}</div>
@@ -100,10 +105,11 @@ onMounted(async () => {
             </v-col>
         </v-row>
     </v-container>
-  </template>
-  
+    
+</template>
+
+
 
 <style scoped lang="scss">
-
 
 </style>

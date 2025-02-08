@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia';
 import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
-import { getHistoriasClinicas, createHistoriaClinica, getHistoriaClinicaById } from '@/services/historiaClinicaService';
+import { getHistoriasClinicas, 
+         createHistoriaClinica, 
+         getHistoriaClinicaById,
+         getHistoriaClinicaStandard    } from '@/services/historiaClinicaService';
 
 export const useHistoriaClinicaStore = defineStore('historiaClinica', {
     state: () => ({
         historias: [] as Plantilla[],
         historiaSeleccionada: null as Plantilla | null,
+        historiaEstandar: null as Plantilla | null,
         loading: false,
         error: null as string | null
     }),
@@ -37,6 +41,19 @@ export const useHistoriaClinicaStore = defineStore('historiaClinica', {
                 console.log(this.historiaSeleccionada);
             } catch (error: any) {
                 this.error = error.message || 'Error al obtener la historia clínica por ID';
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async fetchHistoriaStandard() {
+            this.loading = true;
+            this.error = null;
+            try {
+                return this.historiaEstandar = await getHistoriaClinicaStandard();
+                
+            } catch (error: any) {
+                this.error = error.message || 'Error al obtener la historia clínica estandar';
             } finally {
                 this.loading = false;
             }

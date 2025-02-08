@@ -35,7 +35,8 @@ export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
                                         )
                                 )
                             )
-                    )
+                    ),
+                    plantilla.categories,
                 )
         );
     } catch (error: any) {
@@ -85,7 +86,8 @@ export const createHistoriaClinica = async (payload: {
                                 )
                         )
                     )
-            )
+            ),
+            plantilla.categories,
         );
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al crear la historia clínica');
@@ -122,9 +124,46 @@ export const getHistoriaClinicaById = async (id: string): Promise<Plantilla> => 
                                 )
                         )
                     )
-            )
+            ),
+            plantilla.categories,
         );
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener la historia clínica por ID');
+    }
+};
+
+
+export const getHistoriaClinicaStandard = async (): Promise<Plantilla> => {
+    try {
+        const response = await axios.get(`${API_URL}/historiaClinicaEstandar`);
+        const plantilla = response.data;
+
+        console.log(JSON.stringify(response.data));
+        
+        return new Plantilla(
+            plantilla.id,
+            plantilla.name,
+            plantilla.description,
+            plantilla.sections.map(
+                (section: Seccion) =>
+                    new Seccion(
+                        section.id,
+                        section.name,
+                        section.fields.map(
+                            (field: Campo) =>
+                                new Campo(
+                                    field.id,
+                                    field.name,
+                                    field.type,
+                                    field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
+                                )
+                        )
+                    )
+            ),
+            plantilla.categories,
+        );
+        
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Si buenas');
     }
 };

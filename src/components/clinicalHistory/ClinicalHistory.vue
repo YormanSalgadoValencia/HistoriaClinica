@@ -2,174 +2,27 @@
     import { computed, reactive, ref } from "vue";
     import PlantillaCard from "./PlantillaCard.vue";
     import PreviewPlantilla from "./PreviewPlantilla.vue";
+    import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
+    import { onMounted } from 'vue';
+    import { router } from "@/router";
 
     const plantillaBuscada = ref('');
     const selectedCategory = ref('');
     const isOpenModalPreview = ref(false);
     const plantillaSeleccionada = ref<Plantilla | null>(null);
     const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
+    const historiaStore = useHistoriaClinicaStore();
+    const historiaClinicaEstandar = useHistoriaClinicaStore();
+
+    const confirmModal = ref(false);
     
-    const plantillEnBlanco = reactive<Plantilla>({
-        id: crypto.randomUUID(),
-        name: "Plantilla estandar",
-        description: "Plantilla básica de información personal",
-        sections: [
-            {
-                id: crypto.randomUUID(),
-                name: "Identificación del paciente",
-                fields: [
-                    {id: crypto.randomUUID(), name: "Nombre", type: "text", value:""},
-                    {id: crypto.randomUUID(), name: "Edad", type: "number", value:""},
-                ],
-        
-            },
-            {
-                id: crypto.randomUUID(),
-                name: "Datos de la consulta",
-                fields: [
-                    { id: crypto.randomUUID(), name: "Motivo de la consulta", type: "text", value: "" },
-                    { id: crypto.randomUUID(), name: "Descripción", type: "textarea", value: "" },
-                ],
-            },
-            {
-                id: crypto.randomUUID(),
-                name: "Antecedentes del paciente",
-                fields: [
-                    { id: crypto.randomUUID(), name: "Antecedentes Personales", type: "textarea", value: "" },
-                    { id: crypto.randomUUID(), name: "Antecedentes Familiares", type: "textarea", value: "" },
-                ],
-            },
-        ]
+    onMounted(async () => {
+        await historiaStore.fetchHistorias();
+        await historiaClinicaEstandar.fetchHistoriaStandard();
     });
 
-    const plantillas = reactive<Plantilla[]>([
-        {
-            id: crypto.randomUUID(),
-            name: "Ficha de Paciente",
-            description: "Registro detallado de la información básica del paciente, incluyendo sus datos personales y de contacto. Permite almacenar información esencial para la identificación y comunicación con el paciente, asegurando un acceso rápido y organizado a estos datos en cualquier momento.",
-            categories: ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'],
-            sections: [
-                {
-                    id: crypto.randomUUID(),
-                    name: "Datos Personales",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Nombre Completo", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Fecha de Nacimiento", type: "date", value: "" },
-                        { id: crypto.randomUUID(), name: "DNI/Pasaporte", type: "text", value: "" },
-                    ],
-                },
-                {
-                    id: crypto.randomUUID(),
-                    name: "Datos de Contacto",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Teléfono", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Dirección", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Correo Electrónico", type: "email", value: "" },
-                    ],
-                },
-                {
-                    id: crypto.randomUUID(),
-                    name: "Datos de Contacto",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Teléfono", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Dirección", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Correo Electrónico", type: "email", value: "" },
-                    ],
-                },
-                {
-                    id: crypto.randomUUID(),
-                    name: "Datos de Contacto",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Teléfono", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Dirección", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Correo Electrónico", type: "email", value: "" },
-                    ],
-                },
-            ],
-        },
-        {
-            id: crypto.randomUUID(),
-            name: "Evaluación Médica",
-            description: "Formulario estructurado para recopilar datos clínicos iniciales de un paciente. Contiene información clave sobre signos vitales y síntomas, lo que facilita una evaluación rápida y eficiente para el diagnóstico y tratamiento médico.",
-            categories: ['Primera', 'Quinta'],
-            sections: [
-                {
-                    id: crypto.randomUUID(),
-                    name: "Signos Vitales",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Presión Arterial", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Frecuencia Cardíaca", type: "number", value: "" },
-                        { id: crypto.randomUUID(), name: "Temperatura", type: "number", value: "" },
-                    ],
-                },
-                {
-                    id: crypto.randomUUID(),
-                    name: "Síntomas",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Síntoma Principal", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Duración del Síntoma", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Intensidad del Dolor", type: "number", value: "" },
-                    ],
-                },
-            ],
-        },
-        {
-            id: crypto.randomUUID(),
-            name: "Historia Clínica Completa",
-            description: "Documento detallado que recoge información sobre los antecedentes médicos del paciente, incluyendo enfermedades crónicas, alergias, cirugías previas y medicación actual. Es fundamental para un seguimiento adecuado de la salud del paciente y la toma de decisiones médicas informadas.",
-            categories: ['Cuarta', 'Quinta'],
-            sections: [
-                {
-                    id: crypto.randomUUID(),
-                    name: "Antecedentes Médicos",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Enfermedades Crónicas", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Alergias", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Cirugías Previas", type: "text", value: "" },
-                    ],
-                },
-                {
-                    id: crypto.randomUUID(),
-                    name: "Medicación Actual",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Nombre del Medicamento", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Dosis", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Frecuencia", type: "text", value: "" },
-                    ],
-                },
-            ],
-        },
-        {
-            id: crypto.randomUUID(),
-            name: "Ficha de Emergencia",
-            description: "Registro diseñado para situaciones de emergencia, proporcionando información crítica sobre el paciente, como su grupo sanguíneo, alergias importantes y contactos de emergencia. Facilita una respuesta rápida y efectiva en casos donde cada segundo cuenta.",
-            categories: ['Tercera'],
-            sections: [
-                {
-                    id: crypto.randomUUID(),
-                    name: "Información General",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Nombre Completo", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Grupo Sanguíneo", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Alergias Importantes", type: "text", value: "" },
-                    ],
-                },
-                {
-                    id: crypto.randomUUID(),
-                    name: "Contacto de Emergencia",
-                    fields: [
-                        { id: crypto.randomUUID(), name: "Nombre del Contacto", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Relación", type: "text", value: "" },
-                        { id: crypto.randomUUID(), name: "Teléfono", type: "text", value: "" },
-                    ],
-                },
-            ],
-        },
-     ]);
-
-     const searchPlantilla = computed(() =>
-
-        plantillas.filter(p => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
+    const searchPlantilla = computed(() =>
+        historiaStore.historias.filter(p => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
     );
 
     function openPlantilla(plantilla:Plantilla){
@@ -178,11 +31,11 @@
     }
 
     const searchPlantillaByCategory = computed(() =>
-        plantillas.filter(p => p.categories?.includes(selectedCategory.value))
+        historiaStore.historias.filter(p => p.categories.includes(selectedCategory.value))
     );
 
     const searchPlantillaFiltered = computed(() => {
-        return plantillas.filter(p => {
+        return historiaStore.historias.filter(p => {
             const matchesSearch = p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase());
             const matchesCategory = selectedCategory.value === '' || p.categories?.includes(selectedCategory.value);
             return matchesSearch && matchesCategory;
@@ -197,8 +50,8 @@
         <v-row>
             <v-col cols="12">
                 <PlantillaCard
-                    :plantilla="plantillEnBlanco"
-                    @click="openPlantilla(plantillEnBlanco)"
+                    :plantilla="historiaClinicaEstandar.historiaEstandar"
+                    @click="openPlantilla(historiaClinicaEstandar.historiaEstandar)"
                 />
             </v-col>
         </v-row>
@@ -211,7 +64,7 @@
                 </div>
             </v-col>
             <v-col cols="3">
-                <v-btn color="primary">
+                <v-btn color="primary" @click="confirmModal = true">
                     {{ 'Crear Plantilla' }}
                 </v-btn>
             </v-col>
@@ -230,6 +83,7 @@
                     variant="outlined"
                     >
                     {{ category }}
+                    
                 </v-btn>
             </v-btn-toggle>
         </v-row>
@@ -253,7 +107,7 @@
             </div>
             <div v-else class="template-list">
                 <PlantillaCard
-                    v-for="plantilla in plantillas"
+                    v-for="plantilla in historiaStore.historias"
                     :plantilla="plantilla"
                     @click="openPlantilla(plantilla)"
                 />
@@ -295,6 +149,20 @@
         </v-card>
     </v-dialog>
 
+    <v-dialog v-model="confirmModal">
+        <v-card>
+            <v-card-title>
+                Confirmación
+            </v-card-title>
+            <v-card-text>
+                Desea usar la plantilla base o crear desde 0
+            </v-card-text>
+            <v-card-actios>
+                <v-btn :to="'/edit-plantilla-basica'">Usar plantilla base</v-btn>
+                <v-btn>Empezar de 0</v-btn>
+            </v-card-actios>
+        </v-card>
+    </v-dialog>
 
 
 </template>
