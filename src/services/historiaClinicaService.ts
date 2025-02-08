@@ -1,43 +1,15 @@
 import axios from 'axios';
 import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
-import { Seccion } from '@/types/HistoriaClinica/Seccion';
-import { Campo } from '@/types/HistoriaClinica/Campo';
 
 const API_URL = 'http://localhost:3000';
 
 /**
- * Obtiene el listado de historias clínicas desde el backend y las mapea a instancias de Plantilla.
+ * Obtiene el listado de historias clínicas y las mapea a instancias de Plantilla.
  */
 export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
     try {
         const response = await axios.get(`${API_URL}/historiasClinicas`);
-
-        // Se mapea cada objeto de la respuesta a una instancia de Plantilla.
-        return response.data.map(
-            (plantilla: Plantilla) =>
-                new Plantilla(
-                    plantilla.id,
-                    plantilla.name,
-                    plantilla.description,
-                    plantilla.sections.map(
-                        (section: Seccion) =>
-                            new Seccion(
-                                section.id,
-                                section.name,
-                                section.fields.map(
-                                    (field: Campo) =>
-                                        new Campo(
-                                            field.id,
-                                            field.name,
-                                            field.type,
-                                            // Si el campo es de tipo 'list' y el valor es un string, se parsea a array.
-                                            field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
-                                        )
-                                )
-                            )
-                    )
-                )
-        );
+        return response.data.map((data: Plantilla) => Plantilla.fromJson(data));
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener las historias clínicas');
     }
@@ -64,66 +36,20 @@ export const createHistoriaClinica = async (payload: {
 }): Promise<Plantilla> => {
     try {
         const response = await axios.post(`${API_URL}/historiasClinicas`, payload);
-        const plantilla = response.data;
-
-        return new Plantilla(
-            plantilla.id,
-            plantilla.name,
-            plantilla.description,
-            plantilla.sections.map(
-                (section: Seccion) =>
-                    new Seccion(
-                        section.id,
-                        section.name,
-                        section.fields.map(
-                            (field: Campo) =>
-                                new Campo(
-                                    field.id,
-                                    field.name,
-                                    field.type,
-                                    field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
-                                )
-                        )
-                    )
-            )
-        );
+        return Plantilla.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al crear la historia clínica');
     }
 };
 
 /**
- * Obtiene una historia clínica específica por su ID.
+ * Obtiene una historia clínica específica por su ID y la mapea a una instancia de Plantilla.
  * @param id ID de la historia clínica a buscar.
  */
 export const getHistoriaClinicaById = async (id: string): Promise<Plantilla> => {
     try {
         const response = await axios.get(`${API_URL}/historiasClinicas/${id}`);
-        const plantilla = response.data;
-
-        console.log('Plantilla recibida:', plantilla);
-
-        return new Plantilla(
-            plantilla.id,
-            plantilla.name,
-            plantilla.description,
-            plantilla.sections.map(
-                (section: Seccion) =>
-                    new Seccion(
-                        section.id,
-                        section.name,
-                        section.fields.map(
-                            (field: Campo) =>
-                                new Campo(
-                                    field.id,
-                                    field.name,
-                                    field.type,
-                                    field.type === 'list' && typeof field.value === 'string' ? JSON.parse(field.value) : field.value
-                                )
-                        )
-                    )
-            )
-        );
+        return Plantilla.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener la historia clínica por ID');
     }

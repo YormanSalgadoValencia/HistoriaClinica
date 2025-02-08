@@ -2,8 +2,6 @@ import axios from 'axios';
 import { Atencion } from '../types/Atencion';
 import { FormatoAtencion } from '../types/FormatoAtencion';
 import { Plantilla } from '../types/HistoriaClinica/Plantilla';
-import { Seccion } from '../types/HistoriaClinica/Seccion';
-import { Campo } from '../types/HistoriaClinica/Campo';
 
 const API_URL = 'http://localhost:3000';
 
@@ -13,44 +11,8 @@ const API_URL = 'http://localhost:3000';
 export const getAtenciones = async (): Promise<Atencion[]> => {
     try {
         const response = await axios.get(`${API_URL}/atencion`);
-
-        return response.data.map((atencion: Atencion) => {
-            return new Atencion(
-                atencion.id,
-                new Date(atencion.fechaAtencion).toISOString(),
-                atencion.modalidadAtencion,
-                atencion.consecutivoAtencion,
-                new FormatoAtencion(
-                    atencion.tiposAtencion.id,
-                    atencion.tiposAtencion.tipoEspecialidad,
-                    atencion.tiposAtencion.nombrePersonalizado
-                ),
-                atencion.informacionAdicional || '',
-                atencion.historiaClinica
-                    ? new Plantilla(
-                          atencion.historiaClinica.id,
-                          atencion.historiaClinica.name,
-                          atencion.historiaClinica.description,
-                          atencion.historiaClinica.sections.map(
-                              (seccion: Seccion) =>
-                                  new Seccion(
-                                      seccion.id,
-                                      seccion.name,
-                                      seccion.fields.map(
-                                          (campo: Campo) =>
-                                              new Campo(
-                                                  campo.id,
-                                                  campo.name,
-                                                  campo.type,
-                                                  Array.isArray(campo.value) ? JSON.stringify(campo.value) : campo.value
-                                              )
-                                      )
-                                  )
-                          )
-                      )
-                    : undefined // Si no hay historia clínica, se deja como undefined
-            );
-        });
+        // Se asume que cada objeto recibido se mapea a través del método estático fromJSON.
+        return response.data.map((data: Atencion) => Atencion.fromJson(data));
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener las atenciones');
     }
@@ -66,70 +28,21 @@ export const createAtencion = async (payload: {
     modalidadAtencion: string;
     consecutivoAtencion: string;
     informacionAdicional?: string;
-    tiposAtencion: FormatoAtencion;
-    historiaClinica?: Plantilla; // Ahora es opcional
+    tiposAtencion: FormatoAtencion; // Se asume que FormatoAtencion tiene su propio método de conversión
+    historiaClinica?: Plantilla; // Se asume que Plantilla tiene un método toJSON o similar para serializar
 }): Promise<Atencion> => {
     try {
-        // Crear objeto de envío sin incluir historia clínica si no está presente
+        // Si la historia clínica posee un método para serializarse, se invoca; de lo contrario, se envía tal cual.
         const requestBody = {
             ...payload,
-            historiaClinica: payload.historiaClinica
-                ? {
-                      id: payload.historiaClinica.id,
-                      name: payload.historiaClinica.name,
-                      description: payload.historiaClinica.description,
-                      sections: payload.historiaClinica.sections.map((seccion) => ({
-                          id: seccion.id,
-                          name: seccion.name,
-                          fields: seccion.fields.map((campo) => ({
-                              id: campo.id,
-                              name: campo.name,
-                              type: campo.type,
-                              value: campo.value
-                          }))
-                      }))
-                  }
-                : undefined // Si no hay historia clínica, no se envía
+            historiaClinica:
+                payload.historiaClinica && typeof Plantilla.toJson === 'function'
+                    ? Plantilla.toJson(payload.historiaClinica)
+                    : payload.historiaClinica
         };
 
         const response = await axios.post(`${API_URL}/atencion`, requestBody);
-        const atencion = response.data;
-
-        return new Atencion(
-            atencion.id,
-            atencion.fechaAtencion,
-            atencion.modalidadAtencion,
-            atencion.consecutivoAtencion,
-            new FormatoAtencion(
-                atencion.tiposAtencion.id,
-                atencion.tiposAtencion.tipoEspecialidad,
-                atencion.tiposAtencion.nombrePersonalizado
-            ),
-            atencion.informacionAdicional || '',
-            atencion.historiaClinica
-                ? new Plantilla(
-                      atencion.historiaClinica.id,
-                      atencion.historiaClinica.name,
-                      atencion.historiaClinica.description,
-                      atencion.historiaClinica.sections.map(
-                          (seccion: Seccion) =>
-                              new Seccion(
-                                  seccion.id,
-                                  seccion.name,
-                                  seccion.fields.map(
-                                      (campo: Campo) =>
-                                          new Campo(
-                                              campo.id,
-                                              campo.name,
-                                              campo.type,
-                                              Array.isArray(campo.value) ? JSON.stringify(campo.value) : campo.value
-                                          )
-                                  )
-                              )
-                      )
-                  )
-                : undefined
-        );
+        return Atencion.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al crear la atención');
     }

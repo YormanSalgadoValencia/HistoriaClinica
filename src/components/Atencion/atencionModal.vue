@@ -114,7 +114,8 @@ const atencion = ref({
         id: '',
         name: '',
         description: '',
-        sections: []
+        sections: [],
+        categories: []
     }
 });
 
@@ -165,7 +166,8 @@ const crearAtencion = async () => {
                 id: '',
                 name: '',
                 description: '',
-                sections: []
+                sections: [],
+                categories: []
             }
         };
 
@@ -203,7 +205,8 @@ const resetFormulario = () => {
             id: '',
             name: '',
             description: '',
-            sections: []
+            sections: [],
+            categories: []
         }
     };
 };

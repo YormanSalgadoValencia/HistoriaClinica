@@ -2,7 +2,9 @@
 import { ref, onMounted, computed } from 'vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { useRoute, useRouter } from 'vue-router';
-import ModalNuevaSeccion from '@/components/HistoriaClinica/ModalNuevaSeccion.vue'; // Ajusta la ruta según tu proyecto
+import ModalNuevaSeccion from '@/components/HistoriaClinica/ModalNuevaSeccion.vue';
+import { Seccion } from '@/types/HistoriaClinica/Seccion';
+import { Campo } from '@/types/HistoriaClinica/Campo';
 
 const historiaStore = useHistoriaClinicaStore();
 const route = useRoute();
@@ -28,13 +30,13 @@ onMounted(async () => {
     }
 });
 
-function openSectionModal(seccion: any) {
+function openSectionModal(seccion: Seccion) {
     selectedSection.value = seccion;
     sectionModalOpen.value = true;
 }
 
-function openListModal(campo: any) {
-    selectedList.value = campo.value;
+function openListModal(campo: Campo) {
+    selectedList.value = Array.isArray(campo.value) ? campo.value : [];
     selectedListTitle.value = campo.name;
     listModalOpen.value = true;
 }

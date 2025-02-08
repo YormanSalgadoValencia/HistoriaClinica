@@ -7,10 +7,11 @@ const API_URL = 'http://localhost:3000';
 export const getFormatosAtencion = async (): Promise<FormatoAtencion[]> => {
     try {
         const response = await axios.get(`${API_URL}/formatosAtencion`);
-        return response.data.map((item: FormatoAtencion) => new FormatoAtencion(item.id, item.tipoEspecialidad, item.nombrePersonalizado));
-    } catch (error) {
+        // Mapea cada objeto de la respuesta a una instancia de FormatoAtencion mediante fromJSON
+        return response.data.map((item: any) => FormatoAtencion.fromJson(item));
+    } catch (error: any) {
         console.error('Error al obtener los formatos de atención:', error);
-        throw error;
+        throw new Error(error.response?.data?.message || error.message);
     }
 };
 
@@ -21,10 +22,10 @@ export const createFormatoAtencion = async (formato: FormatoAtencion): Promise<F
             tipoEspecialidad: formato.tipoEspecialidad,
             nombrePersonalizado: formato.nombrePersonalizado
         });
-        // Retorna el nuevo formato de atención creado, transformado en un objeto de la clase FormatoAtencion
-        return new FormatoAtencion(response.data.id, response.data.tipoEspecialidad, response.data.nombrePersonalizado);
-    } catch (error) {
+        // Transforma la respuesta a una instancia de FormatoAtencion usando fromJSON
+        return FormatoAtencion.fromJson(response.data);
+    } catch (error: any) {
         console.error('Error al crear el formato de atención:', error);
-        throw error;
+        throw new Error(error.response?.data?.message || error.message);
     }
 };
