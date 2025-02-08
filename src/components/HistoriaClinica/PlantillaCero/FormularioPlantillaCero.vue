@@ -42,6 +42,8 @@
                         <v-select
                             v-model="plantillaCategories"
                             label="Categorías (opcional)"
+                            :items="especialidades"
+                            item-title="name"
                             prepend-inner-icon="mdi-tag-multiple"
                             multiple
                             chips
@@ -429,6 +431,7 @@ import { Seccion } from '@/types/HistoriaClinica/Seccion';
 import { Campo } from '@/types/HistoriaClinica/Campo';
 import { Structure } from '@/types/HistoriaClinica/Structure';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
+import { especialidades } from '@/data/especialidades';
 
 const historiaClinicaStore = useHistoriaClinicaStore();
 

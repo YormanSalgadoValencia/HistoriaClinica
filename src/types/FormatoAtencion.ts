@@ -1,25 +1,32 @@
+import { Especialidad } from './Especialidad';
 export class FormatoAtencion {
     id: string;
     tipoEspecialidad: string;
     nombrePersonalizado: string;
+    especialidad?: Especialidad;
 
-    constructor(id: string, tipoEspecialidad: string, nombrePersonalizado: string) {
+    constructor(id: string, tipoEspecialidad: string, nombrePersonalizado: string, especialidad?: Especialidad) {
         this.id = id;
         this.tipoEspecialidad = tipoEspecialidad;
         this.nombrePersonalizado = nombrePersonalizado;
+        this.especialidad = especialidad;
     }
 
     static fromJson(data: FormatoAtencion): FormatoAtencion {
-        const formatoAtencion = new FormatoAtencion(data.id, data.tipoEspecialidad, data.nombrePersonalizado);
-
-        return formatoAtencion;
+        return new FormatoAtencion(
+            data.id,
+            data.tipoEspecialidad,
+            data.nombrePersonalizado,
+            data.especialidad ? Especialidad.fromJson(data.especialidad) : undefined
+        );
     }
 
     static toJson(formatoAtencion: FormatoAtencion): FormatoAtencion {
-        return {
-            id: formatoAtencion.id,
-            tipoEspecialidad: formatoAtencion.tipoEspecialidad,
-            nombrePersonalizado: formatoAtencion.nombrePersonalizado
-        };
+        return new FormatoAtencion(
+            formatoAtencion.id,
+            formatoAtencion.tipoEspecialidad,
+            formatoAtencion.nombrePersonalizado,
+            formatoAtencion.especialidad ? Especialidad.toJson(formatoAtencion.especialidad) : undefined
+        );
     }
 }
