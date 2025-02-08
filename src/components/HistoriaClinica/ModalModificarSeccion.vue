@@ -60,7 +60,7 @@ const isVisible = ref(false);
 const localSeccion = ref<any>(null);
 
 // Opciones para el tipo de campo; puedes agregar o modificar según tus necesidades
-const tipos = ['text', 'number', 'list', 'check', 'textarea'];
+const tipos = ['text', 'number', 'check', 'textarea'];
 
 // Cuando cambie el prop "seccion" se crea o se reinicializa la copia local y se muestra el diálogo
 watch(

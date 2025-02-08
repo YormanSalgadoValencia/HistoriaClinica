@@ -8,7 +8,7 @@ export const getFormatosAtencion = async (): Promise<FormatoAtencion[]> => {
     try {
         const response = await axios.get(`${API_URL}/formatosAtencion`);
         // Mapea cada objeto de la respuesta a una instancia de FormatoAtencion mediante fromJSON
-        return response.data.map((item: any) => FormatoAtencion.fromJson(item));
+        return response.data.map((item: FormatoAtencion) => FormatoAtencion.fromJson(item));
     } catch (error: any) {
         console.error('Error al obtener los formatos de atención:', error);
         throw new Error(error.response?.data?.message || error.message);
