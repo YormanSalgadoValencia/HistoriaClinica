@@ -4,22 +4,22 @@ import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
 const API_URL = 'http://localhost:3000';
 
 /**
- * Obtiene el listado de historias clínicas y las mapea a instancias de Plantilla.
+ * Obtiene el listado de todas las plantillas de historias clínicas.
  */
-export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
+export const getPlantillas = async (): Promise<Plantilla[]> => {
     try {
-        const response = await axios.get(`${API_URL}/historiasClinicas`);
+        const response = await axios.get(`${API_URL}/Plantilla`);
         return response.data.map((data: Plantilla) => Plantilla.fromJson(data));
     } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Error al obtener las historias clínicas');
+        throw new Error(error.response?.data?.message || 'Error al obtener las plantillas');
     }
 };
 
 /**
- * Crea una nueva historia clínica en el backend y la retorna como una instancia de Plantilla.
- * @param payload Datos necesarios para crear la historia clínica.
+ * Crea una nueva plantilla de historia clínica en el backend y la retorna como una instancia de Plantilla.
+ * @param payload Datos necesarios para crear la plantilla.
  */
-export const createHistoriaClinica = async (payload: {
+export const createPlantilla = async (payload: {
     id: string;
     name: string;
     description: string;
@@ -45,32 +45,33 @@ export const createHistoriaClinica = async (payload: {
     categories: string[];
 }): Promise<Plantilla> => {
     try {
-        const response = await axios.post(`${API_URL}/historiasClinicas`, payload);
+        const response = await axios.post(`${API_URL}/Plantilla`, payload);
+        console.log(response.data);
         return Plantilla.fromJson(response.data);
     } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Error al crear la historia clínica');
+        throw new Error(error.response?.data?.message || 'Error al crear la plantilla');
     }
 };
 
 /**
- * Obtiene una historia clínica específica por su ID y la mapea a una instancia de Plantilla.
- * @param id ID de la historia clínica a buscar.
+ * Obtiene una plantilla de historia clínica específica por su ID.
+ * @param id ID de la plantilla a obtener.
  */
-export const getHistoriaClinicaById = async (id: string): Promise<Plantilla> => {
+export const getPlantillaById = async (id: string): Promise<Plantilla> => {
     try {
-        const response = await axios.get(`${API_URL}/historiasClinicas/${id}`);
+        const response = await axios.get(`${API_URL}/Plantilla/${id}`);
         return Plantilla.fromJson(response.data);
     } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Error al obtener la historia clínica por ID');
+        throw new Error(error.response?.data?.message || 'Error al obtener la plantilla');
     }
 };
 
 /**
- * Actualiza una historia clínica en el backend.
- * @param id ID de la historia clínica a actualizar.
- * @param payload Datos actualizados de la historia clínica.
+ * Actualiza una plantilla de historia clínica en el backend.
+ * @param id ID de la plantilla a actualizar.
+ * @param payload Datos actualizados de la plantilla.
  */
-export const updateHistoriaClinica = async (
+export const updatePlantilla = async (
     id: string,
     payload: {
         name: string;
@@ -98,21 +99,21 @@ export const updateHistoriaClinica = async (
     }
 ): Promise<Plantilla> => {
     try {
-        const response = await axios.put(`${API_URL}/historiasClinicas/${id}`, payload);
+        const response = await axios.put(`${API_URL}/Plantilla/${id}`, payload);
         return Plantilla.fromJson(response.data);
     } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Error al actualizar la historia clínica');
+        throw new Error(error.response?.data?.message || 'Error al actualizar la plantilla');
     }
 };
 
 /**
- * Elimina una historia clínica en el backend.
- * @param id ID de la historia clínica a eliminar.
+ * Elimina una plantilla de historia clínica en el backend.
+ * @param id ID de la plantilla a eliminar.
  */
-export const deleteHistoriaClinica = async (id: string): Promise<void> => {
+export const deletePlantilla = async (id: string): Promise<void> => {
     try {
-        await axios.delete(`${API_URL}/historiasClinicas/${id}`);
+        await axios.delete(`${API_URL}/Plantilla/${id}`);
     } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Error al eliminar la historia clínica');
+        throw new Error(error.response?.data?.message || 'Error al eliminar la plantilla');
     }
 };

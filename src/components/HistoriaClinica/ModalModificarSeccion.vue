@@ -22,7 +22,14 @@
                         </v-card-title>
                         <v-card-text class="px-0">
                             <v-text-field v-model="field.name" label="Nombre del Campo" outlined></v-text-field>
-                            <v-select v-model="field.type" :items="tipos" label="Tipo del Campo" outlined></v-select>
+                            <v-select
+                                v-model="field.type"
+                                :items="fieldTypes"
+                                item-title="label"
+                                item-value="value"
+                                label="Tipo del Campo"
+                                outlined
+                            ></v-select>
                         </v-card-text>
                     </v-card>
                 </div>
@@ -60,7 +67,14 @@ const isVisible = ref(false);
 const localSeccion = ref<any>(null);
 
 // Opciones para el tipo de campo; puedes agregar o modificar según tus necesidades
-const tipos = ['text', 'number', 'check', 'textarea'];
+const fieldTypes = [
+    { value: 'text', label: 'Texto', icon: 'mdi-form-textbox', description: 'Campo de texto simple' },
+    { value: 'number', label: 'Número', icon: 'mdi-numeric', description: 'Campo numérico' },
+    { value: 'check', label: 'Casilla', icon: 'mdi-checkbox-marked-outline', description: 'Casilla de verificación' },
+    { value: 'textarea', label: 'Área de texto', icon: 'mdi-form-textarea', description: 'Campo de texto multilínea' },
+    { value: 'date', label: 'Fecha', icon: 'mdi-calendar', description: 'Selector de fecha' },
+    { value: 'dropdown', label: 'Lista desplegable', icon: 'mdi-menu-down', description: 'Lista de opciones' }
+];
 
 // Cuando cambie el prop "seccion" se crea o se reinicializa la copia local y se muestra el diálogo
 watch(

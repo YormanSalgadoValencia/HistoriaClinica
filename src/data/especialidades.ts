@@ -1,4 +1,3 @@
-// src/data/especialidades.ts
 import type { Especialidad } from '@/types/Especialidad';
 
 export const especialidades: Especialidad[] = [

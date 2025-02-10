@@ -13,77 +13,11 @@
         </v-card>
 
         <!-- Información General -->
-        <v-card class="mb-6 form-card" elevation="2">
-            <v-card-title class="form-card-title">
-                <v-icon class="mr-2">mdi-file-document-edit</v-icon>
-                Información General
-            </v-card-title>
-            <v-card-text>
-                <v-row>
-                    <v-col cols="12" md="6">
-                        <v-text-field
-                            v-model="plantillaName"
-                            label="Nombre de la Plantilla"
-                            prepend-inner-icon="mdi-format-title"
-                            variant="outlined"
-                            class="input-field"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-text-field
-                            v-model="plantillaDescription"
-                            label="Descripción"
-                            prepend-inner-icon="mdi-text"
-                            variant="outlined"
-                            class="input-field"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-select
-                            v-model="plantillaCategories"
-                            label="Categorías (opcional)"
-                            :items="especialidades"
-                            item-title="name"
-                            prepend-inner-icon="mdi-tag-multiple"
-                            multiple
-                            chips
-                            variant="outlined"
-                            class="input-field"
-                        ></v-select>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </v-card>
-
-        <!-- Selección de Plantilla Base -->
-        <v-card class="mb-6 form-card" elevation="2">
-            <v-card-title class="form-card-title">
-                <v-icon class="mr-2">mdi-file-tree</v-icon>
-                Plantilla Base
-            </v-card-title>
-            <v-card-text>
-                <v-select
-                    v-model="selectedBaseTemplate"
-                    :items="baseTemplates"
-                    item-title="name"
-                    item-value="id"
-                    label="Selecciona una plantilla base (opcional)"
-                    prepend-inner-icon="mdi-file-outline"
-                    clearable
-                    variant="outlined"
-                    class="input-field"
-                >
-                    <template v-slot:item="{ props, item }">
-                        <v-list-item v-bind="props">
-                            <template v-slot:prepend>
-                                <v-icon :icon="item.icon"></v-icon>
-                            </template>
-                            <v-list-item-title>{{ item.name }}</v-list-item-title>
-                        </v-list-item>
-                    </template>
-                </v-select>
-            </v-card-text>
-        </v-card>
+        <InformacionGeneral
+            v-model:plantillaName="plantillaName"
+            v-model:plantillaDescription="plantillaDescription"
+            v-model:plantillaCategories="plantillaCategories"
+        />
 
         <!-- Agregar Sección (para crear una sección nueva) -->
         <v-card class="mb-6 form-card" elevation="2">
@@ -110,7 +44,7 @@
                         <v-row>
                             <v-col cols="12" md="4">
                                 <v-text-field
-                                    v-model="newField.name"
+                                    v-model="fieldReactive.name"
                                     label="Nombre del Campo"
                                     prepend-inner-icon="mdi-form-textbox"
                                     variant="outlined"
@@ -119,7 +53,7 @@
                             </v-col>
                             <v-col cols="12" md="4">
                                 <v-select
-                                    v-model="newField.type"
+                                    v-model="fieldReactive.type"
                                     :items="fieldTypes"
                                     item-title="label"
                                     item-value="value"
@@ -141,18 +75,47 @@
                             </v-col>
                             <v-col cols="12" md="4">
                                 <v-text-field
-                                    v-model="newField.label"
+                                    v-model="fieldReactive.label"
                                     label="Etiqueta (opcional)"
                                     prepend-inner-icon="mdi-label"
                                     variant="outlined"
                                     class="input-field"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="4" v-if="newField.type === 'dropdown'">
+                            <v-col cols="12" md="4" v-if="fieldReactive.type === 'dropdown'">
                                 <v-text-field
-                                    v-model="newField.options"
+                                    v-model="fieldReactive.options"
                                     label="Opciones (separadas por coma)"
                                     prepend-inner-icon="mdi-format-list-bulleted"
+                                    variant="outlined"
+                                    class="input-field"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="4" v-if="fieldReactive.type === 'number'">
+                                <v-text-field
+                                    v-model.number="fieldReactive.structure.min"
+                                    label="Valor Mínimo"
+                                    prepend-inner-icon="mdi-numeric"
+                                    variant="outlined"
+                                    type="number"
+                                    class="input-field"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="4" v-if="fieldReactive.type === 'number'">
+                                <v-text-field
+                                    v-model.number="fieldReactive.structure.max"
+                                    label="Valor Máximo"
+                                    prepend-inner-icon="mdi-numeric"
+                                    variant="outlined"
+                                    type="number"
+                                    class="input-field"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="4" v-if="fieldReactive.type === 'number'">
+                                <v-text-field
+                                    v-model="fieldReactive.structure.units"
+                                    label="Unidades"
+                                    prepend-inner-icon="mdi-ruler"
                                     variant="outlined"
                                     class="input-field"
                                 ></v-text-field>
@@ -275,14 +238,27 @@
                     Editar Campo
                 </v-card-title>
                 <v-card-text>
-                    <v-text-field v-model="editingField.campo.name" label="Nombre" variant="outlined" class="mb-2"></v-text-field>
-                    <v-text-field v-model="editingField.campo.label" label="Etiqueta" variant="outlined" class="mb-2"></v-text-field>
+                    <v-text-field
+                        v-model="editingField.campo.name"
+                        label="Nombre"
+                        prepend-inner-icon="mdi-form-textbox"
+                        variant="outlined"
+                        class="mb-2"
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="editingField.campo.label"
+                        label="Etiqueta"
+                        prepend-inner-icon="mdi-label"
+                        variant="outlined"
+                        class="mb-2"
+                    ></v-text-field>
                     <v-select
                         v-model="editingField.campo.type"
                         :items="fieldTypes"
                         item-title="label"
                         item-value="value"
                         label="Tipo"
+                        prepend-inner-icon="mdi-format-list-checks"
                         variant="outlined"
                         class="mb-2"
                     ></v-select>
@@ -291,7 +267,36 @@
                         v-if="editingField.campo.type === 'dropdown'"
                         v-model="editingFieldDropdown"
                         label="Opciones (separadas por coma)"
+                        prepend-inner-icon="mdi-format-list-bulleted"
                         variant="outlined"
+                    ></v-text-field>
+                    <!-- Para campos number -->
+                    <v-text-field
+                        v-if="editingField.campo.type === 'number'"
+                        :model-value="editingField.campo.structure?.min"
+                        @update:model-value="updateFieldStructure('min', $event)"
+                        label="Valor Mínimo"
+                        prepend-inner-icon="mdi-numeric"
+                        variant="outlined"
+                        class="input-field"
+                    ></v-text-field>
+                    <v-text-field
+                        v-if="editingField.campo.type === 'number'"
+                        :model-value="editingField.campo.structure?.max"
+                        @update:model-value="updateFieldStructure('max', $event)"
+                        label="Valor Máximo"
+                        prepend-inner-icon="mdi-numeric"
+                        variant="outlined"
+                        class="input-field"
+                    ></v-text-field>
+                    <v-text-field
+                        v-if="editingField.campo.type === 'number'"
+                        :model-value="editingField.campo.structure?.units"
+                        @update:model-value="updateFieldStructure('units', $event)"
+                        label="Unidades"
+                        prepend-inner-icon="mdi-ruler"
+                        variant="outlined"
+                        class="input-field"
                     ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -322,7 +327,7 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field
-                                        v-model="editingSectionNewField.name"
+                                        v-model="fieldReactive.name"
                                         label="Nombre del Campo"
                                         prepend-inner-icon="mdi-form-textbox"
                                         variant="outlined"
@@ -331,7 +336,7 @@
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-select
-                                        v-model="editingSectionNewField.type"
+                                        v-model="fieldReactive.type"
                                         :items="fieldTypes"
                                         item-title="label"
                                         item-value="value"
@@ -353,18 +358,45 @@
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-text-field
-                                        v-model="editingSectionNewField.label"
+                                        v-model="fieldReactive.label"
                                         label="Etiqueta (opcional)"
                                         prepend-inner-icon="mdi-label"
                                         variant="outlined"
                                         class="input-field"
                                     ></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="4" v-if="editingSectionNewField.type === 'dropdown'">
+                                <v-col cols="12" md="4" v-if="fieldReactive.type === 'dropdown'">
                                     <v-text-field
-                                        v-model="editingSectionNewField.options"
+                                        v-model="fieldReactive.options"
                                         label="Opciones (separadas por coma)"
                                         prepend-inner-icon="mdi-format-list-bulleted"
+                                        variant="outlined"
+                                        class="input-field"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4" v-if="fieldReactive.type === 'number'">
+                                    <v-text-field
+                                        v-model.number="fieldReactive.structure.min"
+                                        label="Valor Mínimo"
+                                        prepend-inner-icon="mdi-numeric"
+                                        variant="outlined"
+                                        class="input-field"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4" v-if="fieldReactive.type === 'number'">
+                                    <v-text-field
+                                        v-model.number="fieldReactive.structure.max"
+                                        label="Valor Máximo"
+                                        prepend-inner-icon="mdi-numeric"
+                                        variant="outlined"
+                                        class="input-field"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4" v-if="fieldReactive.type === 'number'">
+                                    <v-text-field
+                                        v-model="fieldReactive.structure.units"
+                                        label="Unidades"
+                                        prepend-inner-icon="mdi-ruler"
                                         variant="outlined"
                                         class="input-field"
                                     ></v-text-field>
@@ -423,30 +455,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable';
+import Swal from 'sweetalert2';
 import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
 import { Seccion } from '@/types/HistoriaClinica/Seccion';
 import { Campo } from '@/types/HistoriaClinica/Campo';
 import { Structure } from '@/types/HistoriaClinica/Structure';
-import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
-import { especialidades } from '@/data/especialidades';
+import InformacionGeneral from './InformacionGeneral.vue';
+import { usePlantillaStore } from '@/stores/platillaStore';
 
-const historiaClinicaStore = useHistoriaClinicaStore();
+const plantillaStore = usePlantillaStore();
 
 // Datos generales de la plantilla
+const plantillaId = ref('');
 const plantillaName = ref('');
 const plantillaDescription = ref('');
 const plantillaCategories = ref<string[]>([]);
-
-// Plantillas base con iconos
-const baseTemplates = [
-    { name: 'Plantilla Estándar', id: 'base1', icon: 'mdi-file-document-outline' },
-    { name: 'Plantilla de Emergencia', id: 'base2', icon: 'mdi-ambulance' },
-    { name: 'Plantilla Personalizada', id: 'base3', icon: 'mdi-file-cog-outline' }
-];
-const selectedBaseTemplate = ref(null);
 
 // Array reactivo de secciones
 const sections = reactive<Seccion[]>([]);
@@ -458,11 +484,17 @@ const newSection = reactive({
 });
 
 // Modelo para un nuevo campo en la nueva sección
-const newField = reactive({
+const fieldReactive = reactive({
+    id: '',
     name: '',
     label: '',
     type: '',
-    options: ''
+    options: '',
+    structure: {
+        min: null,
+        max: null,
+        units: ''
+    }
 });
 
 // Estado de edición para campos (se usa para editar campos ya existentes en newSection o en secciones)
@@ -501,14 +533,6 @@ const isEditingSection = computed({
     }
 });
 
-// Nuevo objeto reactivo para agregar campos en la sección en edición
-const editingSectionNewField = reactive({
-    name: '',
-    label: '',
-    type: '',
-    options: ''
-});
-
 // Tipos de campos permitidos
 const fieldTypes = [
     { value: 'text', label: 'Texto', icon: 'mdi-form-textbox', description: 'Campo de texto simple' },
@@ -521,29 +545,38 @@ const fieldTypes = [
 
 // FUNCIONES PARA CAMPOS EN "newSection"
 function agregarCampo() {
-    if (!newField.name || !newField.type) return;
+    if (!fieldReactive.name || !fieldReactive.type) return;
     const campo = new Campo(
         uuidv4(),
-        newField.name,
-        newField.type,
-        newField.label || newField.name,
+        fieldReactive.name,
+        fieldReactive.type,
+        fieldReactive.label || fieldReactive.name,
         undefined,
         undefined,
-        newField.type === 'dropdown'
+        fieldReactive.type === 'dropdown'
             ? new Structure(
                   undefined,
                   undefined,
                   undefined,
-                  newField.options.split(',').map((opt) => opt.trim())
+                  fieldReactive.options.split(',').map((opt) => opt.trim())
               )
-            : undefined,
-        newField.type === 'check' ? '' : ''
+            : fieldReactive.type === 'number'
+              ? new Structure(
+                    fieldReactive.structure.min ?? undefined,
+                    fieldReactive.structure.max ?? undefined,
+                    fieldReactive.structure.units
+                )
+              : undefined,
+        fieldReactive.type === 'check' ? '' : ''
     );
     newSection.fields.push(campo);
-    newField.name = '';
-    newField.label = '';
-    newField.type = '';
-    newField.options = '';
+    fieldReactive.name = '';
+    fieldReactive.label = '';
+    fieldReactive.type = '';
+    fieldReactive.options = '';
+    fieldReactive.structure.min = null;
+    fieldReactive.structure.max = null;
+    fieldReactive.structure.units = '';
 }
 function editarCampoNew(fieldIndex: number, campo: Campo) {
     editingField.value = { sectionIndex: null, fieldIndex, campo: { ...campo } };
@@ -620,10 +653,13 @@ function editarSeccion(index: number, section: Seccion) {
     // Creamos una copia local para editar
     editingSection.value = { index, section: { ...section, fields: [...section.fields] } };
     // Reiniciamos el objeto para agregar nuevos campos en este contexto
-    editingSectionNewField.name = '';
-    editingSectionNewField.label = '';
-    editingSectionNewField.type = '';
-    editingSectionNewField.options = '';
+    fieldReactive.name = '';
+    fieldReactive.label = '';
+    fieldReactive.type = '';
+    fieldReactive.options = '';
+    fieldReactive.structure.min = null;
+    fieldReactive.structure.max = null;
+    fieldReactive.structure.units = '';
 }
 function guardarEdicionSeccion() {
     if (!editingSection.value) return;
@@ -634,33 +670,42 @@ function guardarEdicionSeccion() {
 
 // FUNCIONES PARA AGREGAR CAMPOS DENTRO DEL DIÁLOGO DE EDITAR SECCIÓN
 function agregarCampoEditingSection() {
-    if (!editingSectionNewField.name || !editingSectionNewField.type) return;
+    if (!fieldReactive.name || !fieldReactive.type) return;
     let structure;
-    if (editingSectionNewField.type === 'dropdown' && editingSectionNewField.options) {
+    if (fieldReactive.type === 'dropdown' && fieldReactive.options) {
         structure = new Structure(
             undefined,
             undefined,
             undefined,
-            editingSectionNewField.options.split(',').map((opt) => opt.trim())
+            fieldReactive.options.split(',').map((opt) => opt.trim())
+        );
+    } else if (fieldReactive.type === 'number') {
+        structure = new Structure(
+            fieldReactive.structure.min ?? undefined,
+            fieldReactive.structure.max ?? undefined,
+            fieldReactive.structure.units
         );
     }
     const campo = new Campo(
         uuidv4(),
-        editingSectionNewField.name,
-        editingSectionNewField.type,
-        editingSectionNewField.label || editingSectionNewField.name,
+        fieldReactive.name,
+        fieldReactive.type,
+        fieldReactive.label || fieldReactive.name,
         undefined,
         undefined,
         structure,
-        editingSectionNewField.type === 'check' ? '' : ''
+        fieldReactive.type === 'check' ? '' : ''
     );
     if (editingSection.value) {
         editingSection.value.section.fields.push(campo);
     }
-    editingSectionNewField.name = '';
-    editingSectionNewField.label = '';
-    editingSectionNewField.type = '';
-    editingSectionNewField.options = '';
+    fieldReactive.name = '';
+    fieldReactive.label = '';
+    fieldReactive.type = '';
+    fieldReactive.options = '';
+    fieldReactive.structure.min = null;
+    fieldReactive.structure.max = null;
+    fieldReactive.structure.units = '';
 }
 
 // FUNCIONES PARA VISTA PREVIA DE CAMPOS
@@ -675,6 +720,7 @@ function getPreviewComponent(type: string) {
     };
     return componentMap[type] || 'v-text-field';
 }
+
 function getPreviewProps(field: Campo) {
     const props: Record<string, any> = {
         dense: true,
@@ -698,7 +744,7 @@ function getPreviewProps(field: Campo) {
 async function guardarPlantilla() {
     try {
         const plantilla = new Plantilla(uuidv4(), plantillaName.value, plantillaDescription.value, sections, plantillaCategories.value);
-        await historiaClinicaStore.addHistoria({
+        await plantillaStore.addPlantilla({
             id: plantilla.id,
             name: plantilla.name,
             description: plantilla.description,
@@ -711,24 +757,51 @@ async function guardarPlantilla() {
                     type: field.type,
                     value: field.value?.toString() || ''
                 }))
-            }))
+            })),
+            categories: plantilla.categories
+        });
+        Swal.fire({
+            icon: 'success',
+            title: 'Plantilla guardada',
+            text: 'La plantilla se ha guardado correctamente.',
+            timer: 2000,
+            showConfirmButton: false
         });
         cancelar();
     } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un error al guardar la plantilla.',
+            timer: 2000,
+            showConfirmButton: false
+        });
         console.error('Error al guardar la plantilla:', error);
     }
 }
+
 function cancelar() {
     plantillaName.value = '';
     plantillaDescription.value = '';
     plantillaCategories.value = [];
     sections.splice(0, sections.length);
-    selectedBaseTemplate.value = null;
 }
+
+function updateFieldStructure(key: 'min' | 'max' | 'units', value: any) {
+    if (editingField.value && editingField.value.campo.structure) {
+        editingField.value.campo.structure[key] = value;
+    } else if (editingField.value) {
+        editingField.value.campo.structure = new Structure();
+        editingField.value.campo.structure[key] = value;
+    }
+}
+
+onMounted(async () => {
+    await plantillaStore.fetchPlantillas();
+});
 </script>
 
 <style scoped>
-/* Tus estilos existentes */
 .header-card {
     background: linear-gradient(135deg, #000534 0%, #1f74ff 100%);
     color: white;
@@ -746,22 +819,7 @@ function cancelar() {
     opacity: 0.9;
     padding: 0 24px 24px;
 }
-.form-card {
-    border-radius: 12px;
-    transition:
-        transform 0.2s,
-        box-shadow 0.2s;
-}
-.form-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-.form-card-title {
-    background-color: #f8f9fa;
-    padding: 16px;
-    border-bottom: 1px solid #e9ecef;
-    margin-bottom: 16px;
-}
+
 .input-field {
     transition: all 0.3s ease;
 }
