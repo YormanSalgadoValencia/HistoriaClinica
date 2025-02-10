@@ -413,6 +413,7 @@
                             </v-btn>
                         </v-card-text>
                     </v-card>
+
                     <!-- Lista de Campos en la sección en edición -->
                     <draggable
                         v-model="editingSection.section.fields"
@@ -463,7 +464,7 @@ import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
 import { Seccion } from '@/types/HistoriaClinica/Seccion';
 import { Campo } from '@/types/HistoriaClinica/Campo';
 import { Structure } from '@/types/HistoriaClinica/Structure';
-import InformacionGeneral from './InformacionGeneral.vue';
+import InformacionGeneral from '@/components/PlantillaCero/InformacionGeneral.vue';
 import { usePlantillaStore } from '@/stores/platillaStore';
 
 const plantillaStore = usePlantillaStore();
@@ -808,12 +809,14 @@ onMounted(async () => {
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(31, 116, 255, 0.15);
 }
+
 .header-title {
     font-size: 1.75rem;
     font-weight: 600;
     letter-spacing: 0.5px;
     padding: 24px;
 }
+
 .header-subtitle {
     font-size: 1.1rem;
     opacity: 0.9;
@@ -823,6 +826,7 @@ onMounted(async () => {
 .input-field {
     transition: all 0.3s ease;
 }
+
 .input-field:hover {
     transform: translateY(-1px);
 }

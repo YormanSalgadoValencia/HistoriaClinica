@@ -22,7 +22,7 @@ export const router = createRouter({
         {
             path: '/crearPlantilla',
             name: 'CrearPlantilla',
-            component: () => import('@/components/HistoriaClinica/PlantillaCero/FormularioPlantillaCero.vue')
+            component: () => import('@/views/Plantilla/FormularioPlantillaNueva.vue')
         },
         {
             path: '/historia-clinica/:id',

@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { defineProps, defineEmits } from 'vue';
 // Importa el componente desde la ruta especificada
-import FormularioPlantillaCero from '@/components/HistoriaClinica/PlantillaCero/FormularioPlantillaCero.vue';
+import FormularioPlantillaCero from '@/views/Plantilla/FormularioPlantillaNueva.vue';
 
 const props = defineProps({
     modelValue: {
