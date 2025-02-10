@@ -9,20 +9,20 @@ onMounted(async () => {
 });
 
     defineProps<{ plantilla: 
-        { name: string; 
-          description: string;
-          sections: 
-          { 
-            id: string;
-            name: string; 
-            fields: 
-            { 
-              id: string;
-              name: string;
-              type: string;
-              value: string; 
-             }[] }[] 
-        } 
+            { id: string;
+            name: string;
+            description: string;
+            sections: {
+                id: string;
+                name: string;
+                fields: {
+                    id: string;
+                    name: string;
+                    type: string;
+                    value: string | any[];
+                }[];
+            }[];
+            } | null;
     }>();
 </script>
 
@@ -35,7 +35,7 @@ onMounted(async () => {
                         <span>Historia Clínica: {{ plantilla.name }}</span>
                     </v-card-title>
                     <v-card-subtitle class="header-subtitle">
-                        {{ plantilla.description }}
+                        {{ plantilla.description.length > 100 ? plantilla.description.substring(0, 100) + '...' : plantilla.description }}
                     </v-card-subtitle>
                 </v-card>
 
@@ -105,5 +105,11 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 
+.header-subtitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  max-width: 100%; 
+}
 
 </style>

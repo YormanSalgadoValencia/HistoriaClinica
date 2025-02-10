@@ -10,10 +10,10 @@
                   id: string;
                   name: string;
                   type: string;
-                  value: string | any[];  // Ahora acepta ambos tipos
+                  value: string | any[];
               }[];
           }[];
-        } 
+        } | null;
     }>();
 
 

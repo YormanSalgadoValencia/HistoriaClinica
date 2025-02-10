@@ -4,7 +4,7 @@
     import PreviewPlantilla from "./PreviewPlantilla.vue";
     import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
     import { onMounted } from 'vue';
-    import { router } from "@/router";
+    import type { Plantilla } from "@/types/HistoriaClinica/Plantilla";
 
     const plantillaBuscada = ref('');
     const selectedCategory = ref('');
@@ -50,6 +50,7 @@
         <v-row>
             <v-col cols="12">
                 <PlantillaCard
+                    v-if="historiaClinicaEstandar.historiaEstandar"
                     :plantilla="historiaClinicaEstandar.historiaEstandar"
                     @click="openPlantilla(historiaClinicaEstandar.historiaEstandar)"
                 />
@@ -77,13 +78,12 @@
                     Todas
                 </v-btn>
                 <v-btn
-                v-for="(category, index) in categories" 
-                    :key="index"
-                    :value="category"
-                    variant="outlined"
-                    >
-                    {{ category }}
-                    
+                    v-for="(category, index) in categories" 
+                        :key="index"
+                        :value="category"
+                        variant="outlined"
+                        >
+                        {{ category }}
                 </v-btn>
             </v-btn-toggle>
         </v-row>
@@ -125,26 +125,26 @@
                     <v-col cols="8">
                     <div class="preview-box">
                         <PreviewPlantilla
-                        v-if="plantillaSeleccionada"
-                        :plantilla="plantillaSeleccionada"
+                            v-if="plantillaSeleccionada"
+                            :plantilla="plantillaSeleccionada"
                         />
                     </div>
                     </v-col>
                     <v-col cols="4">
-                    <div class="description-box">
-                        <p>{{ plantillaSeleccionada?.description }}</p>
-                    </div>
+                        <div class="description-box">
+                            <p>{{ plantillaSeleccionada?.description }}</p>
+                        </div>
                     </v-col>
                 </v-row>
             </v-card-text>
 
             <v-card-actions class="d-flex justify-end">
-            <v-btn color="primary" @click="">
-                Usar esta plantilla
-            </v-btn>
-            <v-btn text @click="isOpenModalPreview = false">
-                Cancelar
-            </v-btn>
+                <v-btn color="primary" @click="">
+                    Usar esta plantilla
+                </v-btn>
+                <v-btn text @click="isOpenModalPreview = false">
+                    Cancelar
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -177,6 +177,13 @@
     overflow: scroll;
     overflow-x: hidden;
 }
+.description-box {
+  max-height: 150px;
+  overflow-y: auto;
+  word-wrap: break-word;
+}
+
+
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {
