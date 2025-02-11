@@ -470,7 +470,6 @@ import { usePlantillaStore } from '@/stores/platillaStore';
 const plantillaStore = usePlantillaStore();
 
 // Datos generales de la plantilla
-const plantillaId = ref('');
 const plantillaName = ref('');
 const plantillaDescription = ref('');
 const plantillaCategories = ref<string[]>([]);

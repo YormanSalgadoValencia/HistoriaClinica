@@ -126,8 +126,8 @@ function editarSeccion(seccion: Seccion) {
     seccionEditar.value = { ...seccion };
 }
 
+// Actualizamos la sección en la historia seleccionada
 function actualizarSeccion(seccionActualizada: Seccion) {
-    // Actualizamos la sección en la historia seleccionada
     if (historiaStore.historiaSeleccionada) {
         const index = historiaStore.historiaSeleccionada.sections.findIndex((s) => s.id === seccionActualizada.id);
         if (index !== -1) {

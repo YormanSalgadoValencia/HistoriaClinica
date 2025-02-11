@@ -231,6 +231,31 @@ const tableHeaders = computed(() => {
                                             color="#1f74ff"
                                         ></v-text-field>
                                     </template>
+                                    <!-- Campo de tipo 'select' -->
+                                    <template v-else-if="campo.type === 'dropdown'">
+                                        <v-select
+                                            v-model="campo.value"
+                                            :label="campo.name"
+                                            :items="campo.structure && campo.structure.options ? campo.structure.options : []"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="custom-text-field"
+                                            hide-details
+                                            color="#1f74ff"
+                                        ></v-select>
+                                    </template>
+                                    <!-- Campo de tipo 'upload' -->
+                                    <template v-else-if="campo.type === 'upload'">
+                                        <v-file-input
+                                            v-model="campo.value"
+                                            :label="campo.name"
+                                            variant="outlined"
+                                            density="comfortable"
+                                            class="custom-text-field"
+                                            hide-details
+                                            color="#1f74ff"
+                                        ></v-file-input>
+                                    </template>
                                     <!-- Campo de tipo 'check' -->
                                     <template v-else-if="campo.type === 'check'">
                                         <v-checkbox v-model="campo.value" :label="campo.name" color="#1f74ff"></v-checkbox>
@@ -285,7 +310,7 @@ const tableHeaders = computed(() => {
                 </v-card-text>
                 <v-card-actions class="pa-4">
                     <v-spacer></v-spacer>
-                    <v-btn color="error" variant="text" @click="sectionModalOpen = false"> Cerrar </v-btn>
+                    <v-btn color="error" variant="text" @click="sectionModalOpen = false">Cerrar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -325,7 +350,7 @@ const tableHeaders = computed(() => {
                 </v-card-text>
                 <v-card-actions class="pa-4">
                     <v-spacer></v-spacer>
-                    <v-btn color="error" variant="text" @click="listModalOpen = false"> Cerrar </v-btn>
+                    <v-btn color="error" variant="text" @click="listModalOpen = false">Cerrar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
