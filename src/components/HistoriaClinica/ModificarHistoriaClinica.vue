@@ -18,6 +18,40 @@
                     </v-card-subtitle>
                 </v-card>
 
+                <v-card>
+                    <v-card-title>
+                        <span>Datos basicos de la plantilla:</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-text-field 
+                                    type="text"
+                                    label="Nombre"
+                                >
+                                </v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-textarea 
+                                    type="text"
+                                    label="Descripción"
+                                >
+                                </v-textarea>
+
+                            </v-col>
+                            <v-col cols="12">
+                                <v-select 
+                                    label="Categorias"
+                                    :items="categories"
+                                    multiple
+                                >
+                                </v-select>
+
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+
                 <!-- Botón para agregar nueva sección -->
                 <v-card class="mb-6 add-section-card" elevation="0">
                     <v-card-text class="text-center">
@@ -115,6 +149,9 @@ const createSeccionModal = ref(false);
 // Estado para la sección a editar
 const seccionEditar = ref<any>(null);
 const seccionCrear = ref<any>(null);
+
+//Categorias
+const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta']; 
 
 onMounted(async () => {
     if (historiaId) {

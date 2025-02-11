@@ -113,9 +113,6 @@ function cerrarModal() {
 function guardarCambios() {
     // Emite la nueva sección creada para que el componente padre la procese
     emit('createSeccion', localSeccion.value);
-
-    console.log('Valores nueva sección:' + JSON.stringify(localSeccion.value));
-    
     cerrarModal();
 }
 </script>
