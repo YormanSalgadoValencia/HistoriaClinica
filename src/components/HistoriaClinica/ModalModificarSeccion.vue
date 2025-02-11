@@ -119,12 +119,13 @@ function cerrarModal() {
 }
 
 function guardarCambios() {
+    console.log('Buenas');
+    
     // Emitimos la sección actualizada para que el componente padre la procese
     emit('updateSeccion', localSeccion.value);
     cerrarModal();
 }
 </script>
 
-<style scoped>
-/* Puedes agregar estilos específicos para este modal */
+<style lang="scss" scoped>
 </style>

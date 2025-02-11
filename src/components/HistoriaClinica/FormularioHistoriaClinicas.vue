@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import ModalNuevaSeccion from '@/components/HistoriaClinica/ModalNuevaSeccion.vue';
 import { Seccion } from '@/types/HistoriaClinica/Seccion';
 import { Campo } from '@/types/HistoriaClinica/Campo';
+import ModalModificarSeccion from './ModalModificarSeccion.vue';
 
 // Usamos el store que maneja la "historia clínica" (Plantilla)
 const historiaStore = useHistoriaClinicaStore();
@@ -23,6 +24,8 @@ const selectedListTitle = ref('');
 
 // Nueva sección: se crea como instancia de Seccion
 const nuevaSeccion = ref<Seccion | null>(null);
+
+const seccionModificar = ref<any>(null);
 
 // Función para formatear fechas a "YYYY-MM-DD"
 function formatDate(dateString: string): string {
@@ -57,6 +60,11 @@ onMounted(async () => {
 // Abre el modal para ver/modificar el detalle de la sección
 function openSectionModal(seccion: Seccion) {
     selectedSection.value = seccion;
+    seccionModificar.value = {
+        id: seccion.id,
+        name: seccion.name,
+        fields: seccion.fields
+    };  
     sectionModalOpen.value = true;
 }
 
@@ -145,6 +153,8 @@ const tableHeaders = computed(() => {
                         </v-btn>
                     </v-card-text>
                 </v-card>
+
+                
 
                 <!-- Itera sobre las secciones de la historia clínica -->
                 <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-6">
@@ -301,7 +311,27 @@ const tableHeaders = computed(() => {
 
         <!-- Modal para ver detalle de la sección -->
         <v-dialog v-model="sectionModalOpen" max-width="600">
-            <v-card>
+            <!-- Modal para modificar una sección -->
+            <ModalModificarSeccion
+                v-if="seccionModificar"
+                :seccion="seccionModificar"
+                @update-seccion="
+                    (seccionActualizada: Seccion) => {
+                        if (historiaStore.historiaSeleccionada) {
+                            const index = historiaStore.historiaSeleccionada.sections.findIndex(
+                                (sec) => sec.id === seccionActualizada.id
+                            );
+                            if (index !== -1) {
+                                historiaStore.historiaSeleccionada.sections[index] = seccionActualizada;
+                            }
+                        }
+                        seccionModificar = null;
+                    }
+                "
+                @cerrarModal="sectionModalOpen = false"
+            />
+
+            <!-- <v-card>
                 <v-card-title class="text-h5 pa-4">Detalle de la Sección</v-card-title>
                 <v-card-text class="pa-4">
                     <div v-if="selectedSection">
@@ -312,7 +342,7 @@ const tableHeaders = computed(() => {
                     <v-spacer></v-spacer>
                     <v-btn color="error" variant="text" @click="sectionModalOpen = false">Cerrar</v-btn>
                 </v-card-actions>
-            </v-card>
+            </v-card> -->
         </v-dialog>
 
         <!-- Modal para ver lista -->

@@ -18,6 +18,40 @@
                     </v-card-subtitle>
                 </v-card>
 
+                <v-card>
+                    <v-card-title>
+                        <span>Datos basicos de la plantilla:</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-text-field 
+                                    type="text"
+                                    label="Nombre"
+                                >
+                                </v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-textarea 
+                                    type="text"
+                                    label="Descripción"
+                                >
+                                </v-textarea>
+
+                            </v-col>
+                            <v-col cols="12">
+                                <v-select 
+                                    label="Categorias"
+                                    :items="categories"
+                                    multiple
+                                >
+                                </v-select>
+
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+
                 <!-- Botón para agregar nueva sección -->
                 <v-card class="mb-6 add-section-card" elevation="0">
                     <v-card-text class="text-center">
@@ -83,10 +117,18 @@
                 <v-alert type="error" variant="tonal" border="start" elevation="2"> No se encontró la historia clínica. </v-alert>
             </v-col>
         </v-row>
-
+        
         <!-- Modal para editar sección -->
         <ModalSeccion :seccion="seccionEditar" @updateSeccion="actualizarSeccion" @cerrarModal="cerrarModalSeccion" />
+
+        
+         
     </v-container>
+
+    <ModalNuevaSeccion :seccion="seccionCrear" @create-seccion="createSeccion"/>
+
+    
+
 </template>
 
 <script setup lang="ts">
@@ -94,6 +136,7 @@ import { ref, onMounted } from 'vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { useRoute, useRouter } from 'vue-router';
 import ModalSeccion from '@/components/HistoriaClinica/ModalModificarSeccion.vue';
+import ModalNuevaSeccion from './ModalNuevaSeccion.vue';
 import { Seccion } from '@/types/HistoriaClinica/Seccion';
 
 const historiaStore = useHistoriaClinicaStore();
@@ -101,9 +144,14 @@ const route = useRoute();
 const router = useRouter();
 const historiaId = route.params.id as string;
 const cargando = ref(false);
+const createSeccionModal = ref(false);
 
 // Estado para la sección a editar
 const seccionEditar = ref<any>(null);
+const seccionCrear = ref<any>(null);
+
+//Categorias
+const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta']; 
 
 onMounted(async () => {
     if (historiaId) {
@@ -114,11 +162,18 @@ onMounted(async () => {
 });
 
 function agregarSeccion() {
-    console.log('Agregar nueva sección');
+    seccionCrear.value = {
+        id: Date.now().toString(),
+        name: '',
+        fields: []
+    };   
 }
 
 function eliminarSeccion(seccionId: string) {
-    console.log('Eliminar sección:', seccionId);
+    if (historiaStore.historiaSeleccionada) {
+            historiaStore.historiaSeleccionada.sections = 
+            historiaStore.historiaSeleccionada.sections.filter(section => section.id !== seccionId);
+        }  
 }
 
 function editarSeccion(seccion: Seccion) {
@@ -136,6 +191,12 @@ function actualizarSeccion(seccionActualizada: Seccion) {
     }
     // Se cierra el modal
     seccionEditar.value = null;
+}
+
+function createSeccion(seccionCreada: Seccion){
+    if(historiaStore.historiaSeleccionada){
+        historiaStore.historiaSeleccionada.sections.push(seccionCreada);
+    }
 }
 
 function guardarCambios() {
