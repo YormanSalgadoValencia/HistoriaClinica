@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { onMounted } from 'vue';
+import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
 const historiaStore = useHistoriaClinicaStore();
 
 
@@ -8,22 +9,9 @@ onMounted(async () => {
       await historiaStore.fetchHistoriaStandard();
 });
 
-    defineProps<{ plantilla: 
-            { id: string;
-            name: string;
-            description: string;
-            sections: {
-                id: string;
-                name: string;
-                fields: {
-                    id: string;
-                    name: string;
-                    type: string;
-                    value: string | any[];
-                }[];
-            }[];
-            } | null;
-    }>();
+defineProps<{ 
+  plantilla: Plantilla | null;
+}>();
 </script>
 
 <template>

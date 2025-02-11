@@ -14,6 +14,9 @@
     const historiaStore = useHistoriaClinicaStore();
     const historiaClinicaEstandar = useHistoriaClinicaStore();
 
+    const isOpenModalCrear = ref(false)
+    
+
     const confirmModal = ref(false);
     
     onMounted(async () => {
@@ -25,10 +28,10 @@
         historiaStore.historias.filter(p => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
     );
 
-    function openPlantilla(plantilla:Plantilla){
-        isOpenModalPreview.value = true;
-        plantillaSeleccionada.value = plantilla;
-    }
+function openPlantilla(plantilla: Plantilla) {
+    isOpenModalPreview.value = true;
+    plantillaSeleccionada.value = plantilla;
+}
 
     const searchPlantillaByCategory = computed(() =>
         historiaStore.historias.filter(p => p.categories.includes(selectedCategory.value))
@@ -59,9 +62,7 @@
         <v-row>
             <v-col cols="9">
                 <div class="search">
-                    <v-text-field @keyup="searchPlantilla" v-model="plantillaBuscada" label="Buscar">
-                        
-                    </v-text-field>
+                    <v-text-field @keyup="searchPlantilla" v-model="plantillaBuscada" label="Buscar"> </v-text-field>
                 </div>
             </v-col>
             <v-col cols="3">
@@ -88,22 +89,12 @@
             </v-btn-toggle>
         </v-row>
 
-
-
         <v-row>
             <div class="template-list" v-if="plantillaBuscada != ''">
-                <PlantillaCard
-                    v-for="plantilla in searchPlantillaFiltered"
-                    :plantilla="plantilla"
-                    @click="openPlantilla(plantilla)"
-                />
+                <PlantillaCard v-for="plantilla in searchPlantillaFiltered" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
             </div>
             <div class="template-list" v-else-if="selectedCategory != ''">
-                <PlantillaCard
-                    v-for="plantilla in searchPlantillaByCategory"
-                    :plantilla="plantilla"
-                    @click="openPlantilla(plantilla)"
-                />
+                <PlantillaCard v-for="plantilla in searchPlantillaByCategory" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
             </div>
             <div v-else class="template-list">
                 <PlantillaCard
@@ -113,6 +104,8 @@
                 />
             </div>
         </v-row>
+
+        <ModalCrearPlantilla v-model="isOpenModalCrear" />
     </v-container>
 
     <v-dialog max-width="900" max-height="700" v-model="isOpenModalPreview">
@@ -158,7 +151,7 @@
                 Desea usar la plantilla base o crear desde 0
             </v-card-text>
             <v-card-actios>
-                <v-btn :to="'/edit-plantilla-basica'">Usar plantilla base</v-btn>
+                <v-btn :to="'/historia-clinica/1/modificar'">Usar plantilla base</v-btn>
                 <v-btn>Empezar de 0</v-btn>
             </v-card-actios>
         </v-card>
@@ -168,8 +161,7 @@
 </template>
 
 <style scoped lang="scss">
-
-.preview-box{
+.preview-box {
     transform: scale(0.8);
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -185,26 +177,26 @@
 
 
 /* ===== Scrollbar CSS ===== */
-  /* Firefox */
-  * {
+/* Firefox */
+* {
     scrollbar-width: thin;
     scrollbar-color: #547ca0 #ffffff;
-  }
+}
 
-  /* Chrome, Edge, and Safari */
-  *::-webkit-scrollbar {
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
     width: 16px;
-  }
+}
 
-  *::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     background: #ffffff;
-  }
+}
 
-  *::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background-color: #547ca0;
     border-radius: 10px;
     border: 3px solid #ffffff;
-  }
+}
 
 .modal-content {
     max-height: 90vh;
@@ -219,15 +211,14 @@
     overflow: hidden;
 }
 
-
 .search {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .template-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: start;
 }
 </style>

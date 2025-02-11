@@ -20,6 +20,11 @@ export const router = createRouter({
             props: true
         },
         {
+            path: '/crearPlantilla',
+            name: 'CrearPlantilla',
+            component: () => import('@/views/Plantilla/FormularioPlantillaNueva.vue')
+        },
+        {
             path: '/historia-clinica/:id',
             name: 'HistoriaClinica',
             component: () => import('@/components/HistoriaClinica/FormularioHistoriaClinicas.vue')

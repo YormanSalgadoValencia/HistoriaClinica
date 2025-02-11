@@ -8,7 +8,7 @@
                     <v-select
                         v-model="nuevoFormato.tipoEspecialidad"
                         :items="especialidades"
-                        item-title="nombre"
+                        item-title="name"
                         item-value="id"
                         label="Tipo de Especialidad"
                         attach
@@ -36,6 +36,7 @@
 import { ref, watch } from 'vue';
 import { useFormatoAtencionStore } from '@/stores/formatoAtencionStore';
 import Swal from 'sweetalert2';
+import { especialidades } from '@/data/especialidades';
 
 // Definición de props y emisión de eventos
 const props = defineProps<{ isOpen: boolean }>();
@@ -43,58 +44,10 @@ const emit = defineEmits(['close']);
 
 // Estado reactivo para el formulario
 const nuevoFormato = ref({
-    _id: Date.now().toString(),
+    id: Date.now().toString(),
     tipoEspecialidad: '', // Ahora es un string, por lo que debe coincidir con los id de la lista
     nombrePersonalizado: ''
 });
-
-// Lista de especialidades (los id son strings)
-const especialidades = [
-    { id: '1', nombre: 'Cardiología' },
-    { id: '2', nombre: 'Dermatología' },
-    { id: '3', nombre: 'Endocrinología' },
-    { id: '4', nombre: 'Gastroenterología' },
-    { id: '5', nombre: 'Geriatría' },
-    { id: '6', nombre: 'Ginecología y Obstetricia' },
-    { id: '7', nombre: 'Hematología' },
-    { id: '8', nombre: 'Infectología' },
-    { id: '9', nombre: 'Medicina Interna' },
-    { id: '10', nombre: 'Nefrología' },
-    { id: '11', nombre: 'Neumología' },
-    { id: '12', nombre: 'Neurología' },
-    { id: '13', nombre: 'Nutriología' },
-    { id: '14', nombre: 'Oftalmología' },
-    { id: '15', nombre: 'Oncología' },
-    { id: '16', nombre: 'Ortopedia y Traumatología' },
-    { id: '17', nombre: 'Otorrinolaringología' },
-    { id: '18', nombre: 'Pediatría' },
-    { id: '19', nombre: 'Psiquiatría' },
-    { id: '20', nombre: 'Radiología' },
-    { id: '21', nombre: 'Reumatología' },
-    { id: '22', nombre: 'Urología' },
-    { id: '23', nombre: 'Medicina de Emergencias' },
-    { id: '24', nombre: 'Medicina Familiar y Comunitaria' },
-    { id: '25', nombre: 'Medicina Preventiva y Salud Pública' },
-    { id: '26', nombre: 'Patología' },
-    { id: '27', nombre: 'Microbiología Clínica' },
-    { id: '28', nombre: 'Anatomía Patológica' },
-    { id: '29', nombre: 'Medicina del Sueño' },
-    { id: '30', nombre: 'Medicina Física y Rehabilitación' },
-    { id: '31', nombre: 'Cirugía General' },
-    { id: '32', nombre: 'Cirugía Cardiovascular' },
-    { id: '33', nombre: 'Cirugía Torácica' },
-    { id: '34', nombre: 'Cirugía Plástica, Reconstructiva y Estética' },
-    { id: '35', nombre: 'Neurocirugía' },
-    { id: '36', nombre: 'Cirugía Maxilofacial' },
-    { id: '37', nombre: 'Anestesiología' },
-    { id: '38', nombre: 'Medicina del Dolor' },
-    { id: '39', nombre: 'Genética Clínica' },
-    { id: '40', nombre: 'Medicina Tropical' },
-    { id: '41', nombre: 'Cuidados Paliativos' },
-    { id: '42', nombre: 'Medicina Nuclear' },
-    { id: '43', nombre: 'Medicina del Deporte' },
-    { id: '44', nombre: 'Medicina Forense' }
-];
 
 // Obtenemos el store de Formato de Atención
 const formatoAtencionStore = useFormatoAtencionStore();
@@ -142,8 +95,8 @@ const agregarFormatoAtencion = async () => {
 // Método para resetear el formulario
 const resetFormulario = () => {
     nuevoFormato.value = {
-        _id: Date.now().toString(),
-        tipoEspecialidad: '', // Reiniciamos a cadena vacía
+        id: Date.now().toString(),
+        tipoEspecialidad: '',
         nombrePersonalizado: ''
     };
 };

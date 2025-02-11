@@ -1,20 +1,11 @@
 <script setup lang="ts">
-    defineProps<{ plantilla: 
-        { id: string;
-          name: string;
-          description: string;
-          sections: {
-              id: string;
-              name: string;
-              fields: {
-                  id: string;
-                  name: string;
-                  type: string;
-                  value: string | any[];
-              }[];
-          }[];
-        } | null;
-    }>();
+import type { Structure } from '@/types/HistoriaClinica/Structure';
+import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+
+defineProps<{ 
+  plantilla: Plantilla | null;
+}>();
+
 
 
 </script>

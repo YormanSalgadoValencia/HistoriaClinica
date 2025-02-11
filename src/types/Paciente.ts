@@ -32,4 +32,33 @@ export class Paciente {
         this.responsable = responsable;
         this.atenciones = [];
     }
+
+    static fromJson(data: Paciente): Paciente {
+        const paciente = new Paciente(
+            data.id,
+            data.nombre,
+            data.apellido,
+            data.fechaNacimiento,
+            data.genero,
+            data.numeroDocumento,
+            data.acompanante,
+            data.responsable
+        );
+        paciente.atenciones = data.atenciones || [];
+        return paciente;
+    }
+
+    static toJson(paciente: Paciente): Paciente {
+        return {
+            id: paciente.id,
+            nombre: paciente.nombre,
+            apellido: paciente.apellido,
+            fechaNacimiento: paciente.fechaNacimiento,
+            genero: paciente.genero,
+            numeroDocumento: paciente.numeroDocumento,
+            acompanante: paciente.acompanante,
+            responsable: paciente.responsable,
+            atenciones: paciente.atenciones
+        };
+    }
 }

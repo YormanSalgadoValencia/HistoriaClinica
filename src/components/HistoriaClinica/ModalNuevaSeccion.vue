@@ -7,7 +7,7 @@
                 <v-text-field v-model="localSeccion.name" label="Nombre de la Sección" outlined></v-text-field>
 
                 <!-- Listado de campos (vacío al inicio) -->
-                <div v-for="(field, index) in localSeccion.fields" :key="field._id" class="mb-3">
+                <div v-for="(field, index) in localSeccion.fields" :key="field.id" class="mb-3">
                     <v-card outlined class="pa-3">
                         <v-card-title class="px-0">
                             Campo {{ index + 1 }}
@@ -18,7 +18,14 @@
                         </v-card-title>
                         <v-card-text class="px-0">
                             <v-text-field v-model="field.name" label="Nombre del Campo" outlined></v-text-field>
-                            <v-select v-model="field.type" :items="tipos" label="Tipo del Campo" outlined></v-select>
+                            <v-select
+                                v-model="field.type"
+                                :items="fieldTypes"
+                                item-title="label"
+                                item-value="value"
+                                label="Tipo del Campo"
+                                outlined
+                            ></v-select>
                         </v-card-text>
                     </v-card>
                 </div>
@@ -55,8 +62,15 @@ const isVisible = ref(false);
 // Copia local de la sección para editarla sin mutar el objeto original
 const localSeccion = ref<any>(null);
 
-// Opciones para el tipo de campo (puedes ajustarlas según lo necesites)
-const tipos = ['text', 'number', 'list', 'check', 'textarea'];
+// Tipos de campos permitidos
+const fieldTypes = [
+    { value: 'text', label: 'Texto', icon: 'mdi-form-textbox', description: 'Campo de texto simple' },
+    { value: 'number', label: 'Número', icon: 'mdi-numeric', description: 'Campo numérico' },
+    { value: 'check', label: 'Casilla', icon: 'mdi-checkbox-marked-outline', description: 'Casilla de verificación' },
+    { value: 'textarea', label: 'Área de texto', icon: 'mdi-form-textarea', description: 'Campo de texto multilínea' },
+    { value: 'date', label: 'Fecha', icon: 'mdi-calendar', description: 'Selector de fecha' },
+    { value: 'dropdown', label: 'Lista desplegable', icon: 'mdi-menu-down', description: 'Lista de opciones' }
+];
 
 // Cada vez que cambie el prop "seccion" se crea la copia local y se muestra el diálogo
 watch(
@@ -75,7 +89,7 @@ watch(
 function agregarCampo() {
     // Se crea un nuevo campo con valores por defecto
     const nuevoCampo = {
-        _id: Date.now().toString(),
+        id: Date.now().toString(),
         name: '',
         type: 'text',
         value: ''
@@ -99,6 +113,9 @@ function cerrarModal() {
 function guardarCambios() {
     // Emite la nueva sección creada para que el componente padre la procese
     emit('createSeccion', localSeccion.value);
+
+    console.log('Valores nueva sección:' + JSON.stringify(localSeccion.value));
+    
     cerrarModal();
 }
 </script>

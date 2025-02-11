@@ -35,7 +35,7 @@
                 </v-card>
 
                 <!-- Lista de secciones -->
-                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion._id" class="mb-4">
+                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-4">
                     <v-card class="section-card" elevation="2">
                         <div class="section-header">
                             <div class="section-info">
@@ -57,7 +57,7 @@
                                     variant="text"
                                     color="error"
                                     class="action-button"
-                                    @click="eliminarSeccion(seccion._id)"
+                                    @click="eliminarSeccion(seccion.id)"
                                 ></v-btn>
                             </div>
                         </div>
@@ -83,10 +83,18 @@
                 <v-alert type="error" variant="tonal" border="start" elevation="2"> No se encontró la historia clínica. </v-alert>
             </v-col>
         </v-row>
-
+        
         <!-- Modal para editar sección -->
         <ModalSeccion :seccion="seccionEditar" @updateSeccion="actualizarSeccion" @cerrarModal="cerrarModalSeccion" />
+
+        
+         
     </v-container>
+
+    <ModalNuevaSeccion :seccion="seccionCrear" @create-seccion="createSeccion"/>
+
+    
+
 </template>
 
 <script setup lang="ts">
@@ -94,15 +102,19 @@ import { ref, onMounted } from 'vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { useRoute, useRouter } from 'vue-router';
 import ModalSeccion from '@/components/HistoriaClinica/ModalModificarSeccion.vue';
+import ModalNuevaSeccion from './ModalNuevaSeccion.vue';
+import { Seccion } from '@/types/HistoriaClinica/Seccion';
 
 const historiaStore = useHistoriaClinicaStore();
 const route = useRoute();
 const router = useRouter();
 const historiaId = route.params.id as string;
 const cargando = ref(false);
+const createSeccionModal = ref(false);
 
 // Estado para la sección a editar
 const seccionEditar = ref<any>(null);
+const seccionCrear = ref<any>(null);
 
 onMounted(async () => {
     if (historiaId) {
@@ -113,28 +125,41 @@ onMounted(async () => {
 });
 
 function agregarSeccion() {
-    console.log('Agregar nueva sección');
+    seccionCrear.value = {
+        id: Date.now().toString(),
+        name: '',
+        fields: []
+    };   
 }
 
 function eliminarSeccion(seccionId: string) {
-    console.log('Eliminar sección:', seccionId);
+    if (historiaStore.historiaSeleccionada) {
+            historiaStore.historiaSeleccionada.sections = 
+            historiaStore.historiaSeleccionada.sections.filter(section => section.id !== seccionId);
+        }  
 }
 
-function editarSeccion(seccion: any) {
+function editarSeccion(seccion: Seccion) {
     // Se puede clonar la sección si es necesario
     seccionEditar.value = { ...seccion };
 }
 
-function actualizarSeccion(seccionActualizada: any) {
+function actualizarSeccion(seccionActualizada: Seccion) {
     // Actualizamos la sección en la historia seleccionada
     if (historiaStore.historiaSeleccionada) {
-        const index = historiaStore.historiaSeleccionada.sections.findIndex((s) => s._id === seccionActualizada._id);
+        const index = historiaStore.historiaSeleccionada.sections.findIndex((s) => s.id === seccionActualizada.id);
         if (index !== -1) {
             historiaStore.historiaSeleccionada.sections[index] = seccionActualizada;
         }
     }
     // Se cierra el modal
     seccionEditar.value = null;
+}
+
+function createSeccion(seccionCreada: Seccion){
+    if(historiaStore.historiaSeleccionada){
+        historiaStore.historiaSeleccionada.sections.push(seccionCreada);
+    }
 }
 
 function guardarCambios() {
