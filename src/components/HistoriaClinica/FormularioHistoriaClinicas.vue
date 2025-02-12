@@ -64,7 +64,7 @@ function openSectionModal(seccion: Seccion) {
         id: seccion.id,
         name: seccion.name,
         fields: seccion.fields
-    };  
+    };
     sectionModalOpen.value = true;
 }
 
@@ -153,8 +153,6 @@ const tableHeaders = computed(() => {
                         </v-btn>
                     </v-card-text>
                 </v-card>
-
-                
 
                 <!-- Itera sobre las secciones de la historia clínica -->
                 <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-6">
@@ -318,9 +316,7 @@ const tableHeaders = computed(() => {
                 @update-seccion="
                     (seccionActualizada: Seccion) => {
                         if (historiaStore.historiaSeleccionada) {
-                            const index = historiaStore.historiaSeleccionada.sections.findIndex(
-                                (sec) => sec.id === seccionActualizada.id
-                            );
+                            const index = historiaStore.historiaSeleccionada.sections.findIndex((sec) => sec.id === seccionActualizada.id);
                             if (index !== -1) {
                                 historiaStore.historiaSeleccionada.sections[index] = seccionActualizada;
                             }
