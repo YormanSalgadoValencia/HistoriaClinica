@@ -73,34 +73,41 @@
                 </v-card>
 
                 <!-- Lista de secciones -->
-                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-4">
-                    <v-card class="section-card" elevation="2">
-                        <div class="section-header">
-                            <div class="section-info">
-                                <h3 class="section-title">{{ seccion.name }}</h3>
-                                <div class="section-fields">{{ seccion.fields.length }} campos</div>
-                            </div>
-                            <div class="section-actions">
-                                <v-btn
-                                    v-if="seccion.name !== 'Identificación del Paciente' && seccion.name !== 'Datos de Contacto'"
-                                    icon="mdi-pencil"
-                                    variant="text"
-                                    color="#1f74ff"
-                                    class="action-button"
+                <draggable 
+                    v-model="historiaStore.historiaSeleccionada.sections"
+                    item-key="id"
+                    animation="200"
+                    handle=".drag-handle"
+                    ghost-class="dragging"
+                >
+                    <template #item="{ element: seccion, index }">
+                        <v-card class="section-card pa-3 mb-3" elevation="2">
+                            <v-card-title class="px-0 d-flex align-center">
+                                <v-icon class="drag-handle" color="gray">mdi-drag</v-icon>
+                                <span class="ml-2">{{ seccion.name }}</span>
+                                <v-spacer></v-spacer>
+                                <v-btn 
+                                    v-if="seccion.name !== 'Identificación del Paciente' && seccion.name !== 'Datos de Contacto'" 
+                                    icon 
                                     @click="editarSeccion(seccion)"
-                                ></v-btn>
-                                <v-btn
-                                    v-if="seccion.name !== 'Identificación del Paciente' && seccion.name !== 'Datos de Contacto'"
-                                    icon="mdi-delete"
-                                    variant="text"
-                                    color="error"
-                                    class="action-button"
+                                >
+                                    <v-icon color="#1f74ff">mdi-pencil</v-icon>
+                                </v-btn>
+                                <v-btn 
+                                    v-if="seccion.name !== 'Identificación del Paciente' && seccion.name !== 'Datos de Contacto'" 
+                                    icon 
                                     @click="eliminarSeccion(seccion.id)"
-                                ></v-btn>
-                            </div>
-                        </div>
-                    </v-card>
-                </div>
+                                >
+                                    <v-icon color="red">mdi-delete</v-icon>
+                                </v-btn>
+                            </v-card-title>
+                            <v-card-text class="px-0">
+                                <div class="section-fields">{{ seccion.fields.length }} campos</div>
+                            </v-card-text>
+                        </v-card>
+                    </template>
+                </draggable>
+
 
                 <!-- Botones de acción -->
                 <v-row justify="center" class="mt-6">
