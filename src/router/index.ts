@@ -35,10 +35,11 @@ export const router = createRouter({
             component: () => import('@/components/HistoriaClinica/ModificarHistoriaClinica.vue')
         },
         {
-            path: '/edit-plantilla-basica',
-            name: 'EditarPlantillaBasica',
-            component: () => import('@/components/clinicalHistory/EditPlantilla.vue')
+            path: '/nueva-plantilla-desde-base',
+            name: 'NuevaPlantillaDesdeBase',
+            component: () => import('@/components/HistoriaClinica/NuevaPlantillaDesdeBase.vue')
         },
+
         MainRoutes,
         AuthRoutes
     ]

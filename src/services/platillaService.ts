@@ -45,7 +45,7 @@ export const createPlantilla = async (payload: {
     categories: string[];
 }): Promise<Plantilla> => {
     try {
-        const response = await axios.post(`${API_URL}/Plantilla`, payload);
+        const response = await axios.post(`${API_URL}/historiasClinicas`, payload);
         console.log(response.data);
         return Plantilla.fromJson(response.data);
     } catch (error: any) {

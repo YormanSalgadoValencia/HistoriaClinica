@@ -5,6 +5,8 @@
     import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
     import { onMounted } from 'vue';
     import type { Plantilla } from "@/types/HistoriaClinica/Plantilla";
+    import ModalCrearPlantilla from "../HistoriaClinica/ModalCrearPlantilla.vue";
+    import { router } from "@/router";
 
     const plantillaBuscada = ref('');
     const selectedCategory = ref('');
@@ -28,10 +30,10 @@
         historiaStore.historias.filter(p => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
     );
 
-function openPlantilla(plantilla: Plantilla) {
-    isOpenModalPreview.value = true;
-    plantillaSeleccionada.value = plantilla;
-}
+    function openPlantilla(plantilla: Plantilla) {
+        isOpenModalPreview.value = true;
+        plantillaSeleccionada.value = plantilla;
+    }
 
     const searchPlantillaByCategory = computed(() =>
         historiaStore.historias.filter(p => p.categories.includes(selectedCategory.value))
@@ -45,6 +47,9 @@ function openPlantilla(plantilla: Plantilla) {
         });
     });
     
+    function usarPlantilla(idPlantilla: string | undefined){
+        router.push("historia-clinica/" + idPlantilla);
+    }
 
 </script>
 
@@ -132,7 +137,7 @@ function openPlantilla(plantilla: Plantilla) {
             </v-card-text>
 
             <v-card-actions class="d-flex justify-end">
-                <v-btn color="primary" @click="">
+                <v-btn color="primary" @click="usarPlantilla(plantillaSeleccionada?.id)">
                     Usar esta plantilla
                 </v-btn>
                 <v-btn text @click="isOpenModalPreview = false">
@@ -151,7 +156,7 @@ function openPlantilla(plantilla: Plantilla) {
                 Desea usar la plantilla base o crear desde 0
             </v-card-text>
             <v-card-actios>
-                <v-btn :to="'/historia-clinica/1/modificar'">Usar plantilla base</v-btn>
+                <v-btn :to="'/nueva-plantilla-desde-base'">Usar plantilla base</v-btn>
                 <v-btn>Empezar de 0</v-btn>
             </v-card-actios>
         </v-card>
