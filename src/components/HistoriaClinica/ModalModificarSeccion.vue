@@ -10,29 +10,38 @@
                 <!-- Edición del nombre de la sección -->
                 <v-text-field v-model="localSeccion.name" label="Nombre de la Sección" outlined></v-text-field>
 
-                <!-- Listado de campos -->
-                <div v-for="(field, index) in localSeccion.fields" :key="field.id" class="mb-3">
-                    <v-card outlined class="pa-3">
-                        <v-card-title class="px-0">
-                            Campo {{ index + 1 }}
-                            <v-spacer></v-spacer>
-                            <v-btn icon @click="eliminarCampo(index)">
-                                <v-icon color="red">mdi-delete</v-icon>
-                            </v-btn>
-                        </v-card-title>
-                        <v-card-text class="px-0">
-                            <v-text-field v-model="field.name" label="Nombre del Campo" outlined></v-text-field>
-                            <v-select
-                                v-model="field.type"
-                                :items="fieldTypes"
-                                item-title="label"
-                                item-value="value"
-                                label="Tipo del Campo"
-                                outlined
-                            ></v-select>
-                        </v-card-text>
-                    </v-card>
-                </div>
+                <draggable 
+                    v-model="localSeccion.fields"
+                    item-key="id"
+                    animation="200"
+                    handle=".drag-handle"
+                    ghost-class="dragging"
+                >
+                    <template #item="{ element: field, index }">
+                        <v-card outlined class="pa-3 mb-3">
+                            <v-card-title class="px-0 d-flex align-center">
+                                <v-icon class="drag-handle" color="gray">mdi-drag</v-icon>
+                                <span class="ml-2">Campo {{ index + 1 }}</span>
+                                <v-spacer></v-spacer>
+                                <v-btn icon @click="eliminarCampo(index)">
+                                    <v-icon color="red">mdi-delete</v-icon>
+                                </v-btn>
+                            </v-card-title>
+                            <v-card-text class="px-0">
+                                <v-text-field v-model="field.name" label="Nombre del Campo" outlined></v-text-field>
+                                <v-select
+                                    v-model="field.type"
+                                    :items="fieldTypes"
+                                    item-title="label"
+                                    item-value="value"
+                                    label="Tipo del Campo"
+                                    outlined
+                                ></v-select>
+                            </v-card-text>
+                        </v-card>
+                    </template>
+                </draggable>
+
 
                 <!-- Botón para agregar un nuevo campo -->
                 <v-btn text color="primary" @click="agregarCampo"> <v-icon left>mdi-plus</v-icon> Agregar Campo </v-btn>
@@ -48,6 +57,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch } from 'vue';
+import draggable from 'vuedraggable';
 
 // Se espera recibir la sección a editar; se permite que sea null para indicar que no hay sección activa.
 const props = defineProps({

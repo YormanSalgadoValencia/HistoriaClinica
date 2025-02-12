@@ -140,6 +140,7 @@ import ModalSeccion from '@/components/HistoriaClinica/ModalModificarSeccion.vue
 import ModalNuevaSeccion from './ModalNuevaSeccion.vue';
 import { Seccion } from '@/types/HistoriaClinica/Seccion';
 import Swal from 'sweetalert2';
+import draggable from 'vuedraggable';
 
 const historiaStore = useHistoriaClinicaStore();
 const plantillaStore = usePlantillaStore();
