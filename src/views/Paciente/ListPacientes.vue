@@ -26,7 +26,7 @@
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { usePacienteStore } from '@/stores/pacienteStore';
-import PacienteTable from '@/components/Paciente/pacienteTable.vue';
+import PacienteTable from '@/components/Paciente/PacienteTable.vue';
 
 const router = useRouter();
 const pacienteStore = usePacienteStore();
