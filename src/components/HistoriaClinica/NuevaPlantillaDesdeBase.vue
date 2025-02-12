@@ -51,34 +51,44 @@
                 </v-card>
 
                 <!-- Lista de secciones -->
-                <div v-for="seccion in historiaStore.historiaEstandar.sections" :key="seccion.id" class="mb-4">
-                    <v-card class="section-card" elevation="2">
-                        <div class="section-header">
-                            <div class="section-info">
-                                <h3 class="section-title">{{ seccion.name }}</h3>
-                                <div class="section-fields">{{ seccion.fields.length }} campos</div>
+                <draggable 
+                    v-model="historiaStore.historiaEstandar.sections"
+                    item-key="id"
+                    animation="200"
+                    handle=".drag-handle"
+                    ghost-class="dragging"
+                >
+                    <template #item="{ element }">
+                        <v-card class="section-card" elevation="2">
+                            <div class="section-header">
+                                <div class="section-info">
+                                    <v-icon class="drag-handle" color="gray">mdi-drag</v-icon>
+                                    <h3 class="section-title">{{ element.name }}</h3>
+                                    <div class="section-fields">{{ element.fields.length }} campos</div>
+                                </div>
+                                <div class="section-actions">
+                                    <v-btn
+                                        v-if="element.name !== 'Identificación del Paciente' && element.name !== 'Datos de Contacto'"
+                                        icon="mdi-pencil"
+                                        variant="text"
+                                        color="#1f74ff"
+                                        class="action-button"
+                                        @click="editarSeccion(element)"
+                                    ></v-btn>
+                                    <v-btn
+                                        v-if="element.name !== 'Identificación del Paciente' && element.name !== 'Datos de Contacto'"
+                                        icon="mdi-delete"
+                                        variant="text"
+                                        color="error"
+                                        class="action-button"
+                                        @click="eliminarSeccion(element.id)"
+                                    ></v-btn>
+                                </div>
                             </div>
-                            <div class="section-actions">
-                                <v-btn
-                                    v-if="seccion.name !== 'Identificación del Paciente' && seccion.name !== 'Datos de Contacto'"
-                                    icon="mdi-pencil"
-                                    variant="text"
-                                    color="#1f74ff"
-                                    class="action-button"
-                                    @click="editarSeccion(seccion)"
-                                ></v-btn>
-                                <v-btn
-                                    v-if="seccion.name !== 'Identificación del Paciente' && seccion.name !== 'Datos de Contacto'"
-                                    icon="mdi-delete"
-                                    variant="text"
-                                    color="error"
-                                    class="action-button"
-                                    @click="eliminarSeccion(seccion.id)"
-                                ></v-btn>
-                            </div>
-                        </div>
-                    </v-card>
-                </div>
+                        </v-card>
+                    </template>
+                </draggable>
+
 
                 <!-- Botones de acción -->
                 <v-row justify="center" class="mt-6">
@@ -116,6 +126,7 @@ import ModalSeccion from '@/components/HistoriaClinica/ModalModificarSeccion.vue
 import ModalNuevaSeccion from './ModalNuevaSeccion.vue';
 import { Seccion } from '@/types/HistoriaClinica/Seccion';
 import Swal from 'sweetalert2';
+import draggable from 'vuedraggable';
 
 const historiaStore = useHistoriaClinicaStore();
 const plantillaStore = usePlantillaStore();
@@ -263,6 +274,7 @@ function volver() {
     border-radius: 12px;
     transition: all 0.3s ease;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 12px;
 }
 
 .section-card:hover {
@@ -322,6 +334,21 @@ function volver() {
     letter-spacing: 0.5px;
     border-radius: 12px;
 }
+
+.drag-handle {
+    cursor: grab;
+    margin-right: 8px;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+.draggable-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Aumenta el espacio entre secciones */
+}
+
 
 @media (max-width: 960px) {
     .header-title {
