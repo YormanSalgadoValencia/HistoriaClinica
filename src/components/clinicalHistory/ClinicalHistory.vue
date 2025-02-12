@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import PlantillaCard from './PlantillaCard.vue';
 import PreviewPlantilla from './PreviewPlantilla.vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { onMounted } from 'vue';
 import type { Plantilla } from '@/types/HistoriaClinica/Plantilla';
-import ModalCrearPlantilla from '@/components/HistoriaClinica/ModalCrearPlantilla.vue';
+import ModalCrearPlantilla from '../HistoriaClinica/ModalCrearPlantilla.vue';
+import { router } from '@/router';
 
 const plantillaBuscada = ref('');
 const selectedCategory = ref('');
 const isOpenModalPreview = ref(false);
 const isOpenModalCrear = ref(false);
 const plantillaSeleccionada = ref<Plantilla | null>(null);
+const confirmModal = ref(false);
 const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
 const historiaStore = useHistoriaClinicaStore();
 const historiaClinicaEstandar = useHistoriaClinicaStore();
@@ -39,6 +41,10 @@ const searchPlantillaFiltered = computed(() => {
         return matchesSearch && matchesCategory;
     });
 });
+
+function usarPlantilla(idPlantilla: string | undefined) {
+    router.push('historia-clinica/' + idPlantilla);
+}
 </script>
 
 <template>
@@ -111,9 +117,20 @@ const searchPlantillaFiltered = computed(() => {
             </v-card-text>
 
             <v-card-actions class="d-flex justify-end">
-                <v-btn color="primary" @click=""> Usar esta plantilla </v-btn>
+                <v-btn color="primary" @click="usarPlantilla(plantillaSeleccionada?.id)"> Usar esta plantilla </v-btn>
                 <v-btn text @click="isOpenModalPreview = false"> Cancelar </v-btn>
             </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="confirmModal">
+        <v-card>
+            <v-card-title> Confirmación </v-card-title>
+            <v-card-text> Desea usar la plantilla base o crear desde 0 </v-card-text>
+            <v-card-actios>
+                <v-btn :to="'/nueva-plantilla-desde-base'">Usar plantilla base</v-btn>
+                <v-btn>Empezar de 0</v-btn>
+            </v-card-actios>
         </v-card>
     </v-dialog>
 </template>

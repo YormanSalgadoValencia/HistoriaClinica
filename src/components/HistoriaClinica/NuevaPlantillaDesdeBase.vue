@@ -6,16 +6,13 @@
             </v-col>
         </v-row>
 
-        <v-row justify="center" v-else-if="historiaStore.historiaSeleccionada">
+        <v-row justify="center" v-else-if="historiaStore.historiaEstandar">
             <v-col cols="12" md="10">
                 <!-- Encabezado -->
                 <v-card class="mb-6 header-card" elevation="3">
                     <v-card-title class="header-title">
-                        <span>Modificar Historia Clínica: {{ historiaStore.historiaSeleccionada.name }}</span>
+                        <span>Crear Historia Clínica</span>
                     </v-card-title>
-                    <v-card-subtitle class="header-subtitle">
-                        {{ historiaStore.historiaSeleccionada.description }}
-                    </v-card-subtitle>
                 </v-card>
 
                 <v-card>
@@ -28,7 +25,7 @@
                                 <v-text-field 
                                     type="text"
                                     label="Nombre"
-                                    v-model="historiaStore.historiaSeleccionada.name"
+                                    v-model="namePlantilla"
                                 >
                                 </v-text-field>
                             </v-col>
@@ -36,7 +33,7 @@
                                 <v-textarea 
                                     type="text"
                                     label="Descripción"
-                                    v-model="historiaStore.historiaSeleccionada.description"
+                                    v-model="descriptionPlantilla"
                                 >
                                 </v-textarea>
 
@@ -46,7 +43,7 @@
                                     label="Categorias"
                                     :items="categories"
                                     multiple
-                                    v-model="historiaStore.historiaSeleccionada.categories"
+                                    v-model="categoriesPlantilla"
 
                                 >
                                 </v-select>
@@ -73,7 +70,7 @@
                 </v-card>
 
                 <!-- Lista de secciones -->
-                <div v-for="seccion in historiaStore.historiaSeleccionada.sections" :key="seccion.id" class="mb-4">
+                <div v-for="seccion in historiaStore.historiaEstandar.sections" :key="seccion.id" class="mb-4">
                     <v-card class="section-card" elevation="2">
                         <div class="section-header">
                             <div class="section-info">
@@ -108,7 +105,7 @@
                         <div class="button-group">
                             <v-btn color="error" size="large" variant="elevated" @click="volver" class="action-button"> Cancelar </v-btn>
                             <v-btn color="#1f74ff" size="large" variant="elevated" @click="guardarCambios" class="action-button">
-                                Guardar Cambios
+                                Crear plantilla
                             </v-btn>
                         </div>
                     </v-col>
@@ -124,10 +121,14 @@
         
         <!-- Modal para editar sección -->
         <ModalSeccion :seccion="seccionEditar" @updateSeccion="actualizarSeccion" @cerrarModal="cerrarModalSeccion" />
+
+        
          
     </v-container>
 
-    <ModalNuevaSeccion :seccion="seccionCrear" @create-seccion="createSeccion"/>    
+    <ModalNuevaSeccion :seccion="seccionCrear" @create-seccion="createSeccion"/>
+
+    
 
 </template>
 
@@ -160,11 +161,10 @@ const seccionCrear = ref<any>(null);
 const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta']; 
 
 onMounted(async () => {
-    if (historiaId) {
-        cargando.value = true;
-        await historiaStore.fetchHistoriaById(historiaId);
-        cargando.value = false;
-    }
+
+    cargando.value = true;
+    await historiaStore.fetchHistoriaStandard();        
+    cargando.value = false;
 });
 
 function agregarSeccion() {
@@ -178,7 +178,7 @@ function agregarSeccion() {
 function eliminarSeccion(seccionId: string) {
     Swal.fire({
         title: 'Eliminar',
-        text: "¿Está seguro que quiere eliminar la sección?",
+        text: "Está seguro que quiere eliminar la sección?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -186,9 +186,9 @@ function eliminarSeccion(seccionId: string) {
         confirmButtonText: 'Si, eliminar'
       }).then((result) => {
         if (result.isConfirmed) {
-            if (historiaStore.historiaSeleccionada) {
-                historiaStore.historiaSeleccionada.sections = 
-                historiaStore.historiaSeleccionada.sections.filter(section => section.id !== seccionId);
+            if (historiaStore.historiaEstandar) {
+                historiaStore.historiaEstandar.sections = 
+                historiaStore.historiaEstandar.sections.filter(section => section.id !== seccionId);
             }  
         }
       })
@@ -199,12 +199,12 @@ function editarSeccion(seccion: Seccion) {
     seccionEditar.value = { ...seccion };
 }
 
-// Actualizamos la sección en la historia seleccionada
 function actualizarSeccion(seccionActualizada: Seccion) {
-    if (historiaStore.historiaSeleccionada) {
-        const index = historiaStore.historiaSeleccionada.sections.findIndex((s) => s.id === seccionActualizada.id);
+    // Actualizamos la sección en la historia seleccionada
+    if (historiaStore.historiaEstandar) {
+        const index = historiaStore.historiaEstandar.sections.findIndex((s) => s.id === seccionActualizada.id);
         if (index !== -1) {
-            historiaStore.historiaSeleccionada.sections[index] = seccionActualizada;
+            historiaStore.historiaEstandar.sections[index] = seccionActualizada;
         }
     }
     // Se cierra el modal
@@ -212,20 +212,20 @@ function actualizarSeccion(seccionActualizada: Seccion) {
 }
 
 function createSeccion(seccionCreada: Seccion){
-    if(historiaStore.historiaSeleccionada){
-        historiaStore.historiaSeleccionada.sections.push(seccionCreada);
+    if(historiaStore.historiaEstandar){
+        historiaStore.historiaEstandar.sections.push(seccionCreada);
     }
 }
 
 async function guardarCambios() {
-    if (historiaStore.historiaSeleccionada) {
-        historiaStore.historiaSeleccionada.name = namePlantilla.value;
-        historiaStore.historiaSeleccionada.description = descriptionPlantilla.value;
-        historiaStore.historiaSeleccionada.categories = categoriesPlantilla.value;
+    if (historiaStore.historiaEstandar) {
+        historiaStore.historiaEstandar.name = namePlantilla.value;
+        historiaStore.historiaEstandar.description = descriptionPlantilla.value;
+        historiaStore.historiaEstandar.categories = categoriesPlantilla.value;
     }
 
     try {
-        await plantillaStore.addPlantilla(historiaStore.historiaSeleccionada);
+        await plantillaStore.addPlantilla(historiaStore.historiaEstandar);
         Swal.fire("Creación exitosa", "Se ha creado una nueva plantilla", "success");
         router.push("/");
         console.log("Cambios guardados con éxito.");
