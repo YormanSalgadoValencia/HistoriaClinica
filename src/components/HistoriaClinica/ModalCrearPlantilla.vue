@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { defineProps, defineEmits } from 'vue';
-// Importa el componente desde la ruta especificada
-import FormularioPlantillaCero from '@/views/Plantilla/FormularioPlantillaNueva.vue';
+import { useRouter } from 'vue-router'; // Importamos el router
 
 const props = defineProps({
     modelValue: {
@@ -14,10 +13,8 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue', 'crearConDefecto']);
 
 const isDialogOpen = ref(props.modelValue);
-// Variable que controla si se muestra el formulario de "Crear desde cero"
-const mostrarFormulario = ref(false);
 
-// Sincronizar la prop con el estado local
+// Sincronizamos la prop con el estado local
 watch(
     () => props.modelValue,
     (newVal) => {
@@ -28,10 +25,12 @@ watch(isDialogOpen, (newVal) => {
     emits('update:modelValue', newVal);
 });
 
-// Función: Al hacer clic en "Crear desde cero", se cierra el diálogo y se muestra el formulario
+const router = useRouter();
+
+// Al hacer clic en "Crear desde cero", cerramos el diálogo y redirigimos a la ruta del formulario
 function crearDesdeCero() {
     isDialogOpen.value = false;
-    mostrarFormulario.value = true;
+    router.push({ name: 'CrearPlantilla' });
 }
 
 function crearConDefecto() {
@@ -88,9 +87,6 @@ function cerrarModal() {
             </v-card-actions>
         </v-card>
     </v-dialog>
-
-    <!-- Renderiza el formulario para crear plantilla desde cero cuando se seleccione esa opción -->
-    <FormularioPlantillaCero v-if="mostrarFormulario" v-model="mostrarFormulario" />
 </template>
 
 <style scoped>
@@ -163,7 +159,7 @@ function cerrarModal() {
     font-size: 0.8rem;
     opacity: 0.7;
     font-weight: normal;
-    margin-left: 28px; /* Alinea con el ancho del icono + margen */
+    margin-left: 28px;
 }
 
 .modal-card-actions {

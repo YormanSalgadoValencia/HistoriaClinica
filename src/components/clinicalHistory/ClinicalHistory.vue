@@ -1,51 +1,44 @@
 <script setup lang="ts">
-    import { computed, reactive, ref } from "vue";
-    import PlantillaCard from "./PlantillaCard.vue";
-    import PreviewPlantilla from "./PreviewPlantilla.vue";
-    import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
-    import { onMounted } from 'vue';
-    import type { Plantilla } from "@/types/HistoriaClinica/Plantilla";
+import { computed, reactive, ref } from 'vue';
+import PlantillaCard from './PlantillaCard.vue';
+import PreviewPlantilla from './PreviewPlantilla.vue';
+import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
+import { onMounted } from 'vue';
+import type { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import ModalCrearPlantilla from '@/components/HistoriaClinica/ModalCrearPlantilla.vue';
 
-    const plantillaBuscada = ref('');
-    const selectedCategory = ref('');
-    const isOpenModalPreview = ref(false);
-    const plantillaSeleccionada = ref<Plantilla | null>(null);
-    const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
-    const historiaStore = useHistoriaClinicaStore();
-    const historiaClinicaEstandar = useHistoriaClinicaStore();
+const plantillaBuscada = ref('');
+const selectedCategory = ref('');
+const isOpenModalPreview = ref(false);
+const isOpenModalCrear = ref(false);
+const plantillaSeleccionada = ref<Plantilla | null>(null);
+const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
+const historiaStore = useHistoriaClinicaStore();
+const historiaClinicaEstandar = useHistoriaClinicaStore();
 
-    const isOpenModalCrear = ref(false)
-    
+onMounted(async () => {
+    await historiaStore.fetchHistorias();
+    await historiaClinicaEstandar.fetchHistoriaStandard();
+});
 
-    const confirmModal = ref(false);
-    
-    onMounted(async () => {
-        await historiaStore.fetchHistorias();
-        await historiaClinicaEstandar.fetchHistoriaStandard();
-    });
-
-    const searchPlantilla = computed(() =>
-        historiaStore.historias.filter(p => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
-    );
+const searchPlantilla = computed(() =>
+    historiaStore.historias.filter((p) => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
+);
 
 function openPlantilla(plantilla: Plantilla) {
     isOpenModalPreview.value = true;
     plantillaSeleccionada.value = plantilla;
 }
 
-    const searchPlantillaByCategory = computed(() =>
-        historiaStore.historias.filter(p => p.categories.includes(selectedCategory.value))
-    );
+const searchPlantillaByCategory = computed(() => historiaStore.historias.filter((p) => p.categories.includes(selectedCategory.value)));
 
-    const searchPlantillaFiltered = computed(() => {
-        return historiaStore.historias.filter(p => {
-            const matchesSearch = p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase());
-            const matchesCategory = selectedCategory.value === '' || p.categories?.includes(selectedCategory.value);
-            return matchesSearch && matchesCategory;
-        });
+const searchPlantillaFiltered = computed(() => {
+    return historiaStore.historias.filter((p) => {
+        const matchesSearch = p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase());
+        const matchesCategory = selectedCategory.value === '' || p.categories?.includes(selectedCategory.value);
+        return matchesSearch && matchesCategory;
     });
-    
-
+});
 </script>
 
 <template>
@@ -66,7 +59,7 @@ function openPlantilla(plantilla: Plantilla) {
                 </div>
             </v-col>
             <v-col cols="3">
-                <v-btn color="primary" @click="confirmModal = true">
+                <v-btn color="primary" @click="isOpenModalCrear = true">
                     {{ 'Crear Plantilla' }}
                 </v-btn>
             </v-col>
@@ -75,16 +68,9 @@ function openPlantilla(plantilla: Plantilla) {
         <v-row class="mb-5 align-center">
             <p class="mr-3">Categorías:</p>
             <v-btn-toggle v-model="selectedCategory" mandatory>
-                <v-btn :value="''" variant="outlined">
-                    Todas
-                </v-btn>
-                <v-btn
-                    v-for="(category, index) in categories" 
-                        :key="index"
-                        :value="category"
-                        variant="outlined"
-                        >
-                        {{ category }}
+                <v-btn :value="''" variant="outlined"> Todas </v-btn>
+                <v-btn v-for="(category, index) in categories" :key="index" :value="category" variant="outlined">
+                    {{ category }}
                 </v-btn>
             </v-btn-toggle>
         </v-row>
@@ -97,11 +83,7 @@ function openPlantilla(plantilla: Plantilla) {
                 <PlantillaCard v-for="plantilla in searchPlantillaByCategory" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
             </div>
             <div v-else class="template-list">
-                <PlantillaCard
-                    v-for="plantilla in historiaStore.historias"
-                    :plantilla="plantilla"
-                    @click="openPlantilla(plantilla)"
-                />
+                <PlantillaCard v-for="plantilla in historiaStore.historias" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
             </div>
         </v-row>
 
@@ -116,12 +98,9 @@ function openPlantilla(plantilla: Plantilla) {
             <v-card-text class="modal-body">
                 <v-row class="d-flex justify-center align-center">
                     <v-col cols="8">
-                    <div class="preview-box">
-                        <PreviewPlantilla
-                            v-if="plantillaSeleccionada"
-                            :plantilla="plantillaSeleccionada"
-                        />
-                    </div>
+                        <div class="preview-box">
+                            <PreviewPlantilla v-if="plantillaSeleccionada" :plantilla="plantillaSeleccionada" />
+                        </div>
                     </v-col>
                     <v-col cols="4">
                         <div class="description-box">
@@ -132,32 +111,11 @@ function openPlantilla(plantilla: Plantilla) {
             </v-card-text>
 
             <v-card-actions class="d-flex justify-end">
-                <v-btn color="primary" @click="">
-                    Usar esta plantilla
-                </v-btn>
-                <v-btn text @click="isOpenModalPreview = false">
-                    Cancelar
-                </v-btn>
+                <v-btn color="primary" @click=""> Usar esta plantilla </v-btn>
+                <v-btn text @click="isOpenModalPreview = false"> Cancelar </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
-
-    <v-dialog v-model="confirmModal">
-        <v-card>
-            <v-card-title>
-                Confirmación
-            </v-card-title>
-            <v-card-text>
-                Desea usar la plantilla base o crear desde 0
-            </v-card-text>
-            <v-card-actios>
-                <v-btn :to="'/historia-clinica/1/modificar'">Usar plantilla base</v-btn>
-                <v-btn>Empezar de 0</v-btn>
-            </v-card-actios>
-        </v-card>
-    </v-dialog>
-
-
 </template>
 
 <style scoped lang="scss">
@@ -170,11 +128,10 @@ function openPlantilla(plantilla: Plantilla) {
     overflow-x: hidden;
 }
 .description-box {
-  max-height: 150px;
-  overflow-y: auto;
-  word-wrap: break-word;
+    max-height: 150px;
+    overflow-y: auto;
+    word-wrap: break-word;
 }
-
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
