@@ -1,0 +1,256 @@
+{
+  "uuid": "12345678-abcd-1234-abcd-1234567890ab",
+  "lastMigration": 33,
+  "name": "ClinicalStories API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3000,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "abcd1234-5678-90ab-cdef-1234567890ab",
+      "type": "crud",
+      "documentation": "CRUD para historias clínicas",
+      "method": "",
+      "endpoint": "paciente",
+      "responses": [
+        {
+          "uuid": "1c465e48-b564-4d59-957f-9a7c4542aaeb",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "CRUD de historias clínicas",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "historiaClinica",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "6c444de6-b665-42f5-ae1d-5b7d2e0aafdd",
+      "type": "crud",
+      "documentation": "peticion de atenciones",
+      "method": "",
+      "endpoint": "atencion",
+      "responses": [
+        {
+          "uuid": "cc2f40d9-83eb-4338-b286-f32ae76cd876",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "1c62",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "ffef8383-25e1-41b8-a5e2-4f5dc94cfe77",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "formatosAtencion",
+      "responses": [
+        {
+          "uuid": "3a7fec77-fb97-4692-9bcb-c42ca4fc7d2a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "3529",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "7829da54-8ade-4599-a58a-24446f266850",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "historiasClinicas",
+      "responses": [
+        {
+          "uuid": "8d38f8e5-095c-42f1-a686-a4292a9760b6",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "iwbo",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "75d3a3c0-eacb-42a3-82ac-8f898527a5a8",
+      "type": "crud",
+      "documentation": "Ruta de plantillas",
+      "method": "",
+      "endpoint": "plantilla",
+      "responses": [
+        {
+          "uuid": "5bd0a051-153c-4b15-a1f9-97e7e23fae76",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "k06x",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "data": [
+    {
+      "uuid": "fb5bde0e-e31f-4f30-845e-d353d110f699",
+      "id": "historiaClinica",
+      "name": "pacientes",
+      "documentation": "Tabla de Historias clinicas",
+      "value": "[\r\n  {\r\n    \"id\": \"1\",\r\n    \"nombre\": \"Daner Alejandro\",\r\n    \"apellido\": \"Salazar Colorado\",\r\n    \"fechaNacimiento\": \"2003-09-08\",\r\n    \"genero\": \"Masculino\",\r\n    \"numeroDocumento\": \"1002620318\",\r\n    \"acompanante\": \"María González\",\r\n    \"responsable\": \"Clínica Central\",\r\n    \"atenciones\": [\r\n      {\r\n        \"id\": \"1\",\r\n        \"fechaAtencion\": \"2025-01-01T12:00:00Z\",\r\n        \"modalidadAtencion\": \"Presencial\",\r\n        \"consecutivoAtencion\": \"AT-100001\",\r\n        \"informacionAdicional\": \"Atención para revisión general\",\r\n        \"tiposAtencion\": {\r\n          \"id\": \"1\",\r\n          \"tipoEspecialidad\": \"Cardiología\",\r\n          \"nombrePersonalizado\": \"Revisión Cardiaca\"\r\n        },\r\n        \"historiaClinica\": null\r\n      },\r\n      {\r\n        \"id\": \"2\",\r\n        \"fechaAtencion\": \"2025-01-02T10:30:00Z\",\r\n        \"modalidadAtencion\": \"Presencial\",\r\n        \"consecutivoAtencion\": \"AT-100002\",\r\n        \"informacionAdicional\": \"Atención para dolor de cabeza\",\r\n        \"tiposAtencion\": {\r\n          \"id\": \"2\",\r\n          \"tipoEspecialidad\": \"Neurología\",\r\n          \"nombrePersonalizado\": \"Examen neurológico\"\r\n        },\r\n        \"historiaClinica\": null\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"id\": \"2\",\r\n    \"nombre\": \"Ana\",\r\n    \"apellido\": \"García\",\r\n    \"fechaNacimiento\": \"1985-11-20\",\r\n    \"genero\": \"Femenino\",\r\n    \"numeroDocumento\": \"DNI-98765432\",\r\n    \"acompanante\": \"Pedro Rodríguez\",\r\n    \"responsable\": \"Hospital General\",\r\n    \"atenciones\": []\r\n  },\r\n  {\r\n    \"id\": \"3\",\r\n    \"nombre\": \"Luis\",\r\n    \"apellido\": \"Martínez\",\r\n    \"fechaNacimiento\": \"1998-03-10\",\r\n    \"genero\": \"Masculino\",\r\n    \"numeroDocumento\": \"DNI-76543210\",\r\n    \"acompanante\": \"Laura Sánchez\",\r\n    \"responsable\": \"Clínica San Juan\",\r\n    \"atenciones\": []\r\n  },\r\n  {\r\n    \"id\": \"4\",\r\n    \"nombre\": \"Sofia\",\r\n    \"apellido\": \"Rodríguez\",\r\n    \"fechaNacimiento\": \"1972-09-25\",\r\n    \"genero\": \"Femenino\",\r\n    \"numeroDocumento\": \"DNI-65432109\",\r\n    \"acompanante\": \"Carlos Gómez\",\r\n    \"responsable\": \"Hospital del Sur\",\r\n    \"atenciones\": []\r\n  },\r\n  {\r\n    \"id\": \"5\",\r\n    \"nombre\": \"Miguel\",\r\n    \"apellido\": \"López\",\r\n    \"fechaNacimiento\": \"2001-06-05\",\r\n    \"genero\": \"Masculino\",\r\n    \"numeroDocumento\": \"DNI-54321098\",\r\n    \"acompanante\": \"Isabel Díaz\",\r\n    \"responsable\": \"Clínica Santa María\",\r\n    \"atenciones\": []\r\n  }\r\n]\r\n\r\n"
+    },
+    {
+      "uuid": "dc4672bb-15fa-4a38-bf12-3ea2f12559e9",
+      "id": "1c62",
+      "name": "atenciones",
+      "documentation": "Tabla de atenciones",
+      "value": "[\r\n  {\r\n    \"id\": \"1\",\r\n    \"fechaAtencion\": \"2025-01-01T12:00:00Z\",\r\n    \"modalidadAtencion\": \"Presencial\",\r\n    \"consecutivoAtencion\": \"AT-100001\",\r\n    \"informacionAdicional\": \"Atención para revisión general\",\r\n    \"tiposAtencion\": {\r\n      \"id\": \"1\",\r\n      \"tipoEspecialidad\": \"Cardiología\",\r\n      \"nombrePersonalizado\": \"Revisión Cardiaca\"\r\n    },\r\n    \"historiaClinica\": null\r\n  },\r\n  {\r\n    \"id\": \"2\",\r\n    \"fechaAtencion\": \"2025-01-02T10:30:00Z\",\r\n    \"modalidadAtencion\": \"Presencial\",\r\n    \"consecutivoAtencion\": \"AT-100002\",\r\n    \"informacionAdicional\": \"Atención para dolor de cabeza\",\r\n    \"tiposAtencion\": {\r\n      \"id\": \"2\",\r\n      \"tipoEspecialidad\": \"Neurología\",\r\n      \"nombrePersonalizado\": \"Examen neurológico\"\r\n    },\r\n    \"historiaClinica\": null\r\n  },\r\n  {\r\n    \"id\": \"3\",\r\n    \"fechaAtencion\": \"2025-01-03T14:00:00Z\",\r\n    \"modalidadAtencion\": \"Virtual\",\r\n    \"consecutivoAtencion\": \"AT-100003\",\r\n    \"informacionAdicional\": \"Atención para seguimiento de tratamiento\",\r\n    \"tiposAtencion\": {\r\n      \"id\": \"3\",\r\n      \"tipoEspecialidad\": \"Pediatría\",\r\n      \"nombrePersonalizado\": \"Control pediátrico\"\r\n    },\r\n    \"historiaClinica\": null\r\n  },\r\n  {\r\n    \"id\": \"4\",\r\n    \"fechaAtencion\": \"2025-01-04T09:00:00Z\",\r\n    \"modalidadAtencion\": \"Presencial\",\r\n    \"consecutivoAtencion\": \"AT-100004\",\r\n    \"informacionAdicional\": \"Atención para examen de vista\",\r\n    \"tiposAtencion\": {\r\n      \"id\": \"4\",\r\n      \"tipoEspecialidad\": \"Oftalmología\",\r\n      \"nombrePersonalizado\": \"Examen ocular completo\"\r\n    },\r\n    \"historiaClinica\": null\r\n  },\r\n  {\r\n    \"id\": \"5\",\r\n    \"fechaAtencion\": \"2025-01-05T11:00:00Z\",\r\n    \"modalidadAtencion\": \"Virtual\",\r\n    \"consecutivoAtencion\": \"AT-100005\",\r\n    \"informacionAdicional\": \"Atención para consulta psicológica\",\r\n    \"tiposAtencion\": {\r\n      \"id\": \"5\",\r\n      \"tipoEspecialidad\": \"Psicología\",\r\n      \"nombrePersonalizado\": \"Terapia psicológica\"\r\n    },\r\n    \"historiaClinica\": null\r\n  }\r\n]\r\n"
+    },
+    {
+      "uuid": "3cd395d2-8883-4cb8-83d6-7e6f7d8ec1b9",
+      "id": "3529",
+      "name": "especialidades",
+      "documentation": " tabla de especialidades",
+      "value": "[\r\n  {\r\n    \"id\": \"1\",\r\n    \"tipoEspecialidad\": \"Cardiología\",\r\n    \"nombrePersonalizado\": \"Revisión Cardiaca\"\r\n  },\r\n  {\r\n    \"id\": \"2\",\r\n    \"tipoEspecialidad\": \"Neurología\",\r\n    \"nombrePersonalizado\": \"Examen neurológico\"\r\n  },\r\n  {\r\n    \"id\": \"3\",\r\n    \"tipoEspecialidad\": \"Pediatría\",\r\n    \"nombrePersonalizado\": \"Control pediátrico\"\r\n  },\r\n  {\r\n    \"id\": \"4\",\r\n    \"tipoEspecialidad\": \"Oftalmología\",\r\n    \"nombrePersonalizado\": \"Examen ocular completo\"\r\n  },\r\n  {\r\n    \"id\": \"5\",\r\n    \"tipoEspecialidad\": \"Psicología\",\r\n    \"nombrePersonalizado\": \"Terapia psicológica\"\r\n  }\r\n]\r\n"
+    },
+    {
+      "uuid": "7703b71a-d7aa-47a0-b5ae-ddae20f7df30",
+      "id": "iwbo",
+      "name": "HistoriaClinica",
+      "documentation": "Tabla de historias clinicas ",
+      "value": "[\r\n  {\r\n    \"id\": \"2\",\r\n    \"name\": \"Ficha de Paciente\",\r\n    \"description\": \"Información básica del paciente\",\r\n    \"sections\": [\r\n      {\r\n        \"id\": \"1\",\r\n        \"name\": \"Identificación del Paciente\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Nombre Completo\",\r\n            \"type\": \"text\",\r\n            \"value\": \"Daner Alejandro Salazar Colorado\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Fecha de Nacimiento\",\r\n            \"type\": \"date\",\r\n            \"value\": \"08/09/2003\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"DNI/Pasaporte\",\r\n            \"type\": \"text\",\r\n            \"value\": \"1002620318\"\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"2\",\r\n        \"name\": \"Datos de Contacto\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Teléfono\",\r\n            \"type\": \"text\",\r\n            \"value\": \"3145919465\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Dirección\",\r\n            \"type\": \"text\",\r\n            \"value\": \"Carrea 23\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Correo Electrónico\",\r\n            \"type\": \"email\",\r\n            \"value\": \"daneralejandro03@gmail.com\"\r\n          },\r\n          {\r\n            \"id\": \"4\",\r\n            \"name\": \"Ciudad de Residencia\",\r\n            \"type\": \"text\",\r\n            \"value\": \"\"\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"3\",\r\n        \"name\": \"Motivo de Consulta y Enfermedad Actual\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Motivo de Consulta\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Motivo de Enfermedad\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Síntomas Asociados\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"4\",\r\n            \"name\": \"Duración de Síntomas (días)\",\r\n            \"type\": \"number\",\r\n            \"value\": \"\"\r\n            \r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"4\",\r\n        \"name\": \"Conceptos Médicos\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Análisis Realizados\",\r\n            \"type\": \"list\",\r\n            \"value\": [\r\n              {\r\n                \"id\": \"1\",\r\n                \"fecha\": \"2024-02-05\",\r\n                \"especialidad\": \"Cardiología\",\r\n                \"detalle\": \"Electrocardiograma\"\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Conceptos Médicos Detallados\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"5\",\r\n        \"name\": \"Antecedentes Médicos\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Historial Médico\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Antecedentes Farmacológicos\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Antecedentes Alérgicos\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"4\",\r\n            \"name\": \"Antecedentes Quirúrgicos\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"5\",\r\n            \"name\": \"Antecedentes Familiares\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"6\",\r\n            \"name\": \"Antecedentes Ginecobstétricos\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"6\",\r\n        \"name\": \"Examen Físico\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Último Examen Físico\",\r\n            \"type\": \"date\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Peso (kg)\",\r\n            \"type\": \"number\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Talla (cm)\",\r\n            \"type\": \"number\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"4\",\r\n            \"name\": \"IMC\",\r\n            \"type\": \"number\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"5\",\r\n            \"name\": \"Frecuencia Cardíaca (lat/min)\",\r\n            \"type\": \"number\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"6\",\r\n            \"name\": \"Presión Arterial (mmHg)\",\r\n            \"type\": \"text\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"7\",\r\n            \"name\": \"Temperatura Corporal (°C)\",\r\n            \"type\": \"number\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"8\",\r\n            \"name\": \"Saturación de Oxígeno (%)\",\r\n            \"type\": \"number\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"9\",\r\n            \"name\": \"Sistema Respiratorio\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"10\",\r\n            \"name\": \"Sistema Cardiovascular\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"11\",\r\n            \"name\": \"Sistema Digestivo\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"12\",\r\n            \"name\": \"Sistema Nervioso\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"13\",\r\n            \"name\": \"Sistema Musculoesquelético\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"14\",\r\n            \"name\": \"Sistema Genitourinario\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"15\",\r\n            \"name\": \"Piel y Anexos\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"16\",\r\n            \"name\": \"Observaciones Adicionales\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"17\",\r\n            \"name\": \"Notas del Médico\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"18\",\r\n            \"name\": \"Resultados de Examen Complementario\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"7\",\r\n        \"name\": \"Análisis de Resultados\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Laboratorios\",\r\n            \"type\": \"upload\",\r\n            \"value\": []\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Imágenes Diagnósticas\",\r\n            \"type\": \"upload\",\r\n            \"value\": []\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Patología\",\r\n            \"type\": \"upload\",\r\n            \"value\": []\r\n          },\r\n          {\r\n            \"id\": \"4\",\r\n            \"name\": \"Pruebas Moleculares/Genéticas\",\r\n            \"type\": \"upload\",\r\n            \"value\": []\r\n          },\r\n          {\r\n            \"id\": \"5\",\r\n            \"name\": \"Subir Documentos (PDF, Imágenes)\",\r\n            \"type\": \"upload\",\r\n            \"value\": []\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"8\",\r\n        \"name\": \"Análisis del Caso\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Análisis\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Diagnóstico\",\r\n            \"type\": \"text\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Diagnósticos (CIE-11)\",\r\n            \"type\": \"list\",\r\n            \"value\": []\r\n          },\r\n          {\r\n            \"id\": \"4\",\r\n            \"name\": \"Motivo de Atención\",\r\n            \"type\": \"list\",\r\n            \"value\": []\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"9\",\r\n        \"name\": \"Plan de Manejo\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Plan Anterior\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Nuevo Plan\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Notas Adicionales sobre el Plan\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"10\",\r\n        \"name\": \"Recomendaciones y Signos de Alarma\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"Recomendaciones\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Signos de Alarma\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          },\r\n          {\r\n            \"id\": \"3\",\r\n            \"name\": \"Indicaciones Post-Consulta\",\r\n            \"type\": \"textarea\",\r\n            \"value\": \"\"\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"id\": \"11\",\r\n        \"name\": \"Información Adicional\",\r\n        \"fields\": [\r\n          {\r\n            \"id\": \"1\",\r\n            \"name\": \"EPS\",\r\n            \"type\": \"dropdown\",\r\n            \"value\": \"\",\r\n            \"structure\": {\r\n              \"options\": [\r\n                \"EPS Sura\",\r\n                \"Sanitas\",\r\n                \"Nueva EPS\",\r\n                \"Coomeva\",\r\n                \"Otra\"\r\n              ]\r\n            }\r\n          },\r\n          {\r\n            \"id\": \"2\",\r\n            \"name\": \"Última Actualización de Datos\",\r\n            \"type\": \"date\",\r\n            \"value\": \"\"\r\n          }\r\n        ]\r\n      }\r\n    ],\r\n    \"categories\": []\r\n  }\r\n]\r\n\r\n"
+    },
+    {
+      "uuid": "ce36e659-af6d-4b36-8fb6-72f78e5e9d4d",
+      "id": "k06x",
+      "name": "Plantillas",
+      "documentation": "Tabla de palantillas",
+      "value": "[\n  {\n    \"id\": \"1\",\n    \"name\": \"Template Base\",\n    \"description\": \"Template base del paciente\",\n    \"sections\": [\n      {\n        \"id\": \"1\",\n        \"name\": \"Identificación del Paciente\",\n        \"fields\": [\n          {\n            \"id\": \"1\",\n            \"name\": \"Nombre Completo\",\n            \"type\": \"text\",\n            \"value\": \"\"\n          },\n          {\n            \"id\": \"2\",\n            \"name\": \"Fecha de Nacimiento\",\n            \"type\": \"date\",\n            \"value\": \"\"\n          },\n          {\n            \"id\": \"3\",\n            \"name\": \"DNI/Pasaporte\",\n            \"type\": \"text\",\n            \"value\": \"\"\n          }\n        ]\n      },\n      {\n        \"id\": \"1\",\n        \"name\": \"Datos de Contacto\",\n        \"fields\": [\n          {\n            \"id\": \"1\",\n            \"name\": \"Teléfono\",\n            \"type\": \"text\",\n            \"value\": \"\"\n          },\n          {\n            \"id\": \"2\",\n            \"name\": \"Dirección\",\n            \"type\": \"text\",\n            \"value\": \"\"\n          },\n          {\n            \"id\": \"3\",\n            \"name\": \"Correo Electrónico\",\n            \"type\": \"email\",\n            \"value\": \"\"\n          }\n        ]\n      }\n    ],\n    \"categories\": []\n  }\n]"
+    }
+  ],
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,DELETE,OPTIONS"
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "abcd1234-5678-90ab-cdef-1234567890ab"
+    },
+    {
+      "type": "route",
+      "uuid": "6c444de6-b665-42f5-ae1d-5b7d2e0aafdd"
+    },
+    {
+      "type": "route",
+      "uuid": "ffef8383-25e1-41b8-a5e2-4f5dc94cfe77"
+    },
+    {
+      "type": "route",
+      "uuid": "7829da54-8ade-4599-a58a-24446f266850"
+    },
+    {
+      "type": "route",
+      "uuid": "75d3a3c0-eacb-42a3-82ac-8f898527a5a8"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "proxyReqHeaders": [],
+  "proxyResHeaders": [],
+  "callbacks": []
+}

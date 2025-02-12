@@ -1,0 +1,410 @@
+[
+    {
+        "id": "2",
+        "name": "Ficha de Paciente",
+        "description": "Información básica del paciente",
+        "sections": [
+            {
+                "id": "1",
+                "name": "Identificación del Paciente",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Nombre Completo",
+                        "type": "text",
+                        "value": "Daner Alejandro Salazar Colorado"
+                    },
+                    {
+                        "id": "2",
+                        "name": "Fecha de Nacimiento",
+                        "type": "date",
+                        "value": "08/09/2003"
+                    },
+                    {
+                        "id": "3",
+                        "name": "DNI/Pasaporte",
+                        "type": "text",
+                        "value": "1002620318"
+                    }
+                ]
+            },
+            {
+                "id": "2",
+                "name": "Datos de Contacto",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Teléfono",
+                        "type": "text",
+                        "value": "3145919465"
+                    },
+                    {
+                        "id": "2",
+                        "name": "Dirección",
+                        "type": "text",
+                        "value": "Carrea 23"
+                    },
+                    {
+                        "id": "3",
+                        "name": "Correo Electrónico",
+                        "type": "email",
+                        "value": "daneralejandro03@gmail.com"
+                    },
+                    {
+                        "id": "4",
+                        "name": "Ciudad de Residencia",
+                        "type": "text",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "id": "3",
+                "name": "Motivo de Consulta y Enfermedad Actual",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Motivo de Consulta",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "2",
+                        "name": "Motivo de Enfermedad",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "3",
+                        "name": "Síntomas Asociados",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "4",
+                        "name": "Duración de Síntomas (días)",
+                        "type": "number",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "id": "4",
+                "name": "Conceptos Médicos",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Análisis Realizados",
+                        "type": "list",
+                        "value": [
+                            {
+                                "id": "1",
+                                "fecha": "2024-02-05",
+                                "especialidad": "Cardiología",
+                                "detalle": "Electrocardiograma"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "2",
+                        "name": "Conceptos Médicos Detallados",
+                        "type": "textarea",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "id": "5",
+                "name": "Antecedentes Médicos",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Historial Médico",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "2",
+                        "name": "Antecedentes Farmacológicos",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "3",
+                        "name": "Antecedentes Alérgicos",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "4",
+                        "name": "Antecedentes Quirúrgicos",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "5",
+                        "name": "Antecedentes Familiares",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "6",
+                        "name": "Antecedentes Ginecobstétricos",
+                        "type": "textarea",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "id": "6",
+                "name": "Examen Físico",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Último Examen Físico",
+                        "type": "date",
+                        "value": ""
+                    },
+                    {
+                        "id": "2",
+                        "name": "Peso (kg)",
+                        "type": "number",
+                        "value": ""
+                    },
+                    {
+                        "id": "3",
+                        "name": "Talla (cm)",
+                        "type": "number",
+                        "value": ""
+                    },
+                    {
+                        "id": "4",
+                        "name": "IMC",
+                        "type": "number",
+                        "value": ""
+                    },
+                    {
+                        "id": "5",
+                        "name": "Frecuencia Cardíaca (lat/min)",
+                        "type": "number",
+                        "value": ""
+                    },
+                    {
+                        "id": "6",
+                        "name": "Presión Arterial (mmHg)",
+                        "type": "text",
+                        "value": ""
+                    },
+                    {
+                        "id": "7",
+                        "name": "Temperatura Corporal (°C)",
+                        "type": "number",
+                        "value": ""
+                    },
+                    {
+                        "id": "8",
+                        "name": "Saturación de Oxígeno (%)",
+                        "type": "number",
+                        "value": ""
+                    },
+                    {
+                        "id": "9",
+                        "name": "Sistema Respiratorio",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "10",
+                        "name": "Sistema Cardiovascular",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "11",
+                        "name": "Sistema Digestivo",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "12",
+                        "name": "Sistema Nervioso",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "13",
+                        "name": "Sistema Musculoesquelético",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "14",
+                        "name": "Sistema Genitourinario",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "15",
+                        "name": "Piel y Anexos",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "16",
+                        "name": "Observaciones Adicionales",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "17",
+                        "name": "Notas del Médico",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "18",
+                        "name": "Resultados de Examen Complementario",
+                        "type": "textarea",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "id": "7",
+                "name": "Análisis de Resultados",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Laboratorios",
+                        "type": "upload",
+                        "value": []
+                    },
+                    {
+                        "id": "2",
+                        "name": "Imágenes Diagnósticas",
+                        "type": "upload",
+                        "value": []
+                    },
+                    {
+                        "id": "3",
+                        "name": "Patología",
+                        "type": "upload",
+                        "value": []
+                    },
+                    {
+                        "id": "4",
+                        "name": "Pruebas Moleculares/Genéticas",
+                        "type": "upload",
+                        "value": []
+                    },
+                    {
+                        "id": "5",
+                        "name": "Subir Documentos (PDF, Imágenes)",
+                        "type": "upload",
+                        "value": []
+                    }
+                ]
+            },
+            {
+                "id": "8",
+                "name": "Análisis del Caso",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Análisis",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "2",
+                        "name": "Diagnóstico",
+                        "type": "text",
+                        "value": ""
+                    },
+                    {
+                        "id": "3",
+                        "name": "Diagnósticos (CIE-11)",
+                        "type": "list",
+                        "value": []
+                    },
+                    {
+                        "id": "4",
+                        "name": "Motivo de Atención",
+                        "type": "list",
+                        "value": []
+                    }
+                ]
+            },
+            {
+                "id": "9",
+                "name": "Plan de Manejo",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Plan Anterior",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "2",
+                        "name": "Nuevo Plan",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "3",
+                        "name": "Notas Adicionales sobre el Plan",
+                        "type": "textarea",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "id": "10",
+                "name": "Recomendaciones y Signos de Alarma",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "Recomendaciones",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "2",
+                        "name": "Signos de Alarma",
+                        "type": "textarea",
+                        "value": ""
+                    },
+                    {
+                        "id": "3",
+                        "name": "Indicaciones Post-Consulta",
+                        "type": "textarea",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "id": "11",
+                "name": "Información Adicional",
+                "fields": [
+                    {
+                        "id": "1",
+                        "name": "EPS",
+                        "type": "dropdown",
+                        "value": "",
+                        "structure": {
+                            "options": ["EPS Sura", "Sanitas", "Nueva EPS", "Coomeva", "Otra"]
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "name": "Última Actualización de Datos",
+                        "type": "date",
+                        "value": ""
+                    }
+                ]
+            }
+        ],
+        "categories": []
+    }
+]
