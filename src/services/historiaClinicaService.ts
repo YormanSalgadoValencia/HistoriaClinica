@@ -5,9 +5,8 @@ import { Campo } from '@/types/HistoriaClinica/Campo';
 
 const API_URL = 'http://localhost:3000';
 
-/**
- * Obtiene el listado de historias clínicas y las mapea a instancias de Plantilla.
- */
+//Obtiene el listado de historias clínicas y las mapea a instancias de Plantilla.
+
 export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
     try {
         const response = await axios.get(`${API_URL}/historiasClinicas`);
@@ -17,10 +16,9 @@ export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
     }
 };
 
-/**
- * Crea una nueva historia clínica en el backend y la retorna como una instancia de Plantilla.
- * @param payload Datos necesarios para crear la historia clínica.
- */
+//Crea una nueva historia clínica en el backend y la retorna como una instancia de Plantilla.
+//@param payload Datos necesarios para crear la historia clínica.
+
 export const createHistoriaClinica = async (payload: {
     id: string;
     name: string;
@@ -125,7 +123,7 @@ export const getHistoriaClinicaStandard = async (): Promise<Plantilla> => {
         const plantilla = response.data;
 
         console.log(JSON.stringify(response.data));
-        
+
         return new Plantilla(
             plantilla.id,
             plantilla.name,
@@ -146,9 +144,8 @@ export const getHistoriaClinicaStandard = async (): Promise<Plantilla> => {
                         )
                     )
             ),
-            plantilla.categories,
+            plantilla.categories
         );
-        
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Si buenas');
     }

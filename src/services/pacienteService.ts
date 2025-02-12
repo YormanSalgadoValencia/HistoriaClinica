@@ -3,9 +3,8 @@ import { Paciente } from '../types/Paciente';
 
 const API_URL = 'http://localhost:3000';
 
-/**
- * Obtiene todos los pacientes y los mapea a instancias de Paciente.
- */
+//Obtiene todos los pacientes y los mapea a instancias de Paciente.
+
 export const getPacientes = async (): Promise<Paciente[]> => {
     try {
         const response = await axios.get(`${API_URL}/paciente`);
@@ -15,9 +14,8 @@ export const getPacientes = async (): Promise<Paciente[]> => {
     }
 };
 
-/**
- * Obtiene un paciente por su id y lo mapea a una instancia de Paciente.
- */
+//Obtiene un paciente por su id y lo mapea a una instancia de Paciente.
+
 export const getPacienteById = async (id: string): Promise<Paciente> => {
     try {
         const response = await axios.get(`${API_URL}/paciente/${id}`);
@@ -27,10 +25,9 @@ export const getPacienteById = async (id: string): Promise<Paciente> => {
     }
 };
 
-/**
- * Crea un nuevo paciente en el backend y lo retorna como una instancia de Paciente.
- * @param payload Datos necesarios para crear el paciente.
- */
+//Crea un nuevo paciente en el backend y lo retorna como una instancia de Paciente.
+//@param payload Datos necesarios para crear el paciente.
+
 export const createPaciente = async (payload: {
     nombre: string;
     apellido: string;

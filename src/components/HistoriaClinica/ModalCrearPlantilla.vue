@@ -34,8 +34,8 @@ function crearDesdeCero() {
 }
 
 function crearConDefecto() {
-    emits('crearConDefecto');
     isDialogOpen.value = false;
+    router.push({ name: 'NuevaPlantillaDesdeBase' });
 }
 
 function cerrarModal() {

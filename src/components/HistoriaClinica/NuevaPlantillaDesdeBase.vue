@@ -22,32 +22,13 @@
                     <v-card-text>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field 
-                                    type="text"
-                                    label="Nombre"
-                                    v-model="namePlantilla"
-                                >
-                                </v-text-field>
+                                <v-text-field type="text" label="Nombre" v-model="namePlantilla"> </v-text-field>
                             </v-col>
                             <v-col cols="12">
-                                <v-textarea 
-                                    type="text"
-                                    label="Descripción"
-                                    v-model="descriptionPlantilla"
-                                >
-                                </v-textarea>
-
+                                <v-textarea type="text" label="Descripción" v-model="descriptionPlantilla"> </v-textarea>
                             </v-col>
                             <v-col cols="12">
-                                <v-select 
-                                    label="Categorias"
-                                    :items="categories"
-                                    multiple
-                                    v-model="categoriesPlantilla"
-
-                                >
-                                </v-select>
-
+                                <v-select label="Categorias" :items="categories" multiple v-model="categoriesPlantilla"> </v-select>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -118,18 +99,12 @@
                 <v-alert type="error" variant="tonal" border="start" elevation="2"> No se encontró la historia clínica. </v-alert>
             </v-col>
         </v-row>
-        
+
         <!-- Modal para editar sección -->
         <ModalSeccion :seccion="seccionEditar" @updateSeccion="actualizarSeccion" @cerrarModal="cerrarModalSeccion" />
-
-        
-         
     </v-container>
 
-    <ModalNuevaSeccion :seccion="seccionCrear" @create-seccion="createSeccion"/>
-
-    
-
+    <ModalNuevaSeccion :seccion="seccionCrear" @create-seccion="createSeccion" />
 </template>
 
 <script setup lang="ts">
@@ -158,12 +133,11 @@ const seccionEditar = ref<any>(null);
 const seccionCrear = ref<any>(null);
 
 //Categorias
-const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta']; 
+const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
 
 onMounted(async () => {
-
     cargando.value = true;
-    await historiaStore.fetchHistoriaStandard();        
+    await historiaStore.fetchHistoriaStandard();
     cargando.value = false;
 });
 
@@ -172,26 +146,27 @@ function agregarSeccion() {
         id: Date.now().toString(),
         name: '',
         fields: []
-    };   
+    };
 }
 
 function eliminarSeccion(seccionId: string) {
     Swal.fire({
         title: 'Eliminar',
-        text: "Está seguro que quiere eliminar la sección?",
+        text: 'Está seguro que quiere eliminar la sección?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Si, eliminar'
-      }).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
             if (historiaStore.historiaEstandar) {
-                historiaStore.historiaEstandar.sections = 
-                historiaStore.historiaEstandar.sections.filter(section => section.id !== seccionId);
-            }  
+                historiaStore.historiaEstandar.sections = historiaStore.historiaEstandar.sections.filter(
+                    (section) => section.id !== seccionId
+                );
+            }
         }
-      })
+    });
 }
 
 function editarSeccion(seccion: Seccion) {
@@ -211,8 +186,8 @@ function actualizarSeccion(seccionActualizada: Seccion) {
     seccionEditar.value = null;
 }
 
-function createSeccion(seccionCreada: Seccion){
-    if(historiaStore.historiaEstandar){
+function createSeccion(seccionCreada: Seccion) {
+    if (historiaStore.historiaEstandar) {
         historiaStore.historiaEstandar.sections.push(seccionCreada);
     }
 }
@@ -226,14 +201,13 @@ async function guardarCambios() {
 
     try {
         await plantillaStore.addPlantilla(historiaStore.historiaEstandar);
-        Swal.fire("Creación exitosa", "Se ha creado una nueva plantilla", "success");
-        router.push("/");
-        console.log("Cambios guardados con éxito.");
+        Swal.fire('Creación exitosa', 'Se ha creado una nueva plantilla', 'success');
+        router.push('/');
+        console.log('Cambios guardados con éxito.');
     } catch (error) {
-        console.error("Error al guardar:", error);
+        console.error('Error al guardar:', error);
     }
 }
-
 
 function cerrarModalSeccion() {
     seccionEditar.value = null;

@@ -5,9 +5,7 @@ import { Plantilla } from '../types/HistoriaClinica/Plantilla';
 
 const API_URL = 'http://localhost:3000';
 
-/**
- * Obtiene el listado de atenciones desde el backend y las mapea a instancias de Atencion.
- */
+//Obtiene el listado de atenciones desde el backend y las mapea a instancias de Atencion.
 export const getAtenciones = async (): Promise<Atencion[]> => {
     try {
         const response = await axios.get(`${API_URL}/atencion`);
@@ -18,21 +16,19 @@ export const getAtenciones = async (): Promise<Atencion[]> => {
     }
 };
 
-/**
- * Crea una nueva atención en el backend y la retorna como una instancia de Atencion.
- * @param payload Datos necesarios para crear la atención.
- */
+// Crea una nueva atención en el backend y la retorna como una instancia de Atencion.
+// @param payload Datos necesarios para crear la atención.
+// Si la historia clínica posee un método para serializarse, se invoca; de lo contrario, se envía tal cual.
 export const createAtencion = async (payload: {
     id: string;
     fechaAtencion: Date;
     modalidadAtencion: string;
     consecutivoAtencion: string;
     informacionAdicional?: string;
-    tiposAtencion: FormatoAtencion; // Se asume que FormatoAtencion tiene su propio método de conversión
-    historiaClinica?: Plantilla; // Se asume que Plantilla tiene un método toJSON o similar para serializar
+    tiposAtencion: FormatoAtencion;
+    historiaClinica?: Plantilla;
 }): Promise<Atencion> => {
     try {
-        // Si la historia clínica posee un método para serializarse, se invoca; de lo contrario, se envía tal cual.
         const requestBody = {
             ...payload,
             historiaClinica:
