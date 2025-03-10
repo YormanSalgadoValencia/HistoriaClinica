@@ -28,29 +28,35 @@ export class Atencion {
         this.historiaClinica = historiaClinica;
     }
 
+    // Convertir a instancia de FormatoAtencion
     // Método para convertir de JSON a instancia de Atencion
+    // Convertir a instancia de Plantilla
+    
     static fromJson(data: Atencion): Atencion {
         return new Atencion(
             data.id,
             data.fechaAtencion.toString(),
             data.modalidadAtencion,
             data.consecutivoAtencion,
-            FormatoAtencion.fromJson(data.tiposAtencion), // Convertir a instancia de FormatoAtencion
+            FormatoAtencion.fromJson(data.tiposAtencion), 
             data.informacionAdicional,
-            data.historiaClinica ? Plantilla.fromJson(data.historiaClinica) : undefined // Convertir a instancia de Plantilla
+            data.historiaClinica ? Plantilla.fromJson(data.historiaClinica) : undefined 
         );
     }
 
     // Método para convertir de instancia de Atencion a JSON
+    // Convertir a JSON
+    // Convertir a JSON
+
     static toJson(atencion: Atencion): Atencion {
         return new Atencion(
             atencion.id,
             atencion.fechaAtencion.toString(),
             atencion.modalidadAtencion,
             atencion.consecutivoAtencion,
-            FormatoAtencion.toJson(atencion.tiposAtencion), // Convertir a JSON
+            FormatoAtencion.toJson(atencion.tiposAtencion), 
             atencion.informacionAdicional,
-            atencion.historiaClinica ? Plantilla.toJson(atencion.historiaClinica) : undefined // Convertir a JSON
+            atencion.historiaClinica ? Plantilla.toJson(atencion.historiaClinica) : undefined 
         );
     }
 }
