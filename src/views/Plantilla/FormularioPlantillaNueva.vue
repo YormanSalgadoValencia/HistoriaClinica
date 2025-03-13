@@ -758,7 +758,8 @@ async function guardarPlantilla() {
                     value: field.value?.toString() || ''
                 }))
             })),
-            categories: plantilla.categories
+            categories: plantilla.categories,
+            reason: plantilla.reason
         });
         Swal.fire({
             icon: 'success',

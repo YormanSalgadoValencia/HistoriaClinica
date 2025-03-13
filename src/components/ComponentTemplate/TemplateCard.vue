@@ -30,6 +30,34 @@ defineProps<{
                     </span>
                 </div>
             </div>
+            <div class="section-mini">
+              <h5>{{ 'Reason' }}</h5>
+              <div class="fields-mini">
+                <span class="field-mini">
+                  {{ plantilla?.reason.reasonConsult }}
+                </span>
+                <span class="field-mini">
+                  {{ plantilla?.reason.reasonDisease }}
+                </span>
+                <span class="field-mini">
+                  {{ plantilla?.reason.durationSymptoms }}
+                </span>
+              </div>
+            </div>
+            <div class="section-mini">
+              <h5>{{ 'Management' }}</h5>
+              <div class="fields-mini">
+                <span class="field-mini">
+                  {{ plantilla?.management.previousPlan }}
+                </span>
+                <span class="field-mini">
+                  {{ plantilla?.management.newPlan }}
+                </span>
+                <span class="field-mini">
+                  {{ plantilla?.management.additionalNotes }}
+                </span>
+              </div>
+            </div>
         </div>
         
         

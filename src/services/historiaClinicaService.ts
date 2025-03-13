@@ -122,7 +122,7 @@ export const getHistoriaClinicaStandard = async (): Promise<Template> => {
         const response = await axios.get(`${API_URL}/historiaClinicaEstandar`);
         const plantilla = response.data;
 
-        console.log(JSON.stringify(response.data));
+        console.log('Data nueva:' + JSON.stringify(response.data));
 
         return new Template(
             plantilla.id,
@@ -144,7 +144,16 @@ export const getHistoriaClinicaStandard = async (): Promise<Template> => {
                         )
                     )
             ),
-            plantilla.categories
+            plantilla.categories,
+            plantilla.reason,
+            plantilla.concept,
+            plantilla.antecedent,
+            plantilla.sign,
+            plantilla.exam,
+            plantilla.analysis,
+            plantilla.caseData,
+            plantilla.management,
+            plantilla.recommendation
         );
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Si buenas');

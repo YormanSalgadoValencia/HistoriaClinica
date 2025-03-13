@@ -111,6 +111,126 @@ const tableHeaders = computed(() => {
     }
     return [];
 });
+
+const tmp = {
+    "id": "1a2b3c4d",
+    "name": "Sample Template",
+    "description": "This is a sample template for Mockoon",
+    "sections": [
+      {
+        "id": "section1",
+        "name": "Introduction",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "Patient Name",
+            "type": "text",
+            "label": "Full Name",
+            "category": "personal_info",
+            "description": "The full name of the patient",
+            "value": "John Doe"
+          },
+          {
+            "id": "field2",
+            "name": "Patient Age",
+            "type": "number",
+            "label": "Age",
+            "category": "personal_info",
+            "description": "The age of the patient",
+            "value": 35
+          }
+        ]
+      },
+      {
+        "id": "section2",
+        "name": "Medical History",
+        "fields": [
+          {
+            "id": "field3",
+            "name": "Allergies",
+            "type": "text",
+            "label": "Known Allergies",
+            "description": "List of known allergies",
+            "value": "None"
+          }
+        ]
+      }
+    ],
+    "categories": ["category1", "category2"],
+    "reason": {
+      "idReason": "reason1",
+      "reasonConsult": "Routine checkup",
+      "reasonDisease": "None",
+      "duracionSintomas": 0
+    },
+    "concept": {
+      "idConcept": "concept1",
+      "conceptsMedicalDetailed": "General health evaluation"
+    },
+    "antecedent": {
+      "idAntecedent": "antecedent1",
+      "medicalHistory": "No major illnesses",
+      "pharmacologicalHistory": "None",
+      "allergicHistory": "None",
+      "surgicalHistory": "Appendectomy in 2005",
+      "familyHistory": "No hereditary diseases",
+      "gynecobstetricHistory": "N/A"
+    },
+    "sign": {
+      "idSign": "sign1",
+      "weight": 70,
+      "height": 175,
+      "imc": 22.9,
+      "heartRate": 72,
+      "bloodPressure": "120/80",
+      "temperature": 36.6,
+      "oxygenSaturation": 98
+    },
+    "exam": {
+      "idExam": "exam1",
+      "lastPhysicalExam": "2025-03-10T00:00:00Z",
+      "respiratorySystem": "Normal",
+      "cardiovascularSystem": "Normal",
+      "digestiveSystem": "Normal",
+      "nervousSystem": "Normal",
+      "musculoskeletalSystem": "Normal",
+      "genitourinarySystem": "Normal",
+      "skinAndAnnexes": "Healthy",
+      "additionalObservations": "No issues observed",
+      "medicalNotes": "Patient in good health",
+      "complementaryExamResults": "All tests normal"
+    },
+    "analysis": {
+      "idAnalysis": "analysis1",
+      "date": "2025-03-11T00:00:00Z",
+      "detail": "Comprehensive health analysis",
+      "concept": {
+        "idConcept": "concept1",
+        "conceptsMedicalDetailed": "General health evaluation"
+      },
+      "laboratories": [],
+      "diagnosticImages": [],
+      "pathology": [],
+      "molecularTests": []
+    },
+    "case": {
+      "idCase": "case1",
+      "analysis": "Routine analysis",
+      "diagnosis": "Healthy"
+    },
+    "management": {
+      "idManagement": "management1",
+      "previousPlan": "Annual checkup",
+      "newPlan": "Maintain healthy lifestyle",
+      "additionalNotes": "No special recommendations"
+    },
+    "recommendation": {
+      "idRecommendation": "recommendation1",
+      "recommendation": "Continue with regular exercise and balanced diet",
+      "warningSigns": "None",
+      "postConsultationInstructions": "Schedule next checkup in one year"
+    }
+  }
 </script>
 
 <template>
@@ -286,6 +406,10 @@ const tableHeaders = computed(() => {
                             </v-row>
                         </v-card-text>
                     </v-card>
+                </div>
+
+                <div>
+                    
                 </div>
 
                 <!-- Botones de acción final -->
