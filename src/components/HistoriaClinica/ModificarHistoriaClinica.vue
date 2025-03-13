@@ -145,7 +145,7 @@ import { usePlantillaStore } from '@/stores/platillaStore';
 import { useRoute, useRouter } from 'vue-router';
 import ModalSeccion from '@/components/HistoriaClinica/ModalModificarSeccion.vue';
 import ModalNuevaSeccion from './ModalNuevaSeccion.vue';
-import { Seccion } from '@/types/HistoriaClinica/Seccion';
+import { Seccion } from '@/types/TemplateTypes/Section';
 import Swal from 'sweetalert2';
 import draggable from 'vuedraggable';
 

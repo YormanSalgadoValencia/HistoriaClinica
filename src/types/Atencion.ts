@@ -1,5 +1,5 @@
 import { FormatoAtencion } from './FormatoAtencion';
-import { Plantilla } from './HistoriaClinica/Plantilla';
+import { Plantilla } from './TemplateTypes/Template';
 
 export class Atencion {
     id: string;

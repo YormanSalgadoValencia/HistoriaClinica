@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { Atencion } from '@/types/Atencion';
 import { getAtenciones, createAtencion } from '@/services/atencionService';
 import { FormatoAtencion } from '@/types/FormatoAtencion';
-import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import { Plantilla } from '@/types/TemplateTypes/Template';
 
 // Definimos un tipo para el payload de `addAtencion`
 interface AtencionPayload {

@@ -460,10 +460,10 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable';
 import Swal from 'sweetalert2';
-import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
-import { Seccion } from '@/types/HistoriaClinica/Seccion';
-import { Campo } from '@/types/HistoriaClinica/Campo';
-import { Structure } from '@/types/HistoriaClinica/Structure';
+import { Plantilla } from '@/types/TemplateTypes/Template';
+import { Seccion } from '@/types/TemplateTypes/Section';
+import { Campo } from '@/types/TemplateTypes/Field';
+import { Structure } from '@/types/TemplateTypes/Structure';
 import InformacionGeneral from '@/components/PlantillaCero/InformacionGeneral.vue';
 import { usePlantillaStore } from '@/stores/platillaStore';
 

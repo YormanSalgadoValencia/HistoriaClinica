@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { onMounted } from 'vue';
-import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import { Template } from '@/types/TemplateTypes/Template';
 const historiaStore = useHistoriaClinicaStore();
 
 
@@ -10,7 +10,7 @@ onMounted(async () => {
 });
 
 defineProps<{ 
-  plantilla: Plantilla | null;
+  plantilla: Template | null;
 }>();
 </script>
 

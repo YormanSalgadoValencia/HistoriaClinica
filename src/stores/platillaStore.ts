@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getPlantillas, createPlantilla, getPlantillaById, updatePlantilla, deletePlantilla } from '@/services/platillaService';
-import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import { Plantilla } from '@/types/TemplateTypes/Template';
 
 export const usePlantillaStore = defineStore('plantilla', {
     state: () => ({

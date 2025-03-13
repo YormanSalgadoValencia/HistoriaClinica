@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import { Plantilla } from '@/types/TemplateTypes/Template';
 
 const API_URL = 'http://localhost:3000';
 

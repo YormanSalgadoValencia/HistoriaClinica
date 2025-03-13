@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import { Plantilla } from '@/types/TemplateTypes/Template';
 import { getHistoriasClinicas, 
          createHistoriaClinica, 
          getHistoriaClinicaById,
