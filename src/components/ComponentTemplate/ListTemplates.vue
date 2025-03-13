@@ -45,6 +45,7 @@ const searchPlantillaFiltered = computed(() => {
 function usarPlantilla(idPlantilla: string | undefined) {
     router.push('historia-clinica/' + idPlantilla);
 }
+
 </script>
 
 <template>
