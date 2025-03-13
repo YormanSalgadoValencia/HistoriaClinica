@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { Plantilla } from '@/types/TemplateTypes/Template';
+import { Template } from '@/types/TemplateTypes/Template';
 
 const API_URL = 'http://localhost:3000';
 
 /**
  * Obtiene el listado de todas las plantillas de historias clínicas.
  */
-export const getPlantillas = async (): Promise<Plantilla[]> => {
+export const getPlantillas = async (): Promise<Template[]> => {
     try {
         const response = await axios.get(`${API_URL}/Plantilla`);
-        return response.data.map((data: Plantilla) => Plantilla.fromJson(data));
+        return response.data.map((data: Template) => Template.fromJson(data));
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener las plantillas');
     }
@@ -43,11 +43,11 @@ export const createPlantilla = async (payload: {
         }[];
     }[];
     categories: string[];
-}): Promise<Plantilla> => {
+}): Promise<Template> => {
     try {
         const response = await axios.post(`${API_URL}/historiasClinicas`, payload);
         console.log(response.data);
-        return Plantilla.fromJson(response.data);
+        return Template.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al crear la plantilla');
     }
@@ -57,10 +57,10 @@ export const createPlantilla = async (payload: {
  * Obtiene una plantilla de historia clínica específica por su ID.
  * @param id ID de la plantilla a obtener.
  */
-export const getPlantillaById = async (id: string): Promise<Plantilla> => {
+export const getPlantillaById = async (id: string): Promise<Template> => {
     try {
         const response = await axios.get(`${API_URL}/Plantilla/${id}`);
-        return Plantilla.fromJson(response.data);
+        return Template.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener la plantilla');
     }
@@ -97,10 +97,10 @@ export const updatePlantilla = async (
         }[];
         categories: string[];
     }
-): Promise<Plantilla> => {
+): Promise<Template> => {
     try {
         const response = await axios.put(`${API_URL}/Plantilla/${id}`, payload);
-        return Plantilla.fromJson(response.data);
+        return Template.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al actualizar la plantilla');
     }

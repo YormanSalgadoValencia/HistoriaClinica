@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { getPlantillas, createPlantilla, getPlantillaById, updatePlantilla, deletePlantilla } from '@/services/platillaService';
-import { Plantilla } from '@/types/TemplateTypes/Template';
+import { Template } from '@/types/TemplateTypes/Template';
 
 export const usePlantillaStore = defineStore('plantilla', {
     state: () => ({
-        plantillas: [] as Plantilla[],
-        selectedPlantilla: null as Plantilla | null,
+        plantillas: [] as Template[],
+        selectedPlantilla: null as Template | null,
         loading: false,
         error: null as string | null
     }),

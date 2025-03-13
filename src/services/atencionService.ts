@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Atencion } from '../types/Atencion';
 import { FormatoAtencion } from '../types/FormatoAtencion';
-import { Plantilla } from '../types/TemplateTypes/Template';
+import { Template } from '../types/TemplateTypes/Template';
 
 const API_URL = 'http://localhost:3000';
 
@@ -26,14 +26,14 @@ export const createAtencion = async (payload: {
     consecutivoAtencion: string;
     informacionAdicional?: string;
     tiposAtencion: FormatoAtencion;
-    historiaClinica?: Plantilla;
+    historiaClinica?: Template;
 }): Promise<Atencion> => {
     try {
         const requestBody = {
             ...payload,
             historiaClinica:
-                payload.historiaClinica && typeof Plantilla.toJson === 'function'
-                    ? Plantilla.toJson(payload.historiaClinica)
+                payload.historiaClinica && typeof Template.toJson === 'function'
+                    ? Template.toJson(payload.historiaClinica)
                     : payload.historiaClinica
         };
 

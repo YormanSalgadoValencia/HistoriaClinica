@@ -124,7 +124,7 @@ import { usePlantillaStore } from '@/stores/platillaStore';
 import { useRoute, useRouter } from 'vue-router';
 import ModalSeccion from '@/components/HistoriaClinica/ModalModificarSeccion.vue';
 import ModalNuevaSeccion from './ModalNuevaSeccion.vue';
-import { Seccion } from '@/types/TemplateTypes/Section';
+import { Section } from '@/types/TemplateTypes/Section';
 import Swal from 'sweetalert2';
 import draggable from 'vuedraggable';
 
@@ -180,12 +180,12 @@ function eliminarSeccion(seccionId: string) {
     });
 }
 
-function editarSeccion(seccion: Seccion) {
+function editarSeccion(seccion: Section) {
     // Se puede clonar la sección si es necesario
     seccionEditar.value = { ...seccion };
 }
 
-function actualizarSeccion(seccionActualizada: Seccion) {
+function actualizarSeccion(seccionActualizada: Section) {
     // Actualizamos la sección en la historia seleccionada
     if (historiaStore.historiaEstandar) {
         const index = historiaStore.historiaEstandar.sections.findIndex((s) => s.id === seccionActualizada.id);
@@ -197,7 +197,7 @@ function actualizarSeccion(seccionActualizada: Seccion) {
     seccionEditar.value = null;
 }
 
-function createSeccion(seccionCreada: Seccion) {
+function createSeccion(seccionCreada: Section) {
     if (historiaStore.historiaEstandar) {
         historiaStore.historiaEstandar.sections.push(seccionCreada);
     }

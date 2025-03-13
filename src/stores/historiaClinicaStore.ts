@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Plantilla } from '@/types/TemplateTypes/Template';
+import { Template } from '@/types/TemplateTypes/Template';
 import { getHistoriasClinicas, 
          createHistoriaClinica, 
          getHistoriaClinicaById,
@@ -7,9 +7,9 @@ import { getHistoriasClinicas,
 
 export const useHistoriaClinicaStore = defineStore('historiaClinica', {
     state: () => ({
-        historias: [] as Plantilla[],
-        historiaSeleccionada: null as Plantilla | null,
-        historiaEstandar: null as Plantilla | null,
+        historias: [] as Template[],
+        historiaSeleccionada: null as Template | null,
+        historiaEstandar: null as Template | null,
         loading: false,
         error: null as string | null
     }),
