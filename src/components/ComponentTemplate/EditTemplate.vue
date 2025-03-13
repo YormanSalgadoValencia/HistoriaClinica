@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
-import type { Field } from '@/types/TemplateTypes/Field';
+    import type { Field } from '@/types/TemplateTypes/Field';
     import { Section } from '@/types/TemplateTypes/Section';
     import { onMounted, ref } from 'vue';
   
