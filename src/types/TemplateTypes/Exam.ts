@@ -7,7 +7,7 @@ export class Exam {
     nervousSystem: string;
     musculoskeletalSystem: string;
     genitourinarySystem: string;
-    skinAndAnnexes: string;
+    skinAttachments: string;
     additionalObservations: string;
     medicalNotes: string;
     complementaryExamResults: string;
@@ -21,7 +21,7 @@ export class Exam {
         nervousSystem: string,
         musculoskeletalSystem: string,
         genitourinarySystem: string,
-        skinAndAnnexes: string,
+        skinAttachments: string,
         additionalObservations: string,
         medicalNotes: string,
         complementaryExamResults: string
@@ -34,7 +34,7 @@ export class Exam {
         this.nervousSystem = nervousSystem;
         this.musculoskeletalSystem = musculoskeletalSystem;
         this.genitourinarySystem = genitourinarySystem;
-        this.skinAndAnnexes = skinAndAnnexes;
+        this.skinAttachments = skinAttachments;
         this.additionalObservations = additionalObservations;
         this.medicalNotes = medicalNotes;
         this.complementaryExamResults = complementaryExamResults;
@@ -50,7 +50,7 @@ export class Exam {
             data.nervousSystem,
             data.musculoskeletalSystem,
             data.genitourinarySystem,
-            data.skinAndAnnexes,
+            data.skinAttachments,
             data.additionalObservations,
             data.medicalNotes,
             data.complementaryExamResults
@@ -67,7 +67,7 @@ export class Exam {
             exam.nervousSystem,
             exam.musculoskeletalSystem,
             exam.genitourinarySystem,
-            exam.skinAndAnnexes,
+            exam.skinAttachments,
             exam.additionalObservations,
             exam.medicalNotes,
             exam.complementaryExamResults
