@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import PlantillaCard from './PlantillaCard.vue';
-import PreviewPlantilla from './PreviewPlantilla.vue';
+import PreviewTemplate from './PreviewTemplate.vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { onMounted } from 'vue';
 import type { Template } from '@/types/TemplateTypes/Template';
 import ModalCrearPlantilla from '../HistoriaClinica/ModalCrearPlantilla.vue';
 import { router } from '@/router';
+import TemplateCard from './TemplateCard.vue';
 
 const plantillaBuscada = ref('');
 const selectedCategory = ref('');
@@ -51,7 +51,7 @@ function usarPlantilla(idPlantilla: string | undefined) {
     <v-container>
         <v-row>
             <v-col cols="12">
-                <PlantillaCard
+                <TemplateCard
                     v-if="historiaClinicaEstandar.historiaEstandar"
                     :plantilla="historiaClinicaEstandar.historiaEstandar"
                     @click="openPlantilla(historiaClinicaEstandar.historiaEstandar)"
@@ -83,13 +83,13 @@ function usarPlantilla(idPlantilla: string | undefined) {
 
         <v-row>
             <div class="template-list" v-if="plantillaBuscada != ''">
-                <PlantillaCard v-for="plantilla in searchPlantillaFiltered" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
+                <TemplateCard v-for="plantilla in searchPlantillaFiltered" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
             </div>
             <div class="template-list" v-else-if="selectedCategory != ''">
-                <PlantillaCard v-for="plantilla in searchPlantillaByCategory" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
+                <TemplateCard v-for="plantilla in searchPlantillaByCategory" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
             </div>
             <div v-else class="template-list">
-                <PlantillaCard v-for="plantilla in historiaStore.historias" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
+                <TemplateCard v-for="plantilla in historiaStore.historias" :plantilla="plantilla" @click="openPlantilla(plantilla)" />
             </div>
         </v-row>
 
@@ -105,7 +105,7 @@ function usarPlantilla(idPlantilla: string | undefined) {
                 <v-row class="d-flex justify-center align-center">
                     <v-col cols="8">
                         <div class="preview-box">
-                            <PreviewPlantilla v-if="plantillaSeleccionada" :plantilla="plantillaSeleccionada" />
+                            <PreviewTemplate v-if="plantillaSeleccionada" :plantilla="plantillaSeleccionada" />
                         </div>
                     </v-col>
                     <v-col cols="4">

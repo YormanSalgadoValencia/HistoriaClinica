@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
-import ClinicalHistory from '@/components/clinicalHistory/ClinicalHistory.vue';
+import ListTemplates from '@/components/ComponentTemplate/ListTemplates.vue';
 
 const page = ref({ title: 'Sample Page' });
 const breadcrumbs = ref([
@@ -21,5 +21,5 @@ const breadcrumbs = ref([
 </script>
 
 <template>
-    <ClinicalHistory></ClinicalHistory>
+    <ListTemplates></ListTemplates>
 </template>
