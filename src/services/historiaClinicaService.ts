@@ -1,16 +1,16 @@
 import axios from 'axios';
-import { Plantilla } from '@/types/TemplateTypes/Template';
-import { Seccion } from '@/types/TemplateTypes/Section';
-import { Campo } from '@/types/TemplateTypes/Field';
+import { Template } from '@/types/TemplateTypes/Template';
+import { Section } from '@/types/TemplateTypes/Section';
+import { Field } from '@/types/TemplateTypes/Field';
 
 const API_URL = 'http://localhost:3000';
 
 //Obtiene el listado de historias clínicas y las mapea a instancias de Plantilla.
 
-export const getHistoriasClinicas = async (): Promise<Plantilla[]> => {
+export const getHistoriasClinicas = async (): Promise<Template[]> => {
     try {
         const response = await axios.get(`${API_URL}/historiasClinicas`);
-        return response.data.map((data: Plantilla) => Plantilla.fromJson(data));
+        return response.data.map((data: Template) => Template.fromJson(data));
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener las historias clínicas');
     }
@@ -43,10 +43,10 @@ export const createHistoriaClinica = async (payload: {
         }[];
     }[];
     categories: string[];
-}): Promise<Plantilla> => {
+}): Promise<Template> => {
     try {
         const response = await axios.post(`${API_URL}/historiasClinicas`, payload);
-        return Plantilla.fromJson(response.data);
+        return Template.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al crear la historia clínica');
     }
@@ -56,10 +56,10 @@ export const createHistoriaClinica = async (payload: {
  * Obtiene una historia clínica específica por su ID y la mapea a una instancia de Plantilla.
  * @param id ID de la historia clínica a buscar.
  */
-export const getHistoriaClinicaById = async (id: string): Promise<Plantilla> => {
+export const getHistoriaClinicaById = async (id: string): Promise<Template> => {
     try {
         const response = await axios.get(`${API_URL}/historiasClinicas/${id}`);
-        return Plantilla.fromJson(response.data);
+        return Template.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al obtener la historia clínica por ID');
     }
@@ -96,10 +96,10 @@ export const updateHistoriaClinica = async (
         }[];
         categories: string[];
     }
-): Promise<Plantilla> => {
+): Promise<Template> => {
     try {
         const response = await axios.put(`${API_URL}/historiasClinicas/${id}`, payload);
-        return Plantilla.fromJson(response.data);
+        return Template.fromJson(response.data);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error al actualizar la historia clínica');
     }
@@ -117,25 +117,25 @@ export const deleteHistoriaClinica = async (id: string): Promise<void> => {
     }
 };
 
-export const getHistoriaClinicaStandard = async (): Promise<Plantilla> => {
+export const getHistoriaClinicaStandard = async (): Promise<Template> => {
     try {
         const response = await axios.get(`${API_URL}/historiaClinicaEstandar`);
         const plantilla = response.data;
 
         console.log(JSON.stringify(response.data));
 
-        return new Plantilla(
+        return new Template(
             plantilla.id,
             plantilla.name,
             plantilla.description,
             plantilla.sections.map(
-                (section: Seccion) =>
-                    new Seccion(
+                (section: Section) =>
+                    new Section(
                         section.id,
                         section.name,
                         section.fields.map(
-                            (field: Campo) =>
-                                new Campo(
+                            (field: Field) =>
+                                new Field(
                                     field.id,
                                     field.name,
                                     field.type,

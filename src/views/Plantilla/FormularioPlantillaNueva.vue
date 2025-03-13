@@ -460,9 +460,9 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable';
 import Swal from 'sweetalert2';
-import { Plantilla } from '@/types/TemplateTypes/Template';
-import { Seccion } from '@/types/TemplateTypes/Section';
-import { Campo } from '@/types/TemplateTypes/Field';
+import { Template } from '@/types/TemplateTypes/Template';
+import { Section } from '@/types/TemplateTypes/Section';
+import { Field } from '@/types/TemplateTypes/Field';
 import { Structure } from '@/types/TemplateTypes/Structure';
 import InformacionGeneral from '@/components/PlantillaCero/InformacionGeneral.vue';
 import { usePlantillaStore } from '@/stores/platillaStore';
@@ -475,12 +475,12 @@ const plantillaDescription = ref('');
 const plantillaCategories = ref<string[]>([]);
 
 // Array reactivo de secciones
-const sections = reactive<Seccion[]>([]);
+const sections = reactive<Section[]>([]);
 
 // Modelo para la nueva sección (para creación)
 const newSection = reactive({
     name: '',
-    fields: [] as Campo[]
+    fields: [] as Field[]
 });
 
 // Modelo para un nuevo campo en la nueva sección
@@ -498,7 +498,7 @@ const fieldReactive = reactive({
 });
 
 // Estado de edición para campos (se usa para editar campos ya existentes en newSection o en secciones)
-const editingField = ref<{ sectionIndex: number | null; fieldIndex: number; campo: Campo } | null>(null);
+const editingField = ref<{ sectionIndex: number | null; fieldIndex: number; campo: Field } | null>(null);
 const isEditingField = computed({
     get: () => editingField.value !== null,
     set: (val: boolean) => {
@@ -525,7 +525,7 @@ const editingFieldDropdown = computed<string>({
 });
 
 // Estado de edición para secciones (cuando se edita una sección completa)
-const editingSection = ref<{ index: number; section: Seccion } | null>(null);
+const editingSection = ref<{ index: number; section: Section } | null>(null);
 const isEditingSection = computed({
     get: () => editingSection.value !== null,
     set: (val: boolean) => {
@@ -546,7 +546,7 @@ const fieldTypes = [
 // FUNCIONES PARA CAMPOS EN "newSection"
 function agregarCampo() {
     if (!fieldReactive.name || !fieldReactive.type) return;
-    const campo = new Campo(
+    const campo = new Field(
         uuidv4(),
         fieldReactive.name,
         fieldReactive.type,
@@ -578,7 +578,7 @@ function agregarCampo() {
     fieldReactive.structure.max = null;
     fieldReactive.structure.units = '';
 }
-function editarCampoNew(fieldIndex: number, campo: Campo) {
+function editarCampoNew(fieldIndex: number, campo: Field) {
     editingField.value = { sectionIndex: null, fieldIndex, campo: { ...campo } };
 }
 function eliminarCampoNew(fieldIndex: number) {
@@ -586,7 +586,7 @@ function eliminarCampoNew(fieldIndex: number) {
 }
 
 // FUNCIONES PARA CAMPOS EN LA SECCIÓN EN EDICIÓN (dentro del diálogo de editar sección)
-function editarCampoInEditingSection(fieldIndex: number, campo: Campo) {
+function editarCampoInEditingSection(fieldIndex: number, campo: Field) {
     // Usamos sectionIndex = -1 para distinguir que el campo pertenece a editingSection
     editingField.value = { sectionIndex: -1, fieldIndex, campo: { ...campo } };
 }
@@ -600,7 +600,7 @@ function guardarEdicionCampo() {
     const { sectionIndex, fieldIndex, campo } = editingField.value;
     if (sectionIndex === null) {
         // Campo en newSection
-        newSection.fields[fieldIndex] = new Campo(
+        newSection.fields[fieldIndex] = new Field(
             campo.id,
             campo.name,
             campo.type,
@@ -612,7 +612,7 @@ function guardarEdicionCampo() {
         );
     } else if (sectionIndex === -1 && editingSection.value) {
         // Campo en la sección en edición
-        editingSection.value.section.fields[fieldIndex] = new Campo(
+        editingSection.value.section.fields[fieldIndex] = new Field(
             campo.id,
             campo.name,
             campo.type,
@@ -624,7 +624,7 @@ function guardarEdicionCampo() {
         );
     } else {
         // Campo en una sección ya creada
-        sections[sectionIndex].fields[fieldIndex] = new Campo(
+        sections[sectionIndex].fields[fieldIndex] = new Field(
             campo.id,
             campo.name,
             campo.type,
@@ -641,7 +641,7 @@ function guardarEdicionCampo() {
 // FUNCIONES PARA SECCIONES
 function agregarSeccion() {
     if (!newSection.name) return;
-    const seccion = new Seccion(uuidv4(), newSection.name, [...newSection.fields]);
+    const seccion = new Section(uuidv4(), newSection.name, [...newSection.fields]);
     sections.push(seccion);
     newSection.name = '';
     newSection.fields = [];
@@ -649,7 +649,7 @@ function agregarSeccion() {
 function eliminarSeccion(index: number) {
     sections.splice(index, 1);
 }
-function editarSeccion(index: number, section: Seccion) {
+function editarSeccion(index: number, section: Section) {
     // Creamos una copia local para editar
     editingSection.value = { index, section: { ...section, fields: [...section.fields] } };
     // Reiniciamos el objeto para agregar nuevos campos en este contexto
@@ -664,7 +664,7 @@ function editarSeccion(index: number, section: Seccion) {
 function guardarEdicionSeccion() {
     if (!editingSection.value) return;
     const { index, section } = editingSection.value;
-    sections[index] = new Seccion(section.id, section.name, [...section.fields]);
+    sections[index] = new Section(section.id, section.name, [...section.fields]);
     editingSection.value = null;
 }
 
@@ -686,7 +686,7 @@ function agregarCampoEditingSection() {
             fieldReactive.structure.units
         );
     }
-    const campo = new Campo(
+    const campo = new Field(
         uuidv4(),
         fieldReactive.name,
         fieldReactive.type,
@@ -721,7 +721,7 @@ function getPreviewComponent(type: string) {
     return componentMap[type] || 'v-text-field';
 }
 
-function getPreviewProps(field: Campo) {
+function getPreviewProps(field: Field) {
     const props: Record<string, any> = {
         dense: true,
         class: 'field-preview'
@@ -743,7 +743,7 @@ function getPreviewProps(field: Campo) {
 
 async function guardarPlantilla() {
     try {
-        const plantilla = new Plantilla(uuidv4(), plantillaName.value, plantillaDescription.value, sections, plantillaCategories.value);
+        const plantilla = new Template(uuidv4(), plantillaName.value, plantillaDescription.value, sections, plantillaCategories.value);
         await plantillaStore.addPlantilla({
             id: plantilla.id,
             name: plantilla.name,

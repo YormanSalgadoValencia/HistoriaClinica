@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { Atencion } from '@/types/Atencion';
 import { getAtenciones, createAtencion } from '@/services/atencionService';
 import { FormatoAtencion } from '@/types/FormatoAtencion';
-import { Plantilla } from '@/types/TemplateTypes/Template';
+import { Template } from '@/types/TemplateTypes/Template';
 
 // Definimos un tipo para el payload de `addAtencion`
 interface AtencionPayload {
@@ -12,7 +12,7 @@ interface AtencionPayload {
     consecutivoAtencion: string;
     informacionAdicional: string;
     tiposAtencion: FormatoAtencion;
-    historiaClinica: Plantilla;
+    historiaClinica: Template;
 }
 
 export const useAtencionStore = defineStore('atencion', {
