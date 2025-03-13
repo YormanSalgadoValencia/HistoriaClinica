@@ -1,11 +1,12 @@
 <script setup lang="ts">
     import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
-import { Seccion } from '@/types/HistoriaClinica/Seccion';
+import type { Field } from '@/types/TemplateTypes/Field';
+    import { Section } from '@/types/TemplateTypes/Section';
     import { onMounted, ref } from 'vue';
   
     const historiaClinicaEstandar = useHistoriaClinicaStore();
     const editSectionModal = ref(false);
-    const sectionEditable = ref<Seccion | null>(null);
+    const sectionEditable = ref<Section | null>(null);
     const addFieldModal = ref(false);
 
     onMounted(async () => {
@@ -42,26 +43,26 @@ import { Seccion } from '@/types/HistoriaClinica/Seccion';
     function deleteSection(id: string){
         if (historiaClinicaEstandar.historiaEstandar) {
             historiaClinicaEstandar.historiaEstandar.sections = 
-            historiaClinicaEstandar.historiaEstandar.sections.filter(section => section.id !== id);
+            historiaClinicaEstandar.historiaEstandar.sections.filter((section: Section) => section.id !== id);
         }   
     }
 
-    function editSection(section: Seccion) {
+    function editSection(section: Section) {
         editSectionModal.value = true;
         sectionEditable.value = { ...section };
     }
 
     function deleteField(sectionId: string, fieldId: string){
-        const section = historiaClinicaEstandar.historiaEstandar?.sections.find(sec => sec.id === sectionId);
+        const section = historiaClinicaEstandar.historiaEstandar?.sections.find((sec: Section) => sec.id === sectionId);
         if (section) {
-            section.fields = section.fields.filter(field => field.id !== fieldId);
+            section.fields = section.fields.filter((field: Field) => field.id !== fieldId);
         }
     }
 
     function deleteField2(sectionId: string, fieldId: string){
-        const section = historiaClinicaEstandar.historiaEstandar?.sections.find(sec => sec.id === sectionId);
+        const section = historiaClinicaEstandar.historiaEstandar?.sections.find((sec: Section) => sec.id === sectionId);
         if (section) {
-            section.fields = section.fields.filter(field => field.id !== fieldId);
+            section.fields = section.fields.filter((field: Field) => field.id !== fieldId);
         }
     }
 

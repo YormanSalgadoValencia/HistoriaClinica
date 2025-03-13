@@ -4,7 +4,7 @@ import PlantillaCard from './PlantillaCard.vue';
 import PreviewPlantilla from './PreviewPlantilla.vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { onMounted } from 'vue';
-import type { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import type { Template } from '@/types/TemplateTypes/Template';
 import ModalCrearPlantilla from '../HistoriaClinica/ModalCrearPlantilla.vue';
 import { router } from '@/router';
 
@@ -12,7 +12,7 @@ const plantillaBuscada = ref('');
 const selectedCategory = ref('');
 const isOpenModalPreview = ref(false);
 const isOpenModalCrear = ref(false);
-const plantillaSeleccionada = ref<Plantilla | null>(null);
+const plantillaSeleccionada = ref<Template | null>(null);
 const confirmModal = ref(false);
 const categories = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta'];
 const historiaStore = useHistoriaClinicaStore();
@@ -24,18 +24,18 @@ onMounted(async () => {
 });
 
 const searchPlantilla = computed(() =>
-    historiaStore.historias.filter((p) => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
+    historiaStore.historias.filter((p: Template) => p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase()))
 );
 
-function openPlantilla(plantilla: Plantilla) {
+function openPlantilla(plantilla: Template) {
     isOpenModalPreview.value = true;
     plantillaSeleccionada.value = plantilla;
 }
 
-const searchPlantillaByCategory = computed(() => historiaStore.historias.filter((p) => p.categories.includes(selectedCategory.value)));
+const searchPlantillaByCategory = computed(() => historiaStore.historias.filter((p: Template) => p.categories.includes(selectedCategory.value)));
 
 const searchPlantillaFiltered = computed(() => {
-    return historiaStore.historias.filter((p) => {
+    return historiaStore.historias.filter((p: Template) => {
         const matchesSearch = p.name.toLowerCase().includes(plantillaBuscada.value.toLowerCase());
         const matchesCategory = selectedCategory.value === '' || p.categories?.includes(selectedCategory.value);
         return matchesSearch && matchesCategory;

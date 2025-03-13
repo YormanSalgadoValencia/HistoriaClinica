@@ -3,8 +3,8 @@ import { ref, onMounted, computed } from 'vue';
 import { useHistoriaClinicaStore } from '@/stores/historiaClinicaStore';
 import { useRoute, useRouter } from 'vue-router';
 import ModalNuevaSeccion from '@/components/HistoriaClinica/ModalNuevaSeccion.vue';
-import { Seccion } from '@/types/HistoriaClinica/Seccion';
-import { Campo } from '@/types/HistoriaClinica/Campo';
+import { Section } from '@/types/TemplateTypes/Section';
+import { Field } from '@/types/TemplateTypes/Field';
 import ModalModificarSeccion from './ModalModificarSeccion.vue';
 
 // Usamos el store que maneja la "historia clínica" (Plantilla)
@@ -16,14 +16,14 @@ const cargando = ref(false);
 
 // Variables para manejar la apertura de modales y la sección/tabla seleccionada
 const sectionModalOpen = ref(false);
-const selectedSection = ref<Seccion | null>(null);
+const selectedSection = ref<Section | null>(null);
 
 const listModalOpen = ref(false);
 const selectedList = ref<any[]>([]);
 const selectedListTitle = ref('');
 
 // Nueva sección: se crea como instancia de Seccion
-const nuevaSeccion = ref<Seccion | null>(null);
+const nuevaSeccion = ref<Section | null>(null);
 
 const seccionModificar = ref<any>(null);
 
@@ -43,7 +43,7 @@ onMounted(async () => {
         await historiaStore.fetchHistoriaById(historiaId);
         // Una vez cargada la historia, formateamos los campos de tipo 'date'
         if (historiaStore.historiaSeleccionada) {
-            historiaStore.historiaSeleccionada.sections.forEach((section) => {
+            historiaStore.historiaSeleccionada.sections.forEach((section: Section) => {
                 section.fields.forEach((campo) => {
                     if (campo.type === 'date' && campo.value) {
                         if (typeof campo.value === 'string') {
@@ -58,7 +58,7 @@ onMounted(async () => {
 });
 
 // Abre el modal para ver/modificar el detalle de la sección
-function openSectionModal(seccion: Seccion) {
+function openSectionModal(seccion: Section) {
     selectedSection.value = seccion;
     seccionModificar.value = {
         id: seccion.id,
@@ -69,7 +69,7 @@ function openSectionModal(seccion: Seccion) {
 }
 
 // Abre el modal para visualizar un campo de tipo "list"
-function openListModal(campo: Campo) {
+function openListModal(campo: Field) {
     selectedList.value = Array.isArray(campo.value) ? campo.value : [];
     selectedListTitle.value = campo.name;
     listModalOpen.value = true;
@@ -146,7 +146,7 @@ const tableHeaders = computed(() => {
                             variant="elevated"
                             size="large"
                             prepend-icon="mdi-plus"
-                            @click="nuevaSeccion = new Seccion(Date.now().toString(), '', [])"
+                            @click="nuevaSeccion = new Section(Date.now().toString(), '', [])"
                             class="add-section-button"
                         >
                             Agregar Nueva Sección
@@ -316,10 +316,10 @@ const tableHeaders = computed(() => {
                 v-if="seccionModificar"
                 :seccion="seccionModificar"
                 @update-seccion="
-                    (seccionActualizada: Seccion) => {
+                    (seccionActualizada: Section) => {
                         if (historiaStore.historiaSeleccionada) {
                             const index = historiaStore.historiaSeleccionada.sections.findIndex(
-                                (sec) => sec.id === seccionActualizada.id
+                                (sec: Section) => sec.id === seccionActualizada.id
                             );
                             if (index !== -1) {
                                 historiaStore.historiaSeleccionada.sections[index] = seccionActualizada;
@@ -390,7 +390,7 @@ const tableHeaders = computed(() => {
             v-if="nuevaSeccion"
             :seccion="nuevaSeccion"
             @createSeccion="
-                (seccion: Seccion) => {
+                (seccion: Section) => {
                     if (historiaStore.historiaSeleccionada) {
                         historiaStore.historiaSeleccionada.sections.push(seccion);
                     }

@@ -1,5 +1,5 @@
 import { Structure } from './Structure';
-export class Campo {
+export class Field {
     id: string;
     name: string;
     label?: string;
@@ -30,19 +30,19 @@ export class Campo {
     }
 
     // Método estático para mapear un JSON a una instancia de Campo, aprovechando Structure.fromJSON
-    static fromJSON(data: Campo): Campo {
+    static fromJSON(data: Field): Field {
         let structure;
         if (data.structure) {
             structure = Structure.fromJson(data.structure);
         }
-        return new Campo(data.id, data.name, data.type, data.label, data.category, data.description, structure, data.value);
+        return new Field(data.id, data.name, data.type, data.label, data.category, data.description, structure, data.value);
     }
 
-    static toJson(campo: Campo): Campo {
+    static toJson(campo: Field): Field {
         let structure;
         if (campo.structure) {
             structure = Structure.toJSON(campo.structure);
         }
-        return new Campo(campo.id, campo.name, campo.type, campo.label, campo.category, campo.description, structure, campo.value);
+        return new Field(campo.id, campo.name, campo.type, campo.label, campo.category, campo.description, structure, campo.value);
     }
 }

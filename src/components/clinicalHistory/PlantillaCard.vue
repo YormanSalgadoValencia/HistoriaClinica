@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Structure } from '@/types/HistoriaClinica/Structure';
-import { Plantilla } from '@/types/HistoriaClinica/Plantilla';
+import type { Structure } from '@/types/TemplateTypes/Structure';
+import { Template } from '@/types/TemplateTypes/Template';
 
 defineProps<{ 
-  plantilla: Plantilla | null;
+  plantilla: Template | null;
 }>();
 
 
